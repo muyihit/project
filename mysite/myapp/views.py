@@ -13,7 +13,7 @@ from django.utils.timezone import timedelta
 import datetime
 from django.db.models import Q 
 # Create your views here.
-
+# the test
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
