@@ -1,0 +1,24 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>用户注册</title>
+</head>
+<style type="text/css">
+    body{color:#efd; background:#453; padding:0 5em; margin:0}
+    h1{padding:2em 1em; background:#675}
+    h2{color:#bf8;border-top:1px dotted #fff;margin-top:2em}
+    p{margin:0em 0}
+</style>
+<body>
+<h1>注册页面</h1>
+<form method = "post">
+{%csrf_token%}
+<ul>
+<li><label for="id_username"><h2>用户名:</h2></label></li><input id="id_username" maxlength="30" name="username" type="text" />{{form.username.errors}}<ul class="errorlist"><li>请输入正确的用户名形式. 只包括字母, 数字和 @/./+/-/_ 等符号, 最长不超过30个字符.</li></ul>
+<li><label for="id_password1"><h2>请输入密码:</h2></label></li><input id="id_password1" name="password1" type="password" />
+<li><label for="id_password2"><h2>请确认密码:</h2></label></li><input id="id_password2" name="password2" type="password" />
+<input type="submit" value = "ok" />
+</ul>
+</form>
+</body>
+</html>

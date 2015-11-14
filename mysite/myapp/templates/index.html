@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block style %}
+   #strgys{float: right; color : white; font-size:21px; margin-right: 10px;}
+   #logs{float: left; color : yellow; font-size:21px;}
+   #test{float: right; font-size:30px;}
+   #map{float: left;}
+{% endblock %}
+
+{% block title %}index{% endblock %}
+
+{% block content%}
+
+	<div id = "logs">
+	{%for log in logs%}
+	<li><a href = "/mylog/{{log.title}}/">{{log}}</a></li>
+	{%endfor%}
+	</div>
+	<div id = "strgys">
+	{%for strgy in strgys%}
+	<li><a href = "/showstrgy/{{strgy.title}}/">{{strgy}}</a></li>
+	{%endfor%}
+	</div>
+  
+{% endblock %}

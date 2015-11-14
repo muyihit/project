@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block style %}
+   #strgys{float: left; color : yellow; font-size:25px;}
+   #mystrgy{float: right; color : white; font-size:21px; margin-right: 5em; margin-top :20px;}
+{% endblock %}
+
+{% block title %}showstrgy{% endblock %}
+
+{% block content%}
+
+	<div id = "strgys">
+	{%for strg in strgys%}
+	<li><a href = "/showstrgy/{{strg.title}}/">{{strg}}</a></li>
+	{%endfor%}
+	</div>
+	<div id = "mystrgy">
+	<li><td>主题：</td>{{strgy.title}}</li>
+	<li><td>内容：</td>{{strgy.content}}</li>
+	<li><td>日期：</td>{{strgy.date}}</li>
+	</div>
+	
+{% endblock %}

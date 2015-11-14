@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block style %}
+   #form{ 
+	float: left;
+    font-size: 20px;
+    margin-top: 1em;
+	margin-left: 0em;
+	border-radius:10px;
+	}
+	#id_logID{color = "white";}
+	input{width:200px;height:30px;font-size:25; background-color: #453; color:white; border-radius:10px;}
+	label{font-color:white;}
+	#id_content{width:1000px;height:300px;font-size:30; background-color: #453; color:white}
+	#sub, #rst{
+	margin-top:2px;
+	width:60px;
+	height:30px;
+	border-radius:15px;
+	font-size:20px;
+	margin-left: 2em;
+	}
+	#sub{margin-left:10px;}
+	#rst{margin-right:40px;}
+{% endblock %}
+
+{% block title %}addstrgy{% endblock %}
+
+{% block content%}
+
+	<form method="post">
+	<div id = "form">
+	<table>{{form.as_table}}
+	<tr><th><label for="id_logID">选项:</label></th><td><input type = "submit" value = "发布" id = "sub" style="background:#453;color:white">
+	<input type = "reset" value = "重置" id = "rst" style="background:#453;color:white"></td></tr>
+	</table>
+	</div>
+	</form>
+	
+{% endblock %}
+
+   

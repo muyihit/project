@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block style %}
+   #form{ 
+	float: left;
+    font-size: 20px;
+    margin-top: 1em;
+	margin-left: 0em;
+	border-radius:10px;
+	}
+	#id_logID{color = "white";}
+	input{width:400px;height:30px;font-size:20px; background-color: #453; color:white; border-radius:10px;}
+	label{font-color:white;}
+	#id_tip, #id_question, #id_answer{width:1000px;height:100px;font-size:30; background-color: #453; color:white}
+	#id_sex, #id_busy, #id_landtype{width:80px;height:30px;font-size:20; background-color: #453; color:white}
+	#sub, #rst{
+	margin-top:2px;
+	width:60px;
+	height:30px;
+	border-radius:15px;
+	font-size:20px;
+	margin-left: 2em;}
+	#sub{
+	margin-left:10px;
+	}#rst{
+	margin-right:40px;
+	}
+{% endblock %}
+
+{% block title %}hope{% endblock %}
+
+{% block content%}
+
+	<form method="post">
+	<div id = "form">
+	<table>{{form.as_table}}
+	<tr><th><label for="id_logID">选项:</label></th><td><input type = "submit" value = "保存" id = "sub" style="background:#453;color:white">
+	<input type = "reset" value = "重置" id = "rst" style="background:#453;color:white"></td></tr>
+	</table>
+	</div>
+	</form>
+	
+{% endblock %}
+
+   

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block style %}
+   #logs{float: left; color : yellow; font-size:21px;}
+   #mylog{float: right; color : white; font-size:21px; margin-right: 5em; margin-top :20px;}
+{% endblock %}
+
+{% block title %}mylog{% endblock %}
+
+{% block content%}
+
+	<div id = "logs">
+	{%for log in logs%}
+	<li><a href = "/mylog/{{log.title}}/">{{log}}</a></li>
+	{%endfor%}
+	</div>
+	<div id = "mylog">
+	<li><td>标题：</td>{{mylog.title}}</li>
+	<li><td>内容：</td>{{mylog.content}}</li>
+	<li><td>日期：</td>{{mylog.date}}</li>
+	</div>
+	
+{% endblock %}
+
+   

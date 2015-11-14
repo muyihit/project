@@ -1,0 +1,66 @@
+<html>
+   <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+   <link rel="stylesheet" type="text/css" href="/static/css/head.css" />
+   <style type="text/css">
+   body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";font-size:14px;}
+   {% block style %}{% endblock %}
+   </style>
+   <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SmPwRK0YbgiWMTCXEIPPgK1S"></script>
+  </head>
+   <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+   <!-- Header -->
+    <div id="header">
+        
+		<div id="branding">
+			<h1 id="site-name"><a href="/index/"><font color = "white"><b>我的个人主页</b></font></a></h1>
+        </div>
+		
+		<div id = "log">
+			<h3><a href="/addlog/"><font color = "white"><b>我的旅游日志</b></font></a></h3>
+        </div>
+		
+		<div id = "strgy">
+			<h3><a href="/addstrgy/"><font color = "white"><b>旅游攻略</b></font></a></h3>
+        </div>
+		
+		<div id = "hope">
+			<h3><a href="/myhope/"><font color = "white"><b>旅游意向</b></font></a></h3>
+        </div>
+		
+		<div id = "advice">
+			<h3><a href="/advice/"><font color = "white"><b>驴友推荐</b></font></a></h3>
+        </div>
+		
+		<div id = "design">
+			<h3><a href="/design/"><font color = "white"><b>路线规划</b></font></a></h3>
+        </div>
+        
+		<div id="user-tools">
+			
+			{%ifequal img_mark 1%}
+				<div id = "img"><a href = "/profile/"><img src="/static/imgs/{{username}}.png"/ class = "radius_img"></a></div>
+			{%else%}
+				<div id = "upload_img">
+				<a href = "/img/">点此上传头像</a>
+				</div>
+			{%endifequal%}
+			<div id = "user-tool-content">
+			<font color = "white"><b>欢迎您的到来！</b></font>
+			
+			<strong><a href = "/profile/" class = "namelink">{{username}}</a></strong>
+			
+			<a href="/passwd_change/">修改密码</a> /
+			
+			<a href="/logout/">退出登录</a>
+			</div>
+            
+        </div>     
+    </div>
+    <!-- END Header -->
+	{% block content %}{% endblock %}
+</body>
+</html>

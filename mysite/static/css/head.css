@@ -1,0 +1,129 @@
+/*
+    DJANGO Admin styles
+*/
+
+   #log{float: left;font-size: 18px; margin-top:6px;}
+   
+   #strgy{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
+   #img{
+		float: right; 
+		margin-top: 0px;
+		width:50px;height:50px;
+        border-radius:100px;
+   }
+   #upload_img{
+	    float: left; 
+		margin-top: 20px;
+		width:120px;height:50px;
+   }
+   .radius_img{width:50px;height:50px;border-radius:50px;margin-top:10px}
+   #hope{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
+   #advice{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
+   #design{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
+   
+body {
+    margin: 0;
+    padding: 0 ;
+    /*font-size: 12px;*/
+    font-family:"微软雅黑";
+    color: white;
+    background: #675;
+}
+
+/* LINKS */
+a:link, a:visited {
+    color: #CCCCCC;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #FFFF99;
+}
+
+a:img {
+    border: none;
+}
+
+a.section:link, a.section:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+/*global*/
+
+/* HEADER */
+
+#header {
+    width: 100%;
+    background: #453;/*#417690;*/
+    color: #ffc;
+    overflow: hidden;
+}
+
+#header a:link, #header a:visited {
+    color: #fff;
+}
+
+#header a:hover {
+	color: yellow;
+    text-decoration: underline;
+}
+
+#branding {
+    float: left;
+	font-size: 15px;
+}
+#branding h1 {
+    padding: 0 30px;
+    margin-top: 18px;
+    font-weight: normal;
+}
+
+#branding h1, #branding h1 a:link, #branding h1 a:visited {
+    color: #f4f379;
+}
+#branding h1 a:hover {
+    color: yellow;
+}
+#branding h2 {
+    padding: 0 10px;
+    font-size: 14px;
+    margin: -8px 0 8px 0;
+    font-weight: normal;
+    color: #ffc;
+}
+
+#branding a:hover {
+    text-decoration: none;
+}
+
+#user-tools {
+    float: right;
+	width: 510px;
+    padding: 5px 10px;
+    font-size: 20px;
+    text-align: center;
+}
+#user-tool-content{
+	margin-top:20px;
+}
+/* SIDEBAR */
+
+#content-related h3 {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+#content-related h4 {
+    font-size: 11px;
+}
+
+#content-related .module h2 {
+    background: #eee url(../img/nav-bg.gif) bottom left repeat-x;
+    color: #666;
+}
+#upload_img a:link, #upload_img a:visited{
+	color : #6699FF;
+}
+	

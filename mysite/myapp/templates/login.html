@@ -1,0 +1,33 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>用户登录</title>
+</head>
+<style type="text/css">
+    body{color:#efd;background:#453;margin:0; padding:0 5em}
+    h1{padding:2em 1em;background:#675; dotted #fff;}
+    h2{color:#bf8;border-top:1px dotted #fff;margin-top:2em}
+	h3{color:#bf8;border-top:5px dotted ;margin-top:2em}
+    p{margin:1em 0}
+</style>
+<body>
+
+<h1>登录界面</h1>
+<a href = "/register/"><h3><font color = "white"><b>没有账户？点此注册一个</b></font></h3></a>
+{% if form.errors %}
+	<p class="error">对不起，您的用户名或密码有误！！！</p>
+{% endif %}
+
+<form action="" method="post">
+{%csrf_token%}
+<ul>
+<li><label for="username"><h2>用户名:</h2></label></li>
+<input type="text" name="username" value="" id="username">
+<li><label for="password"><h2>密码:</h2></label></li>
+<input type="password" name="password" value="" id="password">
+<input type="submit" value="登录" />
+<input type="hidden" name="next" value="/index/" />
+</ul>
+</form>
+</body>
+</html>

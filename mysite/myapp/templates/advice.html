@@ -1,0 +1,22 @@
+﻿{% extends "base.html" %}
+
+{% block style %}
+   
+   #adviceresult{float: left; color : yellow; font-size:21px;}
+   
+{% endblock %}
+
+{% block title %}advice{% endblock %}
+
+{% block content%}
+
+	<div id = "adviceresult">
+	{%for hope in hlist%}
+		{%ifequal hope.user u%}
+		{%else%}
+		<li><a href = "/myfriend/{{hope.user.username}}/">{{hope.user.username}}</a></li>
+		{%endifequal%}
+	{%endfor%}
+	</div>
+  
+{% endblock %}

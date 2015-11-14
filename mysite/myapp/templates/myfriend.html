@@ -1,0 +1,48 @@
+﻿{% extends "base.html" %}
+
+{% block style %}
+   
+   #adviceresult{float: left; color : yellow; font-size:40px; margin-left: 10em;}
+   #myfriend{float: right; font-size:21px; margin-right : 20em;}
+   #friendimg{}
+{% endblock %}
+
+{% block title %}myfriend{% endblock %}
+
+{% block content%}
+
+	<div id = "adviceresult">
+	{%for hope in hlist%}
+		{%ifequal hope.user u%}
+		{%else%}
+		<li><a href = "/myfriend/{{hope.user.username}}/">{{hope.user.username}}</a></li>
+		{%endifequal%}
+	{%endfor%}
+	</div>
+	
+	<div id = "myfriend">
+	<table>
+	<tr><td>用户名：</td><td>{{target_user.username}}</td></tr>
+	<tr><td>头像：</td><td>{%ifequal target_user.profile.is_img 0%}该驴友未上传头像
+	{%else%}<div id = "friendimg"><img src="/static/imgs/{{target_user.username}}.png"/ class = "radius_img"></div>{%endifequal%}</td></tr>
+	<tr><td>昵称：</td><td>{{target_user.profile.nickname}}</td></tr>
+	<tr><td>性别：</td><td>{%ifequal target_user.profile.sex 0%}女{%else%}男{%endifequal%}</td></tr>
+	<tr><td>出发地：</td><td>{{target_hope.home}}</td></tr>
+	<tr><td>目的地：</td><td>{{target_hope.goal}}</td></tr>
+	<tr><td>出发日期起点：</td><td>{{target_hope.start_date}}</td></tr>
+	<tr><td>出发日期终点：</td><td>{{target_hope.end_date}}</td></tr>
+	<tr><td>旅行预算：</td><td>{{target_hope.price}}</td></tr>
+	<tr><td>期望去的景点：</td><td>{{target_hope.hopesry}}</td></tr>
+	<tr><td>旅游爱好：</td><td>{{target_user.profile.sex}}</td></tr>
+	<tr><td>备注：</td><td>{{target_hope.tip}}</td></tr>
+	<tr><td>是否发出邀请：</td><td><input type = "button"  value = "确认" onclick = 'ensure()'/></td></tr>
+	</table>
+	</div>
+	<script type="text/javascript">
+	function ensure(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/myfriend/" + "?click=click");
+		oreq.send(null);
+	}
+	</script>
+{% endblock %}

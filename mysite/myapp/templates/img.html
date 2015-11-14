@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block style %}
+   #mylog{float: right; color : white; font-size:21px; margin-right: 5em;}
+   #logs{float: left; color : yellow; font-size:25px;}
+{% endblock %}
+
+{% block title %}img{% endblock %}
+
+{% block content%}
+
+	<form enctype="multipart/form-data" method="post">
+	{% csrf_token %}
+	<fieldset>
+	<legend>上传图片</legend>
+	<input type="file" name = "image"/>
+	</fieldset>
+    <input value="提交" type="submit"/>
+	</form>
+	
+{% endblock %}
