@@ -14,6 +14,7 @@ import datetime
 from django.db.models import Q 
 # Create your views here.
 # the test
+# the second git test
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
