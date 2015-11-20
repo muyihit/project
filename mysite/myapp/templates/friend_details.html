@@ -1,0 +1,54 @@
+﻿{% extends "base.html" %}
+
+{% block style %}
+   #form{ 
+	float: left;
+    font-size: 20px;
+    margin-top: 1em;
+	margin-left: 0em;
+	border-radius:10px;
+	}
+	input{width:100px;height:30px;font-size:20px; background-color: #453; color:white; border-radius:10px;}
+	label{font-color:white;}
+{% endblock %}
+
+{% block title %}friend_details{% endblock %}
+
+{% block content%}
+
+	<div id = "form">
+	<li><label>用户名：</label>{{friend_u.username}}</li>
+	<li><label>头像：</label>{%ifequal friend_u.profile.is_img 0%}该驴友未上传头像
+	{%else%}<img src="/static/imgs/{{friend_u.username}}.png"/ class = "radius_img">{%endifequal%}</li>
+	{%if friend_p.nickname%}<li><label>昵称：</label>{{friend_p.nickname}}</li>{%endif%}
+	{%if friend_p.age%}<li><label>年龄：</label>{{friend_p.age}}</li>{%endif%}
+	{%if friend_p.sex%}<li><label>性别：</label>{{friend_p.sex}}</li>{%endif%}
+	{%if friend_p.phone%}<li><label>电话：</label>{{friend_p.phone}}</li>{%endif%}
+	{%if friend_p.qq%}<li><label>QQ：</label>{{friend_p.qq}}</li>{%endif%}
+	{%if friend_p.travellike%}<li><label>旅游爱好：</label>{{friend_p.travellike}}</li>{%endif%}
+	{%if friend_h.home%}<li><label>出发地：</label>{{friend_h.home}}</li>{%endif%}
+	{%if friend_h.goal%}<li><label>目的地：</label>{{friend_h.goal}}</li>{%endif%}
+	{%if friend_h.start_date%}<li><label>出发日期：</label>{{friend_h.start_date}}</li>{%endif%}
+	{%if friend_h.end_date%}<li><label>结束日期：</label>{{friend_h.end_date}}</li>{%endif%}
+	{%if friend_h.landtype%}<li><label>目的地地型：</label>{{friend_h.landtype}}</li>{%endif%}
+	{%if friend_h.tip%}<li><label>备注：</label>{{friend_h.tip}}</li>{%endif%}
+	<table><input type = "button" value = "同意" onclick = 'ensure()'/>
+		   <input type = "button" value = "忽略" onclick = 'cancel()'/></table>
+	</div>
+	<script type="text/javascript">
+	function ensure(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/friend_details/{{friend_u.username}}/" + "?ensure=ensure");
+		oreq.send(null);
+		alert("你已成功同意邀请！！！");
+	}
+	function cancel(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/friend_details/{{friend_u.username}}/" + "?cancel=cancel");
+		oreq.send(null);
+		alert("你已成功忽略邀请！！！");
+	}
+	</script>
+{% endblock %}
+
+   

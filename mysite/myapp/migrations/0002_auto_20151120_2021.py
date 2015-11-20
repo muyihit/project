@@ -12,8 +12,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
+            model_name='messages',
             name='date',
-            field=models.DateField(null=True, blank=True),
+            field=models.DateTimeField(primary_key=True, serialize=False, auto_now_add=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f'),
         ),
     ]

@@ -16,6 +16,7 @@ class Profile(models.Model):
     answer = models.CharField(max_length = 50, blank = True)
     #img = models.ImageField(blank = True)
     is_img = models.IntegerField(default = 0)
+    friend = models.ManyToManyField('self')
     def __unicode__(self):
         return self.user.username
 
@@ -46,8 +47,8 @@ class Hope(models.Model):
     goal = models.CharField(max_length = 50, blank = True)
     start_date = models.DateField(blank = True, null = True)
     end_date = models.DateField(blank = True, null = True)
-    price = models.IntegerField(default = 0)
-    number = models.IntegerField(default = 0)
+    price = models.IntegerField(blank = True, null = True)
+    number = models.IntegerField(blank = True, null = True)
     landtype = models.CharField(verbose_name = '目的地类型', max_length = 10, choices = (('any', '随意'),
         ('plain', '平原'), ('mountain', '山林'), ('water', '湖海'), ('interest', '名胜'),
         ('scenery', '景区'), ('explore', '探险')), default = 'any')
@@ -57,8 +58,12 @@ class Hope(models.Model):
     def __unicode__(self):
         return self.user.username + "\'s hope"
 
-    
-class Friends(models.Model):
-    user = models.OneToOneField(User)
-    friend = models.ManyToManyField('self', related_name = "friend")
+class Messages(models.Model):
+    go = models.ForeignKey(User, related_name = 'go_set')
+    come = models.ForeignKey(User, related_name = 'come_set')
+    is_read = models.BooleanField(default = False)
+    date = models.DateTimeField(primary_key = True, auto_now_add = True)
+    def __unicode__(self):
+        return str(self.date) + "from" + str(self.come.username) + "to" + str(self.go.username)
+
     

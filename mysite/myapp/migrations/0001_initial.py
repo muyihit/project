@@ -13,12 +13,38 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Hope',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('home', models.CharField(max_length=50, blank=True)),
+                ('goal', models.CharField(max_length=50, blank=True)),
+                ('start_date', models.DateField(null=True, blank=True)),
+                ('end_date', models.DateField(null=True, blank=True)),
+                ('price', models.IntegerField(default=0)),
+                ('number', models.IntegerField(default=0)),
+                ('landtype', models.CharField(default=b'any', max_length=10, verbose_name=b'\xe7\x9b\xae\xe7\x9a\x84\xe5\x9c\xb0\xe7\xb1\xbb\xe5\x9e\x8b', choices=[(b'any', b'\xe9\x9a\x8f\xe6\x84\x8f'), (b'plain', b'\xe5\xb9\xb3\xe5\x8e\x9f'), (b'mountain', b'\xe5\xb1\xb1\xe6\x9e\x97'), (b'water', b'\xe6\xb9\x96\xe6\xb5\xb7'), (b'interest', b'\xe5\x90\x8d\xe8\x83\x9c'), (b'scenery', b'\xe6\x99\xaf\xe5\x8c\xba'), (b'explore', b'\xe6\x8e\xa2\xe9\x99\xa9')])),
+                ('busy', models.IntegerField(default=0, verbose_name=b'\xe6\x98\xaf\xe5\x90\xa6\xe7\xa9\xba\xe9\x97\xb2', choices=[(1, b'\xe5\xbf\x99\xe7\xa2\x8c'), (0, b'\xe7\xa9\xba\xe9\x97\xb2')])),
+                ('hopesry', models.CharField(max_length=50, blank=True)),
+                ('tip', models.CharField(max_length=128, blank=True)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Log',
             fields=[
                 ('title', models.CharField(max_length=50, verbose_name=b'\xe6\x97\xa5\xe5\xbf\x97\xe9\xa2\x98\xe7\x9b\xae')),
                 ('content', models.CharField(max_length=1000, verbose_name=b'\xe5\x86\x85\xe5\xae\xb9')),
                 ('date', models.DateTimeField(primary_key=True, serialize=False, auto_now_add=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Messages',
+            fields=[
+                ('is_read', models.BooleanField(default=False)),
+                ('date', models.DateTimeField(primary_key=True, auto_now=True, serialize=False, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
+                ('come', models.ForeignKey(related_name='come_set', to=settings.AUTH_USER_MODEL)),
+                ('go', models.ForeignKey(related_name='go_set', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -30,15 +56,11 @@ class Migration(migrations.Migration):
                 ('sex', models.IntegerField(default=1, choices=[(1, b'\xe7\x94\xb7'), (0, b'\xe5\xa5\xb3')])),
                 ('phone', models.CharField(max_length=20, blank=True)),
                 ('qq', models.CharField(max_length=20, blank=True)),
-                ('home', models.CharField(max_length=50, blank=True)),
-                ('goal', models.CharField(max_length=50, blank=True)),
-                ('date', models.DateField(blank=True)),
-                ('price', models.IntegerField(default=0)),
-                ('number', models.IntegerField(default=0)),
-                ('busy', models.IntegerField(default=0, choices=[(1, b'\xe5\xbf\x99\xe7\xa2\x8c'), (0, b'\xe7\xa9\xba\xe9\x97\xb2')])),
-                ('tip', models.CharField(max_length=128, blank=True)),
+                ('travellike', models.CharField(max_length=50, blank=True)),
                 ('question', models.CharField(max_length=50, blank=True)),
                 ('answer', models.CharField(max_length=50, blank=True)),
+                ('is_img', models.IntegerField(default=0)),
+                ('friend', models.ManyToManyField(related_name='_friend_+', to='myapp.Profile')),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -56,7 +78,6 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=50)),
                 ('content', models.CharField(max_length=1000)),
                 ('date', models.DateTimeField(primary_key=True, serialize=False, auto_now_add=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

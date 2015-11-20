@@ -7,18 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('myapp', '0013_friends'),
+        ('myapp', '0003_auto_20151120_2036'),
     ]
 
     operations = [
-        migrations.RenameField(
+        migrations.AlterField(
             model_name='hope',
-            old_name='date',
-            new_name='end_date',
+            name='number',
+            field=models.IntegerField(null=True, blank=True),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='hope',
-            name='start_date',
-            field=models.DateField(null=True, blank=True),
+            name='price',
+            field=models.IntegerField(null=True, blank=True),
         ),
     ]

@@ -41,8 +41,9 @@
 	<script type="text/javascript">
 	function ensure(){
 		var oreq = new XMLHttpRequest();
-		oreq.open("get", "/myfriend/" + "?click=click");
+		oreq.open("get", "/myfriend/{{target_user.username}}/" + "?click=click");
 		oreq.send(null);
+		alert("你已成功发出邀请！！！");
 	}
 	</script>
 {% endblock %}

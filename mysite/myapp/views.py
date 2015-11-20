@@ -7,11 +7,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from forms import LogForm, ProfileForm, StrategyForm, HopeForm
-from models import Log, Profile, Strategy, Hope
+from models import Log, Profile, Strategy, Hope, Messages
 from PIL import Image
 from django.utils.timezone import timedelta
 import datetime
-from django.db.models import Q 
+from django.db.models import Q
 # Create your views here.
 # the test
 # the second git test
@@ -34,6 +34,10 @@ def index(request):
     img_mark = p.is_img
     logs = u.log_set.all().order_by('-date')
     strgys = Strategy.objects.all()
+    info_num = len(Messages.objects.filter(go = u, is_read = False))
+    if info_num != 0:
+        messages = Messages.objects.filter(go = u, is_read = False).order_by('-date')
+    friends = p.friend.all()
     return render_to_response("index.html", locals())
 
 @csrf_exempt
@@ -226,8 +230,6 @@ def advice(request):
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
-    print h.start_date
-    print h.end_date
     hlist = Hope.objects.filter(home__contains = h.home).filter(goal__contains = h.goal).filter(busy = 0)\
             .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
     return render_to_response('advice.html', locals())
@@ -244,10 +246,40 @@ def myfriend(request, id):
             .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
     target_user = User.objects.get(username = id)
     target_hope = target_user.hope
+    if request.method == 'GET':
+        if request.GET.has_key('click'):
+            m = Messages()
+            m.go = target_user
+            m.come = u
+            m.save()
     return render_to_response('myfriend.html', locals())
 
 
-
+@csrf_exempt
+@login_required
+def friend_details(request, come_username):
+    u = request.user
+    username = u.username
+    p = Profile.objects.get_or_create(user = u)[0]
+    img_mark = p.is_img
+    friend_u = User.objects.get(username = come_username)
+    friend_p = Profile.objects.get_or_create(user = friend_u)[0]
+    friend_h = Hope.objects.get_or_create(user = friend_u)[0]
+    if request.method == 'GET':
+        if request.GET.has_key('cancel'):
+            message_readed = Messages.objects.filter(come = friend_u, go = u)
+            for message in message_readed:
+                message.is_read = True
+                message.save()
+        elif request.GET.has_key('ensure'):
+            p.friend.add(friend_p)
+            message_readed = Messages.objects.filter(come = friend_u, go = u)
+            for message in message_readed:
+                message.is_read = True
+                message.save()
+    return render_to_response('friend_details.html', locals())
+    
+    
 
 
 

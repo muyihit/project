@@ -5,6 +5,7 @@
    #logs{float: left; color : yellow; font-size:21px;}
    #test{float: right; font-size:30px;}
    #map{float: left;}
+   #message{float: left;}
 {% endblock %}
 
 {% block title %}index{% endblock %}
@@ -21,5 +22,16 @@
 	<li><a href = "/showstrgy/{{strgy.title}}/">{{strgy}}</a></li>
 	{%endfor%}
 	</div>
-  
+    <div id = "message">
+	{% if messages %}
+		<ul>
+		{% for message in messages %}
+		<li>亲爱的{{message.go.username}}, 您收到 <a href = "/friend_details/{{message.come.username}}/">{{message.come.username}}</a>的邀请, 时间为{{message.date}}</li>
+		{% endfor %}
+		</ul>
+	{% endif %} 
+	<h2>我的好友</h2>
+	{% for friend in friends %}
+		<li>{{friend.user.username}}</li>
+	{% endfor %}
 {% endblock %}
