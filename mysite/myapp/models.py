@@ -22,22 +22,26 @@ class Profile(models.Model):
 
     
 class Site(models.Model):
-    siteID = models.IntegerField(primary_key = True)
+    siteID = models.AutoField(primary_key = True)
     name = models.CharField(max_length = 20)
     price = models.IntegerField()
 
 class Log(models.Model):
+    logID = models.AutoField(primary_key = True)
     user = models.ForeignKey(User)
     title = models.CharField(max_length = 50, verbose_name = '日志题目')
     content = models.CharField(max_length = 1000, verbose_name = '内容')
-    date = models.DateTimeField(verbose_name = '日期', primary_key = True, auto_now_add = True)
+    date = models.DateTimeField(verbose_name = '日期', auto_now = True)
+    is_img = models.BooleanField(default = False)
+    img_name = models.CharField(max_length = 50, default = '')
     def __unicode__(self):
-        return self.title + '_...' + self.content[0:10] + '..._' + str(self.date)
+        return self.title + '_...' + self.content[0:10] + '..._' + str(self.date) + u'作者' + str(self.user.username)
 
 class Strategy(models.Model):
+    strgyID = models.AutoField(primary_key = True)
     title = models.CharField(max_length = 50)
     content = models.CharField(max_length = 1000)
-    date = models.DateTimeField(verbose_name = '日期', primary_key = True, auto_now_add = True)
+    date = models.DateTimeField(verbose_name = '日期', auto_now_add = True)
     def __unicode__(self):
         return self.title + '_...' + self.content[0:10] + '..._' + str(self.date)
 
@@ -54,15 +58,17 @@ class Hope(models.Model):
         ('scenery', '景区'), ('explore', '探险')), default = 'any')
     busy = models.IntegerField(verbose_name = '是否空闲', choices = ((1, '忙碌'), (0, '空闲')), default = 0)
     hopesry = models.CharField(max_length = 50, blank = True)
+    is_commit = models.BooleanField(default = False)
     tip = models.CharField(max_length = 128, blank = True)
     def __unicode__(self):
         return self.user.username + "\'s hope"
 
 class Messages(models.Model):
+    msgID = models.AutoField(primary_key = True)
     go = models.ForeignKey(User, related_name = 'go_set')
     come = models.ForeignKey(User, related_name = 'come_set')
     is_read = models.BooleanField(default = False)
-    date = models.DateTimeField(primary_key = True, auto_now_add = True)
+    date = models.DateTimeField(auto_now_add = True)
     def __unicode__(self):
         return str(self.date) + "from" + str(self.come.username) + "to" + str(self.go.username)
 

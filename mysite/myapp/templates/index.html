@@ -1,37 +1,95 @@
 {% extends "base.html" %}
 
 {% block style %}
-   #strgys{float: right; color : white; font-size:21px; margin-right: 10px;}
-   #logs{float: left; color : yellow; font-size:21px;}
-   #test{float: right; font-size:30px;}
-   #map{float: left;}
-   #message{float: left;}
+   #strgys{float: right; color : white; font-size:18px; margin-right: 10px; font-family : KaiTi;}
+   #logs{float: left; font-size:18px;}
+   #index_table{width : 100%; height : 100%; align : center; text-align : center}
+   #container_left, #container_center, #container_right{
+		border:0px solid #fff;   
+		-moz-border-radius:30px;  
+        -webkit-border-radius:30px;  
+        border-radius:30px;}
+   #container_left{width : 100% ; height : 100% ; padding : 5px ; float : left;}
+   #container_center{width : 90% ; height : 100%; padding : 20px; border:3px solid #fff;}
+   #container_right{width : 100% ; height : 100%; padding : 5px; float : right;}
+   #log_img{float : left ; width : 200px }
+   #message{font-family : STSong;}
 {% endblock %}
 
 {% block title %}index{% endblock %}
 
 {% block content%}
-
-	<div id = "logs">
-	{%for log in logs%}
-	<li><a href = "/mylog/{{log.title}}/">{{log}}</a></li>
-	{%endfor%}
+	<table id = "index_table">
+	<tr><td width = "20%">
+	<div id = "container_left">
+		<div id = "message">
+			<h2>消息区</h2>
+			<hr>
+			<b><font color = "#3399FF">您有{{info_num}}条未读消息！</font></b>
+			<hr>
+			{% if messages %}
+				<ul>
+				{% for message in messages %}
+					<li>亲爱的{{message.go.username}}, 您收到 <a href = "/friend_details/{{message.come.username}}/">
+					{{message.come.username}}</a>的邀请, 时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+				{% endfor %}
+				</ul>
+				<hr>
+			{% endif %} 
+		</div>
+		
+		<div id = "logs">
+			<h2><font color = "white">我的日志</font></h2><hr>
+			<b><font color = "#3399FF">您有{{logs_num}}条日志</font></b><hr>
+			{%for log in logs%}
+				<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
+			{%endfor%}
+		</div>
 	</div>
-	<div id = "strgys">
-	{%for strgy in strgys%}
-	<li><a href = "/showstrgy/{{strgy.title}}/">{{strgy}}</a></li>
-	{%endfor%}
+	</td><td width = "60%" align = "center">
+	<div id = "container_center">
+		<div>
+		<h1>好友动态</h1>
+		<hr>
+			{%for log in friends_logs%}
+				<table>
+				<tr><td><font color = "yellow">{{log.user.username}}</font></td>
+				<td>{%ifequal log.user.profile.is_img 0%}
+				{%else%}<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img">{%endifequal%}</td>
+				<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
+				<td>标题：</h3>{{log.title}}</td></tr>
+				<tr>
+				<td colspan = "4"></h3><div>
+				{%ifequal log.is_img False%}
+				{%else%}<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img">{%endifequal%}
+				{{log.content}}</div></td>
+				</table>
+				<hr>
+			{% endfor %}
+		</div>
+		
 	</div>
-    <div id = "message">
-	{% if messages %}
-		<ul>
-		{% for message in messages %}
-		<li>亲爱的{{message.go.username}}, 您收到 <a href = "/friend_details/{{message.come.username}}/">{{message.come.username}}</a>的邀请, 时间为{{message.date}}</li>
-		{% endfor %}
-		</ul>
-	{% endif %} 
-	<h2>我的好友</h2>
-	{% for friend in friends %}
-		<li>{{friend.user.username}}</li>
-	{% endfor %}
+	</td><td width = "20%">
+	<div id = "container_right">
+		<div id = "strgys">
+		<h2>旅游攻略</h2><hr>
+		{%for strgy in strgys%}
+		<li><a href = "/showstrgy/{{strgy.strgyID}}/">{{strgy}}</a></li>
+		<hr>
+		{%endfor%}
+		</div>
+	</div>
+	</td></tr>
+	
+    
 {% endblock %}
+
+
+
+
+
+
+
+
+
+

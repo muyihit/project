@@ -33,11 +33,16 @@ def index(request):
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
     logs = u.log_set.all().order_by('-date')
+    logs_num = len(logs)
     strgys = Strategy.objects.all()
     info_num = len(Messages.objects.filter(go = u, is_read = False))
     if info_num != 0:
         messages = Messages.objects.filter(go = u, is_read = False).order_by('-date')
     friends = p.friend.all()
+    friends_u = []
+    for friend in friends:
+        friends_u.append(friend.user)
+    friends_logs = Log.objects.filter(user__in = friends_u).order_by('-date')
     return render_to_response("index.html", locals())
 
 @csrf_exempt
@@ -70,7 +75,7 @@ def addlog(request):
             log.title = form.cleaned_data["title"]
             log.user = request.user
             log.save()
-            return HttpResponseRedirect("/index/")
+            return HttpResponseRedirect("/is_add_logimg/" + str(log.logID))
     else:
         form = LogForm()
     return render_to_response('addlog.html', locals())
@@ -83,7 +88,7 @@ def mylog(request, id):
     username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
-    mylog = u.log_set.all().get(title = id)
+    mylog = u.log_set.all().get(logID = id)
     logs = u.log_set.all().order_by('-date') 
     return render_to_response('mylog.html', locals())
 @csrf_exempt
@@ -180,7 +185,7 @@ def showstrgy(request, id):
     username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
-    strgy = Strategy.objects.all().get(title = id)
+    strgy = Strategy.objects.all().get(strgyID = id)
     strgys = Strategy.objects.all().order_by('date')
     return render_to_response('showstrgy.html', locals())
 
@@ -197,6 +202,8 @@ def myhope(request):
         form = HopeForm(request.POST, instance = h)
         if form.is_valid():
             form.save()
+            h.is_commit = True
+            h.save()
             return HttpResponseRedirect("/myhope/")
     else:
         form = HopeForm(instance = h)
@@ -230,8 +237,9 @@ def advice(request):
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
-    hlist = Hope.objects.filter(home__contains = h.home).filter(goal__contains = h.goal).filter(busy = 0)\
-            .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
+    if h.is_commit == True:
+        hlist = Hope.objects.filter(home__contains = h.home).filter(goal__contains = h.goal).filter(busy = 0)\
+                .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
     return render_to_response('advice.html', locals())
 
 @csrf_exempt
@@ -271,18 +279,52 @@ def friend_details(request, come_username):
             for message in message_readed:
                 message.is_read = True
                 message.save()
+            return HttpResponseRedirect("/index/")
         elif request.GET.has_key('ensure'):
             p.friend.add(friend_p)
             message_readed = Messages.objects.filter(come = friend_u, go = u)
             for message in message_readed:
                 message.is_read = True
                 message.save()
+            return HttpResponseRedirect("/index/")
     return render_to_response('friend_details.html', locals())
     
+@csrf_exempt
+@login_required    
+def is_add_logimg(request, id):
+    u = request.user
+    username = u.username
+    p = Profile.objects.get_or_create(user = u)[0]
+    img_mark = p.is_img
+    if request.method == 'POST':
+        if request.POST.has_key('ensure'):
+            return HttpResponseRedirect("/logimg/" + str(id))
+        else:
+            return HttpResponseRedirect("/index/")
+    return render_to_response("is_add_logimg.html", locals())
     
 
-
-
+@csrf_exempt
+@login_required
+def logimg(request, id):
+    u = request.user
+    username = u.username
+    p = Profile.objects.get_or_create(user = u)[0]
+    img_mark = p.is_img
+    log = Log.objects.get(logID = id)
+    if request.method == 'POST':       
+        if 'image' in request.FILES:
+            image=request.FILES["image"]
+            img=Image.open(image)
+            img.thumbnail((1080,720),Image.ANTIALIAS)
+            name='./static/imgs/' + username + str(log.logID) + 'log.png'
+            img.save(name,"png")
+            nameurl = username + str(log.logID) + 'log'
+            log.img_name = nameurl
+            log.is_img = True
+            log.save()
+            return HttpResponseRedirect("/index/")
+    return render_to_response('img.html', locals())
 
 
 

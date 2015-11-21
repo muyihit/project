@@ -11,13 +11,13 @@
 
 	<div id = "logs">
 	{%for log in logs%}
-	<li><a href = "/mylog/{{log.title}}/">{{log}}</a></li>
+	<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
 	{%endfor%}
 	</div>
 	<div id = "mylog">
 	<li><td>标题：</td>{{mylog.title}}</li>
 	<li><td>内容：</td>{{mylog.content}}</li>
-	<li><td>日期：</td>{{mylog.date}}</li>
+	<li><td>日期：</td>{{mylog.date|date:"Y-m-d H:i:s"}}</li>
 	</div>
 	
 {% endblock %}

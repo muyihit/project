@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('myapp', '0001_initial'),
+        ('myapp', '0003_log_img_name'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='messages',
+            model_name='log',
             name='date',
-            field=models.DateTimeField(primary_key=True, serialize=False, auto_now_add=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f'),
+            field=models.DateTimeField(auto_now=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f'),
         ),
     ]

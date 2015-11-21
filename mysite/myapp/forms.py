@@ -9,7 +9,7 @@ class LogForm(forms.ModelForm):
         widgets = {
             "content": forms.Textarea(attrs={"col":10,"row":25},)
             }
-        exclude = ['user', ]
+        exclude = ['user', 'is_img', 'img_name', ]
 class ProfileForm(forms.ModelForm):
     nickname = forms.CharField(label = (u"昵称"), max_length = 16, required = False,
                                widget = forms.TextInput(attrs = {"placeholder":"请输入昵称，不超过16个字，可不写"}))
@@ -70,7 +70,7 @@ class HopeForm(forms.ModelForm):
                           widget = forms.Textarea(attrs={"placeholder":"请在此输入备注信息，可不写，不超过128字"}))
     class Meta:
         model = Hope
-        exclude = ['user', ]
+        exclude = ['user', 'is_commit', ]
         widgets = {
             "tip": forms.Textarea(attrs={"col":10,"row":25},),
         }

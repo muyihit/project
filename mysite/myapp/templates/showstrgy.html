@@ -11,13 +11,13 @@
 
 	<div id = "strgys">
 	{%for strg in strgys%}
-	<li><a href = "/showstrgy/{{strg.title}}/">{{strg}}</a></li>
+	<li><a href = "/showstrgy/{{strg.strgyID}}/">{{strg}}</a></li>
 	{%endfor%}
 	</div>
 	<div id = "mystrgy">
 	<li><td>主题：</td>{{strgy.title}}</li>
 	<li><td>内容：</td>{{strgy.content}}</li>
-	<li><td>日期：</td>{{strgy.date}}</li>
+	<li><td>日期：</td>{{strgy.date|date:"Y-m-d H:i:s"}}</li>
 	</div>
 	
 {% endblock %}

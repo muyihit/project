@@ -9,14 +9,19 @@
 {% block title %}advice{% endblock %}
 
 {% block content%}
-
-	<div id = "adviceresult">
-	{%for hope in hlist%}
-		{%ifequal hope.user u%}
-		{%else%}
-		<li><a href = "/myfriend/{{hope.user.username}}/">{{hope.user.username}}</a></li>
-		{%endifequal%}
-	{%endfor%}
-	</div>
-  
+	{% ifequal h.is_commit False%}
+		<div id = "info_to_commit_hope">
+		您还未填写旅游意向<br>
+		<a href = "/myhope/">请点此转到旅游意向界面</a>
+		</div>
+	{% else %}
+		<div id = "adviceresult">
+		{%for hope in hlist%}
+			{%ifequal hope.user u%}
+			{%else%}
+			<li><a href = "/myfriend/{{hope.user.username}}/">{{hope.user.username}}</a></li>
+			{%endifequal%}
+		{%endfor%}
+		</div>
+	{% endifequal%}
 {% endblock %}
