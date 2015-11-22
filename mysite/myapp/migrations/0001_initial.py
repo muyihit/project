@@ -13,6 +13,20 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Activity',
+            fields=[
+                ('actID', models.AutoField(serialize=False, primary_key=True)),
+                ('title', models.CharField(max_length=20, blank=True)),
+                ('content', models.CharField(max_length=100, blank=True)),
+                ('start_date', models.DateField(null=True, blank=True)),
+                ('end_date', models.DateField(null=True, blank=True)),
+                ('is_valid', models.BooleanField(default=True)),
+                ('is_end', models.BooleanField(default=False)),
+                ('date', models.DateTimeField(auto_now=True)),
+                ('author', models.ForeignKey(related_name='author_set', to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Hope',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -21,9 +35,8 @@ class Migration(migrations.Migration):
                 ('start_date', models.DateField(null=True, blank=True)),
                 ('end_date', models.DateField(null=True, blank=True)),
                 ('price', models.IntegerField(null=True, blank=True)),
-                ('number', models.IntegerField(null=True, blank=True)),
-                ('landtype', models.CharField(default=b'any', max_length=10, verbose_name=b'\xe7\x9b\xae\xe7\x9a\x84\xe5\x9c\xb0\xe7\xb1\xbb\xe5\x9e\x8b', choices=[(b'any', b'\xe9\x9a\x8f\xe6\x84\x8f'), (b'plain', b'\xe5\xb9\xb3\xe5\x8e\x9f'), (b'mountain', b'\xe5\xb1\xb1\xe6\x9e\x97'), (b'water', b'\xe6\xb9\x96\xe6\xb5\xb7'), (b'interest', b'\xe5\x90\x8d\xe8\x83\x9c'), (b'scenery', b'\xe6\x99\xaf\xe5\x8c\xba'), (b'explore', b'\xe6\x8e\xa2\xe9\x99\xa9')])),
                 ('busy', models.IntegerField(default=0, verbose_name=b'\xe6\x98\xaf\xe5\x90\xa6\xe7\xa9\xba\xe9\x97\xb2', choices=[(1, b'\xe5\xbf\x99\xe7\xa2\x8c'), (0, b'\xe7\xa9\xba\xe9\x97\xb2')])),
+                ('landtype', models.CharField(default=b'any', max_length=10, verbose_name=b'\xe7\x9b\xae\xe7\x9a\x84\xe5\x9c\xb0\xe7\xb1\xbb\xe5\x9e\x8b', choices=[(b'any', b'\xe9\x9a\x8f\xe6\x84\x8f'), (b'plain', b'\xe5\xb9\xb3\xe5\x8e\x9f'), (b'mountain', b'\xe5\xb1\xb1\xe6\x9e\x97'), (b'water', b'\xe6\xb9\x96\xe6\xb5\xb7'), (b'interest', b'\xe5\x90\x8d\xe8\x83\x9c'), (b'scenery', b'\xe6\x99\xaf\xe5\x8c\xba'), (b'explore', b'\xe6\x8e\xa2\xe9\x99\xa9')])),
                 ('hopesry', models.CharField(max_length=50, blank=True)),
                 ('is_commit', models.BooleanField(default=False)),
                 ('tip', models.CharField(max_length=128, blank=True)),
@@ -36,7 +49,9 @@ class Migration(migrations.Migration):
                 ('logID', models.AutoField(serialize=False, primary_key=True)),
                 ('title', models.CharField(max_length=50, verbose_name=b'\xe6\x97\xa5\xe5\xbf\x97\xe9\xa2\x98\xe7\x9b\xae')),
                 ('content', models.CharField(max_length=1000, verbose_name=b'\xe5\x86\x85\xe5\xae\xb9')),
-                ('date', models.DateTimeField(auto_now_add=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
+                ('date', models.DateTimeField(auto_now=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
+                ('is_img', models.BooleanField(default=False)),
+                ('img_name', models.CharField(default=b'', max_length=50)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -44,6 +59,8 @@ class Migration(migrations.Migration):
             name='Messages',
             fields=[
                 ('msgID', models.AutoField(serialize=False, primary_key=True)),
+                ('is_freq', models.BooleanField()),
+                ('is_req', models.BooleanField()),
                 ('is_read', models.BooleanField(default=False)),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('come', models.ForeignKey(related_name='come_set', to=settings.AUTH_USER_MODEL)),

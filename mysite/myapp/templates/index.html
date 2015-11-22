@@ -30,8 +30,19 @@
 			{% if messages %}
 				<ul>
 				{% for message in messages %}
-					<li>亲爱的{{message.go.username}}, 您收到 <a href = "/friend_details/{{message.come.username}}/">
-					{{message.come.username}}</a>的邀请, 时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+				
+					{% ifequal message.is_freq True %}
+					<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的添加好友请求, 
+					时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+					<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/"><font color = "#0099FF">点此处理</font></a>
+					{% endifequal%}
+					
+					{% ifequal message.is_freq False %}
+					<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的活动组队邀请, 
+					时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+					<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/"><font color = "#0099FF">点此处理</font></a>
+					{% endifequal%}
+					
 				{% endfor %}
 				</ul>
 				<hr>
@@ -53,15 +64,17 @@
 		<hr>
 			{%for log in friends_logs%}
 				<table>
-				<tr><td><font color = "yellow">{{log.user.username}}</font></td>
+				<tr><td>{{log.user.username}}</td>
 				<td>{%ifequal log.user.profile.is_img 0%}
-				{%else%}<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img">{%endifequal%}</td>
+				{%else%}<a href = "/friend_details/{{log.user.username}}/">
+					<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img"></a>
+					{%endifequal%}</td>
 				<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
 				<td>标题：</h3>{{log.title}}</td></tr>
 				<tr>
 				<td colspan = "4"></h3><div>
 				{%ifequal log.is_img False%}
-				{%else%}<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img">{%endifequal%}
+				{%else%}<a href = "/friend_logimgs/{{log.user.username}}/"><img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
 				{{log.content}}</div></td>
 				</table>
 				<hr>
@@ -69,7 +82,7 @@
 		</div>
 		
 	</div>
-	</td><td width = "20%">
+	</td><td>
 	<div id = "container_right">
 		<div id = "strgys">
 		<h2>旅游攻略</h2><hr>

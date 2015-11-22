@@ -12,7 +12,7 @@
 	label{font-color:white;}
 {% endblock %}
 
-{% block title %}friend_details{% endblock %}
+{% block title %}deal_msg{% endblock %}
 
 {% block content%}
 
@@ -32,21 +32,41 @@
 	{%if friend_h.end_date%}<li><label>结束日期：</label>{{friend_h.end_date}}</li>{%endif%}
 	{%if friend_h.landtype%}<li><label>目的地地型：</label>{{friend_h.landtype}}</li>{%endif%}
 	{%if friend_h.tip%}<li><label>备注：</label>{{friend_h.tip}}</li>{%endif%}
-	<table><input type = "button" value = "同意" onclick = 'ensure()'/>
-		   <input type = "button" value = "忽略" onclick = 'cancel()'/></table>
+	{% ifequal target_msg.is_freq True%}
+		{% ifequal is_friend False %}
+			<table><input type = "button" value = "同意添加" onclick = 'ensuref()'/>
+			<input type = "button" value = "拒绝添加" onclick = 'cancelf()'/></table>
+		{% else %}
+		{% endifequal%}
+	{% else %}
+		<table><input type = "button" value = "同意加入" onclick = 'ensuret()'/>
+		<input type = "button" value = "拒绝加入" onclick = 'cancelt()'/></table>
+	{% endifequal %}
 	</div>
 	<script type="text/javascript">
-	function ensure(){
+	function ensuref(){
 		var oreq = new XMLHttpRequest();
-		oreq.open("get", "/friend_details/{{friend_u.username}}/" + "?ensure=ensure");
+		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensuref=ensuref");
 		oreq.send(null);
-		alert("你已成功同意邀请！！！");
+		alert("你已添加对方为好友！！！");
 	}
-	function cancel(){
+	function cancelf(){
 		var oreq = new XMLHttpRequest();
-		oreq.open("get", "/friend_details/{{friend_u.username}}/" + "?cancel=cancel");
+		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancelf=cancelf");
 		oreq.send(null);
-		alert("你已成功忽略邀请！！！");
+		alert("你已成功拒绝对方添加！！！");
+	}
+	function ensuret(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensuret=ensuret");
+		oreq.send(null);
+		alert("你已成功加入对方团队！！！");
+	}
+	function cancelt(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancelt=cancelt");
+		oreq.send(null);
+		alert("你已拒绝加入对方团队！！！");
 	}
 	</script>
 {% endblock %}

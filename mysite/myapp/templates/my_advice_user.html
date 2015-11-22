@@ -7,7 +7,7 @@
    #friendimg{}
 {% endblock %}
 
-{% block title %}myfriend{% endblock %}
+{% block title %}my_advice_user{% endblock %}
 
 {% block content%}
 
@@ -15,7 +15,7 @@
 	{%for hope in hlist%}
 		{%ifequal hope.user u%}
 		{%else%}
-		<li><a href = "/myfriend/{{hope.user.username}}/">{{hope.user.username}}</a></li>
+		<li><a href = "/my_advice_user/{{hope.user.username}}/">{{hope.user.username}}</a></li>
 		{%endifequal%}
 	{%endfor%}
 	</div>
@@ -35,15 +35,24 @@
 	<tr><td>期望去的景点：</td><td>{{target_hope.hopesry}}</td></tr>
 	<tr><td>旅游爱好：</td><td>{{target_user.profile.sex}}</td></tr>
 	<tr><td>备注：</td><td>{{target_hope.tip}}</td></tr>
-	<tr><td>是否发出邀请：</td><td><input type = "button"  value = "确认" onclick = 'ensure()'/></td></tr>
+	{% ifequal is_friend False %}
+	<tr><td>是否添加对方为好友：</td><td><input type = "button"  value = "添加好友" onclick = 'addfriend()'/></td></tr>
+	{% else %}{% endifequal %}
+	<tr><td>是否发出组团邀请：</td><td><input type = "button"  value = "发送邀请" onclick = 'travelreq()'/></td></tr>
 	</table>
 	</div>
 	<script type="text/javascript">
-	function ensure(){
+	function addfriend(){
 		var oreq = new XMLHttpRequest();
-		oreq.open("get", "/myfriend/{{target_user.username}}/" + "?click=click");
+		oreq.open("get", "/myfriend/{{target_user.username}}/" + "?friend=friend");
 		oreq.send(null);
-		alert("你已成功发出邀请！！！");
+		alert("您已成功发送添加好友请求！");
+	}
+	function travelreq(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/myfriend/{{target_user.username}}/" + "?travel=travel");
+		oreq.send(null);
+		alert("您已成功发出组团邀请！！！");
 	}
 	</script>
 {% endblock %}

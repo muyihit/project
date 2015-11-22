@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
+    
 class Profile(models.Model):
     user = models.OneToOneField(User)
     nickname = models.CharField(max_length = 16, blank = True)
@@ -52,11 +53,10 @@ class Hope(models.Model):
     start_date = models.DateField(blank = True, null = True)
     end_date = models.DateField(blank = True, null = True)
     price = models.IntegerField(blank = True, null = True)
-    number = models.IntegerField(blank = True, null = True)
+    busy = models.IntegerField(verbose_name = '是否空闲', choices = ((1, '忙碌'), (0, '空闲')), default = 0)
     landtype = models.CharField(verbose_name = '目的地类型', max_length = 10, choices = (('any', '随意'),
         ('plain', '平原'), ('mountain', '山林'), ('water', '湖海'), ('interest', '名胜'),
         ('scenery', '景区'), ('explore', '探险')), default = 'any')
-    busy = models.IntegerField(verbose_name = '是否空闲', choices = ((1, '忙碌'), (0, '空闲')), default = 0)
     hopesry = models.CharField(max_length = 50, blank = True)
     is_commit = models.BooleanField(default = False)
     tip = models.CharField(max_length = 128, blank = True)
@@ -67,9 +67,40 @@ class Messages(models.Model):
     msgID = models.AutoField(primary_key = True)
     go = models.ForeignKey(User, related_name = 'go_set')
     come = models.ForeignKey(User, related_name = 'come_set')
+    is_freq = models.BooleanField()
+    is_req = models.BooleanField()
     is_read = models.BooleanField(default = False)
     date = models.DateTimeField(auto_now_add = True)
     def __unicode__(self):
         return str(self.date) + "from" + str(self.come.username) + "to" + str(self.go.username)
+
+
+class Activity(models.Model):
+    actID = models.AutoField(primary_key = True)
+    title = models.CharField(max_length = 20, blank = True)
+    content = models.CharField(max_length = 100, blank = True)
+    author = models.ForeignKey(User, related_name = 'author_set')
+    start_date = models.DateField(blank = True, null = True)
+    end_date = models.DateField(blank = True, null = True)
+    is_valid = models.BooleanField(default = True)
+    is_end = models.BooleanField(default = False)
+    date = models.DateTimeField(auto_now = True)
+    def __unicode__(self):
+        return str(self.user.username) + "\'s activity...." + str(self.title)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     

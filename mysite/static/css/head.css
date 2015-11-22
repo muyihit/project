@@ -13,13 +13,14 @@
    }
    #upload_img{
 	    float: left; 
-		margin-top: 20px;
+		margin-top: 25px;
 		width:120px;height:50px;
    }
-   .radius_img{width:50px;height:50px;border-radius:50px;margin-top:10px}
+   .radius_img{width:50px;height:50px;border-radius:50px;margin-top:8px}
    #hope{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
    #advice{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
    #design{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
+   #group{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
    
 body {
     margin: 0;
@@ -99,13 +100,13 @@ a.section:link, a.section:visited {
 
 #user-tools {
     float: right;
-	width: 510px;
+	width: 420px;
     padding: 5px 10px;
-    font-size: 20px;
+    font-size: 16px;
     text-align: center;
 }
 #user-tool-content{
-	margin-top:20px;
+	margin-top:25px;
 }
 /* SIDEBAR */
 

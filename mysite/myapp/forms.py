@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from models import Log, Profile, Strategy, Hope
+from models import Log, Profile, Strategy, Hope, Activity
 class LogForm(forms.ModelForm):
     title = forms.CharField(label = (u"标题"), max_length = 50, widget = forms.TextInput(attrs = {"placeholder":"日志标题"}))
     content = forms.CharField(label = (u"内容"), max_length = 1000, widget = forms.Textarea(attrs = {"placeholder":"请再此输入您的日志内容，不超过1000字..."}))
@@ -28,7 +28,7 @@ class ProfileForm(forms.ModelForm):
                              widget = forms.Textarea(attrs={"placeholder":"请在此输入密保问题答案，可不写，不超过50字"})) 
     class Meta:
         model = Profile
-        fields = ['nickname', 'age', 'sex', 'phone', 'qq', 'question', 'answer', 'travellike', ]
+        fields = ['nickname', 'age', 'sex', 'phone', 'qq', 'travellike', 'question', 'answer', ]
         widgets = {
             "question": forms.Textarea(attrs={"col":10,"row":25, }, ), 
             "answer": forms.Textarea(attrs={"col":10,"row":25},),
@@ -61,9 +61,6 @@ class HopeForm(forms.ModelForm):
     price = forms.IntegerField(label = (u"旅行预算"),
                                widget=forms.TextInput(attrs={"placeholder":"请输入您的旅行预算"}),
                                error_messages = {"required": "预算一定要写哦"})
-    number = forms.IntegerField(label = (u"期望团队人数"),
-                                widget=forms.TextInput(attrs={"placeholder":"请输入您希望的团队人数"}),
-                                error_messages = {"required": "团队人数一定要写哦"})
     hopesry = forms.CharField(label = (u"期望去的景点"), max_length = 50, required = False,
                           widget = forms.TextInput(attrs={"placeholder":"请在此输入期望去的景点,不超过50字"}))
     tip = forms.CharField(label = (u"备注信息"), max_length = 128, required = False,
@@ -76,4 +73,11 @@ class HopeForm(forms.ModelForm):
         }
         
     
-    
+class ActForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = ['title', 'content',]
+        widgets = {
+            'content' : forms.Textarea(attrs={"col":10,"row":20},),
+
+            }

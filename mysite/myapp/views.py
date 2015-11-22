@@ -6,8 +6,8 @@ from django.contrib import auth
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from forms import LogForm, ProfileForm, StrategyForm, HopeForm
-from models import Log, Profile, Strategy, Hope, Messages
+from forms import LogForm, ProfileForm, StrategyForm, HopeForm, ActForm
+from models import Log, Profile, Strategy, Hope, Messages, Activity
 from PIL import Image
 from django.utils.timezone import timedelta
 import datetime
@@ -36,13 +36,14 @@ def index(request):
     logs_num = len(logs)
     strgys = Strategy.objects.all()
     info_num = len(Messages.objects.filter(go = u, is_read = False))
-    if info_num != 0:
-        messages = Messages.objects.filter(go = u, is_read = False).order_by('-date')
+    messages = Messages.objects.filter(go = u, is_read = False).order_by('-date')
+    
     friends = p.friend.all()
     friends_u = []
     for friend in friends:
         friends_u.append(friend.user)
     friends_logs = Log.objects.filter(user__in = friends_u).order_by('-date')
+    
     return render_to_response("index.html", locals())
 
 @csrf_exempt
@@ -238,34 +239,48 @@ def advice(request):
     img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
     if h.is_commit == True:
-        hlist = Hope.objects.filter(home__contains = h.home).filter(goal__contains = h.goal).filter(busy = 0)\
+        hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1])\
                 .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
     return render_to_response('advice.html', locals())
 
 @csrf_exempt
 @login_required
-def myfriend(request, id):
+def my_advice_user(request, id):
     u = request.user
     username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
-    hlist = Hope.objects.filter(home__contains = h.home).filter(goal__contains = h.goal).filter(busy = 0)\
+    hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1])\
             .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
     target_user = User.objects.get(username = id)
     target_hope = target_user.hope
+    if target_user.profile in p.friend.all():
+        is_friend = True
+    else:
+        is_friend = False
+    print is_friend
     if request.method == 'GET':
-        if request.GET.has_key('click'):
-            m = Messages()
-            m.go = target_user
-            m.come = u
-            m.save()
-    return render_to_response('myfriend.html', locals())
+        if request.GET.has_key('friend'):
+            mf = Messages()
+            mf.go = target_user
+            mf.come = u
+            mf.is_freq = True
+            mf.is_req = True
+            mf.save()
+        if request.GET.has_key('travel'):
+            mt = Messages()
+            mt.go = target_user
+            mt.come = u
+            mt.is_freq = False
+            mf.is_req = True
+            mt.save() 
+    return render_to_response('my_advice_user.html', locals())
 
 
 @csrf_exempt
 @login_required
-def friend_details(request, come_username):
+def deal_msg(request, come_username, msgID):
     u = request.user
     username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
@@ -273,21 +288,38 @@ def friend_details(request, come_username):
     friend_u = User.objects.get(username = come_username)
     friend_p = Profile.objects.get_or_create(user = friend_u)[0]
     friend_h = Hope.objects.get_or_create(user = friend_u)[0]
+    if friend_p in p.friend.all():
+        is_friend = True
+    else:
+        is_friend = False
+    target_msg = Messages.objects.get(msgID = msgID)
     if request.method == 'GET':
-        if request.GET.has_key('cancel'):
-            message_readed = Messages.objects.filter(come = friend_u, go = u)
-            for message in message_readed:
-                message.is_read = True
-                message.save()
-            return HttpResponseRedirect("/index/")
-        elif request.GET.has_key('ensure'):
-            p.friend.add(friend_p)
-            message_readed = Messages.objects.filter(come = friend_u, go = u)
-            for message in message_readed:
-                message.is_read = True
-                message.save()
-            return HttpResponseRedirect("/index/")
-    return render_to_response('friend_details.html', locals())
+        if target_msg.is_freq:
+            print 1
+            if request.GET.has_key('cancelf'):
+                print 2
+                message_readed = Messages.objects.filter(come = friend_u, go = u)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+                    
+            elif request.GET.has_key('ensuref'):
+                print 3
+                p.friend.add(friend_p)
+                message_readed = Messages.objects.filter(come = friend_u, go = u)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+                    
+            result_m = Messages.objects.create(
+                go = friend_u,
+                come = u,
+                is_freq = True,
+                is_req = False
+                )
+        else:
+            pass
+    return render_to_response('deal_msg.html', locals())
     
 @csrf_exempt
 @login_required    
@@ -327,6 +359,16 @@ def logimg(request, id):
     return render_to_response('img.html', locals())
 
 
-
+@csrf_exempt
+@login_required
+def friend_logimgs(request, id):
+    u = request.user
+    username = u.username
+    p = Profile.objects.get_or_create(user = u)[0]
+    img_mark = p.is_img
+    friend_u = User.objects.get(username = id)
+    friend_logs = friend_u.log_set.all().filter(is_img = True).order_by('-date')
+    logimgs_num = len(friend_logs)
+    return render_to_response('friend_logimgs.html', locals())
 
     
