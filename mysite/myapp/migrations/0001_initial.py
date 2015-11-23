@@ -62,9 +62,20 @@ class Migration(migrations.Migration):
                 ('is_freq', models.BooleanField()),
                 ('is_req', models.BooleanField()),
                 ('is_read', models.BooleanField(default=False)),
+                ('is_ensuref', models.BooleanField(default=False)),
+                ('is_ensuret', models.BooleanField(default=False)),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('come', models.ForeignKey(related_name='come_set', to=settings.AUTH_USER_MODEL)),
                 ('go', models.ForeignKey(related_name='go_set', to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Person',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('date', models.DateTimeField(auto_now=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
+                ('act', models.ForeignKey(related_name='person_set', to='myapp.Activity')),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(

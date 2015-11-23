@@ -52,10 +52,10 @@ class HopeForm(forms.ModelForm):
     goal = forms.CharField(label = (u"目的地"), max_length = 50,
                            widget=forms.TextInput(attrs={"placeholder":"请输入目的地"}),
                            error_messages = {"required": "目的地一定要写哦"})
-    start_date = forms.DateField(label = (u"出发日期范围起点"),
+    start_date = forms.DateField(label = (u"日期范围起点"),
                            widget=forms.TextInput(attrs={"placeholder":"请输入出发日期范围起点"}),
                            error_messages = {"required": "一定要写哦"})
-    end_date = forms.DateField(label = (u"出发日期范围终点"),
+    end_date = forms.DateField(label = (u"日期范围终点"),
                            widget=forms.TextInput(attrs={"placeholder":"请输入出发日期范围终点"}),
                            error_messages = {"required": "一定要写哦"})
     price = forms.IntegerField(label = (u"旅行预算"),
@@ -74,6 +74,10 @@ class HopeForm(forms.ModelForm):
         
     
 class ActForm(forms.ModelForm):
+    title = forms.CharField(label = (u"标题"), max_length = 20, required = True,
+                          widget = forms.TextInput(attrs={"placeholder":"请在此输入标题,不超过20字"}))
+    content = forms.CharField(label = (u"活动说明"), max_length = 100, required = True,
+                          widget = forms.Textarea(attrs={"placeholder":"请在此输入活动说明，不超过100字"}))
     class Meta:
         model = Activity
         fields = ['title', 'content',]

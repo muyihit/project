@@ -20,80 +20,118 @@
 
 {% block content%}
 	<table id = "index_table">
-	<tr><td width = "20%">
-	<div id = "container_left">
-		<div id = "message">
-			<h2>消息区</h2>
-			<hr>
-			<b><font color = "#3399FF">您有{{info_num}}条未读消息！</font></b>
-			<hr>
-			{% if messages %}
-				<ul>
-				{% for message in messages %}
-				
-					{% ifequal message.is_freq True %}
-					<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的添加好友请求, 
-					时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-					<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/"><font color = "#0099FF">点此处理</font></a>
-					{% endifequal%}
+		<tr><td width = "20%">
+		<div id = "container_left">
+			<div id = "message">
+				<h2>消息区</h2>
+				<hr>
+				<b><font color = "#3399FF">您有{{info_num}}条未读消息！</font></b>
+				<hr>
+				{% if messages %}
+					<ul>
+					{% for message in messages %}
+						{% ifequal message.is_req True %}
+							{% ifequal message.is_freq True %}
+							<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的添加好友请求, 
+							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							{% endifequal%}
+							
+							{% ifequal message.is_freq False %}
+							<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的活动组队邀请, 
+							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							{% endifequal%}
+							<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/">
+							<button>去处理</button></a>
+							
+						{% else %}
+							{% ifequal message.is_freq True%}
+								{% ifequal message.is_ensuref True %}
+									<li>亲爱的{{message.go.username}}, {{message.come.username}}接受了您的好友请求, 
+									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+								{% endifequal%}
+								
+								{% ifequal message.is_ensuref False %}
+									<li>亲爱的{{message.go.username}}, {{message.come.username}}拒绝了您的好友请求, 
+									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+								{% endifequal%}
+							{% else %}
+								{% ifequal message.is_ensuret True %}
+									<li>亲爱的{{message.go.username}}, {{message.come.username}}加入了您的团队, 
+									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+								{% endifequal%}
+								
+								{% ifequal message.is_ensuret False %}
+									<li>亲爱的{{message.go.username}}, {{message.come.username}}拒绝加入您的团队, 
+									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+								{% endifequal%}
+							{% endifequal %}
+							<input type = "button" value = "知道了" onclick = 'ignore()'/>
+						{% endifequal %}
+						
+						<script type="text/javascript">
+						function ignore(){
+							var oreq = new XMLHttpRequest();
+							var para = "?ignore=ignore&msgID="+{{message.msgID}}
+							oreq.open("get", "/index/" + para);
+							oreq.send(null);
+							alert("你已忽略此消息!");
+							window.location.href = "/index/";
+						}
+						</script>
 					
-					{% ifequal message.is_freq False %}
-					<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的活动组队邀请, 
-					时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-					<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/"><font color = "#0099FF">点此处理</font></a>
-					{% endifequal%}
+					{% endfor %}
+					</ul>
+					<hr>
 					
+				{% endif %} 
+			</div>
+			
+			<div id = "logs">
+				<h2><font color = "white">我的日志</font></h2><hr>
+				<b><font color = "#3399FF">您有{{logs_num}}条日志</font></b><hr>
+				{%for log in logs%}
+					<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
+				{%endfor%}
+			</div>
+		</div>
+		</td><td width = "60%" align = "center">
+		<div id = "container_center">
+			<div>
+			<h1>好友动态</h1>
+			<hr>
+				{%for log in friends_logs%}
+					<table>
+					<tr><td>{{log.user.username}}</td>
+					<td>{%ifequal log.user.profile.is_img 0%}
+					{%else%}<a href = "/friend_details/{{log.user.username}}/">
+						<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img"></a>
+						{%endifequal%}</td>
+					<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
+					<td>标题：</h3>{{log.title}}</td></tr>
+					<tr>
+					<td colspan = "4"></h3><div>
+					{%ifequal log.is_img False%}
+					{%else%}<a href = "/friend_logimgs/{{log.user.username}}/">
+					<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
+					{{log.content}}</div></td>
+					</table>
+					<hr>
 				{% endfor %}
-				</ul>
-				<hr>
-			{% endif %} 
+			</div>
+			
 		</div>
-		
-		<div id = "logs">
-			<h2><font color = "white">我的日志</font></h2><hr>
-			<b><font color = "#3399FF">您有{{logs_num}}条日志</font></b><hr>
-			{%for log in logs%}
-				<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
+		</td><td>
+		<div id = "container_right">
+			<div id = "strgys">
+			<h2>旅游攻略</h2><hr>
+			{%for strgy in strgys%}
+			<li><a href = "/showstrgy/{{strgy.strgyID}}/">{{strgy}}</a></li>
+			<hr>
 			{%endfor%}
+			</div>
 		</div>
-	</div>
-	</td><td width = "60%" align = "center">
-	<div id = "container_center">
-		<div>
-		<h1>好友动态</h1>
-		<hr>
-			{%for log in friends_logs%}
-				<table>
-				<tr><td>{{log.user.username}}</td>
-				<td>{%ifequal log.user.profile.is_img 0%}
-				{%else%}<a href = "/friend_details/{{log.user.username}}/">
-					<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img"></a>
-					{%endifequal%}</td>
-				<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
-				<td>标题：</h3>{{log.title}}</td></tr>
-				<tr>
-				<td colspan = "4"></h3><div>
-				{%ifequal log.is_img False%}
-				{%else%}<a href = "/friend_logimgs/{{log.user.username}}/"><img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
-				{{log.content}}</div></td>
-				</table>
-				<hr>
-			{% endfor %}
-		</div>
-		
-	</div>
-	</td><td>
-	<div id = "container_right">
-		<div id = "strgys">
-		<h2>旅游攻略</h2><hr>
-		{%for strgy in strgys%}
-		<li><a href = "/showstrgy/{{strgy.strgyID}}/">{{strgy}}</a></li>
-		<hr>
-		{%endfor%}
-		</div>
-	</div>
-	</td></tr>
-	
+		</td></tr>
+	</table>
     
 {% endblock %}
 

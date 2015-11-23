@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block style %}
+   #friends{color : yellow; font-size:30px;}
+{% endblock %}
+
+{% block title %}myfriend{% endblock %}
+
+{% block content%}
+
+	<div id = "friends">
+	{%for friend in friends%}
+	<li>{{friend.user.username}}</li>
+	{%endfor%}
+{% endblock %}
+
+   

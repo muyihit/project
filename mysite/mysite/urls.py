@@ -19,7 +19,7 @@ from django.contrib import admin
 from myapp.views import register, index, ensure_logout, addlog, myprofile
 from myapp.views import myhope, passwd_change, mylog, img, addstrgy, showstrgy
 from myapp.views import design, result, advice, my_advice_user, deal_msg, is_add_logimg, logimg
-from myapp.views import friend_logimgs
+from myapp.views import friend_logimgs, group, myfriend, deal_act
 from django.contrib.auth.views import login, logout
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -45,4 +45,7 @@ urlpatterns = [
     url(r'^is_add_logimg/(.+)/$', is_add_logimg),
     url(r'^logimg/(.+)/$', logimg),
     url(r'^friend_logimgs/(.+)/$', friend_logimgs),
+    url(r'^group/$', group),
+    url(r'^myfriend/$', myfriend),
+    url(r'^deal_act/$', deal_act),
 ]

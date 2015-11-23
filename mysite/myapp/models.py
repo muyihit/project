@@ -20,7 +20,6 @@ class Profile(models.Model):
     friend = models.ManyToManyField('self')
     def __unicode__(self):
         return self.user.username
-
     
 class Site(models.Model):
     siteID = models.AutoField(primary_key = True)
@@ -70,6 +69,8 @@ class Messages(models.Model):
     is_freq = models.BooleanField()
     is_req = models.BooleanField()
     is_read = models.BooleanField(default = False)
+    is_ensuref = models.BooleanField(default = False)
+    is_ensuret = models.BooleanField(default = False)
     date = models.DateTimeField(auto_now_add = True)
     def __unicode__(self):
         return str(self.date) + "from" + str(self.come.username) + "to" + str(self.go.username)
@@ -86,11 +87,16 @@ class Activity(models.Model):
     is_end = models.BooleanField(default = False)
     date = models.DateTimeField(auto_now = True)
     def __unicode__(self):
-        return str(self.user.username) + "\'s activity...." + str(self.title)
+        return str(self.author.username) + "\'s activity..." + str(self.date)
 
 
 
-
+class Person(models.Model):
+    user = models.OneToOneField(User)
+    act = models.ForeignKey(Activity, related_name = 'person_set')
+    date = models.DateTimeField(verbose_name = '日期', auto_now = True)
+    def __unicode__(self):
+        return str(self.user.username) + "\'s person"
 
 
 

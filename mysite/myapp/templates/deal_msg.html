@@ -33,11 +33,8 @@
 	{%if friend_h.landtype%}<li><label>目的地地型：</label>{{friend_h.landtype}}</li>{%endif%}
 	{%if friend_h.tip%}<li><label>备注：</label>{{friend_h.tip}}</li>{%endif%}
 	{% ifequal target_msg.is_freq True%}
-		{% ifequal is_friend False %}
-			<table><input type = "button" value = "同意添加" onclick = 'ensuref()'/>
-			<input type = "button" value = "拒绝添加" onclick = 'cancelf()'/></table>
-		{% else %}
-		{% endifequal%}
+		<table><input type = "button" value = "同意添加" onclick = 'ensuref()'/>
+		<input type = "button" value = "拒绝添加" onclick = 'cancelf()'/></table>
 	{% else %}
 		<table><input type = "button" value = "同意加入" onclick = 'ensuret()'/>
 		<input type = "button" value = "拒绝加入" onclick = 'cancelt()'/></table>
@@ -49,24 +46,28 @@
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensuref=ensuref");
 		oreq.send(null);
 		alert("你已添加对方为好友！！！");
+		window.location.href = "/index/";
 	}
 	function cancelf(){
 		var oreq = new XMLHttpRequest();
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancelf=cancelf");
 		oreq.send(null);
 		alert("你已成功拒绝对方添加！！！");
+		window.location.href = "/index/";
 	}
 	function ensuret(){
 		var oreq = new XMLHttpRequest();
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensuret=ensuret");
 		oreq.send(null);
 		alert("你已成功加入对方团队！！！");
+		window.location.href = "/index/";
 	}
 	function cancelt(){
 		var oreq = new XMLHttpRequest();
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancelt=cancelt");
 		oreq.send(null);
 		alert("你已拒绝加入对方团队！！！");
+		window.location.href = "/index/";
 	}
 	</script>
 {% endblock %}

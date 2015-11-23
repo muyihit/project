@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from forms import LogForm, ProfileForm, StrategyForm, HopeForm, ActForm
-from models import Log, Profile, Strategy, Hope, Messages, Activity
+from models import Log, Profile, Strategy, Hope, Messages, Activity, Person
 from PIL import Image
 from django.utils.timezone import timedelta
 import datetime
@@ -43,7 +43,12 @@ def index(request):
     for friend in friends:
         friends_u.append(friend.user)
     friends_logs = Log.objects.filter(user__in = friends_u).order_by('-date')
-    
+    if request.method == 'GET':
+        if request.GET.has_key('ignore'):
+            msgID = request.GET['msgID']
+            m = Messages.objects.get(msgID = msgID)
+            m.is_read = True
+            m.save()
     return render_to_response("index.html", locals())
 
 @csrf_exempt
@@ -259,7 +264,18 @@ def my_advice_user(request, id):
         is_friend = True
     else:
         is_friend = False
-    print is_friend
+        
+    has_act = False
+    if Activity.objects.filter(author = u, is_end = False, is_valid = True).order_by('-date'):
+        act = Activity.objects.filter(author = u, is_end = False, is_valid = True).order_by('-date')[0]
+        persons = act.person_set.all()
+        act_users = []
+        for person in persons:
+            act_users.append(person.user)
+        if act:
+            if target_user not in act_users:
+                has_act = True
+                
     if request.method == 'GET':
         if request.GET.has_key('friend'):
             mf = Messages()
@@ -273,8 +289,8 @@ def my_advice_user(request, id):
             mt.go = target_user
             mt.come = u
             mt.is_freq = False
-            mf.is_req = True
-            mt.save() 
+            mt.is_req = True
+            mt.save()
     return render_to_response('my_advice_user.html', locals())
 
 
@@ -288,37 +304,53 @@ def deal_msg(request, come_username, msgID):
     friend_u = User.objects.get(username = come_username)
     friend_p = Profile.objects.get_or_create(user = friend_u)[0]
     friend_h = Hope.objects.get_or_create(user = friend_u)[0]
-    if friend_p in p.friend.all():
-        is_friend = True
-    else:
-        is_friend = False
     target_msg = Messages.objects.get(msgID = msgID)
     if request.method == 'GET':
         if target_msg.is_freq:
-            print 1
-            if request.GET.has_key('cancelf'):
-                print 2
-                message_readed = Messages.objects.filter(come = friend_u, go = u)
-                for message in message_readed:
-                    message.is_read = True
-                    message.save()
-                    
-            elif request.GET.has_key('ensuref'):
-                print 3
-                p.friend.add(friend_p)
-                message_readed = Messages.objects.filter(come = friend_u, go = u)
-                for message in message_readed:
-                    message.is_read = True
-                    message.save()
-                    
-            result_m = Messages.objects.create(
+            result_m = Messages.objects.get_or_create(
                 go = friend_u,
                 come = u,
                 is_freq = True,
                 is_req = False
-                )
+                )[0]
+            if request.GET.has_key('cancelf'):
+                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = True)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+            elif request.GET.has_key('ensuref'):
+                p.friend.add(friend_p)
+                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = True)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+                result_m.is_ensuref = True
+                result_m.save()
+                    
         else:
-            pass
+            result_m = Messages.objects.get_or_create(
+                go = friend_u,
+                come = u,
+                is_freq = False,
+                is_req = False
+                )[0]
+            if request.GET.has_key('cancelt'):
+                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = False)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+                    
+            elif request.GET.has_key('ensuret'):
+                act = Activity.objects.filter(author = friend_u, is_end = False, is_valid = True).order_by('-date')[0]
+                person = Person.objects.get_or_create(user = u, act = act)[0]
+                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = False)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+                result_m.is_ensuret = True
+                result_m.save()
+    else:
+        return HttpResponseRedirect("/index/")
     return render_to_response('deal_msg.html', locals())
     
 @csrf_exempt
@@ -372,3 +404,88 @@ def friend_logimgs(request, id):
     return render_to_response('friend_logimgs.html', locals())
 
     
+@csrf_exempt
+@login_required
+def group(request):
+    u = request.user
+    username = u.username
+    p = Profile.objects.get_or_create(user = u)[0]
+    img_mark = p.is_img
+    h = Hope.objects.get_or_create(user = u)[0]
+    if h.is_commit == True:
+        hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1])\
+                .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
+    is_create_act = True
+    acts = Activity.objects.filter(author = u).order_by('-date')
+    acts_num = len(acts)
+    if acts_num:
+        for act in acts:
+            if act.is_end == False:
+                is_create_act = False
+    if is_create_act:
+        if request.method == 'POST':
+            new_act = Activity.objects.create(author = u)
+            form = ActForm(request.POST, instance = new_act)
+            if form.is_valid():
+                form.save()
+                new_act.start_date = h.start_date
+                new_act.end_date = h.end_date
+                new_act.save()
+                is_create_act = False
+                return HttpResponseRedirect("/group/")
+        else:
+            form = ActForm()
+    return render_to_response('group.html', locals())
+
+
+
+@csrf_exempt
+@login_required
+
+def myfriend(request):
+    u = request.user
+    username = u.username
+    p = Profile.objects.get_or_create(user = u)[0]
+    img_mark = p.is_img
+    friends = p.friend.all()
+    friends_num = len(friends)
+    has_friend = True
+    if request.method == 'GET':
+        if request.GET.has_key('goal'):
+            goal_username = request.GET['goal']
+            goal_user = User.objects.get(username = goal_username)
+    else:
+        if friends_num:
+            goal_user = User.objects.get(username = friends[0].user.uername)
+        else:
+            has_friend = False
+    return render_to_response('myfriend.html', locals())
+
+
+
+@csrf_exempt
+@login_required
+
+def deal_act(request):
+    u = request.user
+    username = u.username
+    p = Profile.objects.get_or_create(user = u)[0]
+    img_mark = p.is_img
+    if request.method == 'GET':
+        print 55555555
+        if request.GET.has_key('actID'):
+            print 666666
+            actID = request.GET['actID']
+            act = Activity.objects.get(actID = actID)
+            persons = act.person_set.all().order_by('-date')
+    return render_to_response('deal_act.html', locals())
+
+
+
+
+
+
+
+
+
+

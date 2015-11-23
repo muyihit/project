@@ -2,8 +2,8 @@
 
 {% block style %}
    
-   #adviceresult{float: left; color : yellow; font-size:40px; margin-left: 10em;}
-   #myfriend{float: right; font-size:21px; margin-right : 20em;}
+   #adviceresult{float: left; color : yellow; font-size:40px; margin-left: 8em;}
+   #advice_u_details{float: right; font-size:21px; margin-right : 15em;}
    #friendimg{}
 {% endblock %}
 
@@ -20,7 +20,7 @@
 	{%endfor%}
 	</div>
 	
-	<div id = "myfriend">
+	<div id = "advice_u_details">
 	<table>
 	<tr><td>用户名：</td><td>{{target_user.username}}</td></tr>
 	<tr><td>头像：</td><td>{%ifequal target_user.profile.is_img 0%}该驴友未上传头像
@@ -38,21 +38,25 @@
 	{% ifequal is_friend False %}
 	<tr><td>是否添加对方为好友：</td><td><input type = "button"  value = "添加好友" onclick = 'addfriend()'/></td></tr>
 	{% else %}{% endifequal %}
+	{% ifequal has_act True %}
 	<tr><td>是否发出组团邀请：</td><td><input type = "button"  value = "发送邀请" onclick = 'travelreq()'/></td></tr>
+	{% else %}{% endifequal %}
 	</table>
 	</div>
 	<script type="text/javascript">
 	function addfriend(){
 		var oreq = new XMLHttpRequest();
-		oreq.open("get", "/myfriend/{{target_user.username}}/" + "?friend=friend");
+		oreq.open("get", "/my_advice_user/{{target_user.username}}/" + "?friend=friend");
 		oreq.send(null);
 		alert("您已成功发送添加好友请求！");
+		window.location.href = "/group/";
 	}
 	function travelreq(){
 		var oreq = new XMLHttpRequest();
-		oreq.open("get", "/myfriend/{{target_user.username}}/" + "?travel=travel");
+		oreq.open("get", "/my_advice_user/{{target_user.username}}/" + "?travel=travel");
 		oreq.send(null);
 		alert("您已成功发出组团邀请！！！");
+		window.location.href = "/group/";
 	}
 	</script>
 {% endblock %}
