@@ -7,13 +7,15 @@
 {% block title %}deal_act{% endblock %}
 
 {% block content%}
-	
+	{% ifequal msg_disread True %}
+	<h2>您还有未处理的活动申请</h2>
+	<a href = "/index/">请点此去首页处理</a>
+	{% endifequal %}
 	<li>活动序号：{{act.actID}}</li>
 	<li>活动主题：{{act.title}}</li>
 	<li>活动内容：{{act.content}}</li>
 	<li>起始日期：{{act.start_date}}</li>
 	<li>结束日期：{{act.end_date}}</li>
-	<li>是否有效：{{act.is_valid}}</li>
 	<li>是否结束：{{act.is_end}}</li>
 	<li>创建日期：{{act.date}}</li>
 	<hr>
@@ -21,7 +23,16 @@
 		<li>成员名称：{{person.user.username}}</li>
 		<li>成员加入时间：{{person.date}}</li>
 	{% endfor %}
-	
+	<input type = "button" value = "是否结束" onclick = 'end()'/></table>
+	<script type="text/javascript">
+	function end(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/deal_act/" + "?end=end&actID=" + {{act.actID}});
+		oreq.send(null);
+		alert("您想要结束活动？？？！");
+		
+	}
+	</script>
 {% endblock %}
 
    

@@ -43,12 +43,29 @@ def index(request):
     for friend in friends:
         friends_u.append(friend.user)
     friends_logs = Log.objects.filter(user__in = friends_u).order_by('-date')
+
+    has_act = True
+    if Person.objects.filter(user = u):
+        has_act = False
+        
+    acts = Activity.objects.all().filter(is_end = False).order_by('-date').exclude(author = u)
+    
     if request.method == 'GET':
         if request.GET.has_key('ignore'):
             msgID = request.GET['msgID']
             m = Messages.objects.get(msgID = msgID)
             m.is_read = True
             m.save()
+        if request.GET.has_key('upgrade'):
+            actID = request.GET['actID']
+            target_act = Activity.objects.get(actID = actID)
+            target_user = target_act.author
+            msg = Messages()
+            msg.go = target_user
+            msg.come = u
+            msg.msg_type = 2
+            msg.is_req = True
+            msg.save()
     return render_to_response("index.html", locals())
 
 @csrf_exempt
@@ -265,7 +282,8 @@ def my_advice_user(request, id):
     else:
         is_friend = False
         
-    has_act = False
+    
+    '''
     if Activity.objects.filter(author = u, is_end = False, is_valid = True).order_by('-date'):
         act = Activity.objects.filter(author = u, is_end = False, is_valid = True).order_by('-date')[0]
         persons = act.person_set.all()
@@ -275,20 +293,23 @@ def my_advice_user(request, id):
         if act:
             if target_user not in act_users:
                 has_act = True
-                
+    '''
+    has_act = True
+    if Person.objects.filter(user = target_user):
+        has_act = False
     if request.method == 'GET':
         if request.GET.has_key('friend'):
             mf = Messages()
             mf.go = target_user
             mf.come = u
-            mf.is_freq = True
+            mf.msg_type = 0
             mf.is_req = True
             mf.save()
         if request.GET.has_key('travel'):
             mt = Messages()
             mt.go = target_user
             mt.come = u
-            mt.is_freq = False
+            mt.msg_type = 1
             mt.is_req = True
             mt.save()
     return render_to_response('my_advice_user.html', locals())
@@ -306,49 +327,61 @@ def deal_msg(request, come_username, msgID):
     friend_h = Hope.objects.get_or_create(user = friend_u)[0]
     target_msg = Messages.objects.get(msgID = msgID)
     if request.method == 'GET':
-        if target_msg.is_freq:
-            result_m = Messages.objects.get_or_create(
-                go = friend_u,
-                come = u,
-                is_freq = True,
-                is_req = False
-                )[0]
+        if target_msg.msg_type == 0:
+            
             if request.GET.has_key('cancelf'):
-                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = True)
+                message_readed = Messages.objects.filter(come = friend_u, go = u, msg_type = 0, is_req = True)
                 for message in message_readed:
                     message.is_read = True
                     message.save()
+                result_m = Messages.objects.create(go = friend_u, come = u, msg_type = 0, is_req = False)
             elif request.GET.has_key('ensuref'):
                 p.friend.add(friend_p)
-                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = True)
+                message_readed = Messages.objects.filter(come = friend_u, go = u, msg_type = 0, is_req = True)
                 for message in message_readed:
                     message.is_read = True
                     message.save()
-                result_m.is_ensuref = True
+                result_m = Messages.objects.create(go = friend_u, come = u, msg_type = 0, is_req = False)
+                result_m.msg_deal = 0
                 result_m.save()
                     
-        else:
-            result_m = Messages.objects.get_or_create(
-                go = friend_u,
-                come = u,
-                is_freq = False,
-                is_req = False
-                )[0]
+        elif target_msg.msg_type == 1:
+            
             if request.GET.has_key('cancelt'):
-                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = False)
+                message_readed = Messages.objects.filter(come = friend_u, go = u, msg_type = 1, is_req = True)
                 for message in message_readed:
                     message.is_read = True
                     message.save()
-                    
+                result_m = Messages.objects.create(go = friend_u, come = u, msg_type = 1, is_req = False)    
             elif request.GET.has_key('ensuret'):
                 act = Activity.objects.filter(author = friend_u, is_end = False, is_valid = True).order_by('-date')[0]
                 person = Person.objects.get_or_create(user = u, act = act)[0]
-                message_readed = Messages.objects.filter(come = friend_u, go = u, is_freq = False)
+                message_readed = Messages.objects.filter(come = friend_u, go = u, msg_type = 1, is_req = True)
                 for message in message_readed:
                     message.is_read = True
                     message.save()
-                result_m.is_ensuret = True
+                result_m = Messages.objects.create(go = friend_u, come = u, msg_type = 1, is_req = False)
+                result_m.msg_deal = 1
                 result_m.save()
+        elif target_msg.msg_type == 2:
+            
+            if request.GET.has_key('cancela'):
+                message_readed = Messages.objects.filter(come = friend_u, go = u, msg_type = 2, is_req = True)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+                result_m = Messages.objects.create(go = friend_u, come = u, msg_type = 2, is_req = False)
+            elif request.GET.has_key('ensurea'):
+                message_readed = Messages.objects.filter(come = friend_u, go = u, msg_type = 2, is_req = True)
+                for message in message_readed:
+                    message.is_read = True
+                    message.save()
+                act = Activity.objects.filter(author = u, is_end = False, is_valid = True).order_by('-date')[0]
+                person = Person.objects.get_or_create(user = friend_u, act = act)[0]
+                result_m = Messages.objects.create(go = friend_u, come = u, msg_type = 2, is_req = False)
+                result_m.msg_deal = 2
+                result_m.save()
+                
     else:
         return HttpResponseRedirect("/index/")
     return render_to_response('deal_msg.html', locals())
@@ -471,13 +504,20 @@ def deal_act(request):
     username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
+    msg_disread = False
+    if Messages.objects.filter(go = u, msg_type = 2, is_req = True, is_read = False):
+        msg_disread = True
     if request.method == 'GET':
-        print 55555555
         if request.GET.has_key('actID'):
-            print 666666
             actID = request.GET['actID']
             act = Activity.objects.get(actID = actID)
             persons = act.person_set.all().order_by('-date')
+        if request.GET.has_key('end'):
+            if msg_disread == False:
+                actID = request.GET['actID']
+                act = Activity.objects.get(actID = actID)
+                act.is_end = True
+                act.save()
     return render_to_response('deal_act.html', locals())
 
 

@@ -64,7 +64,9 @@
 				<li>是否有效：{{act.is_valid}}</li>
 				<li>是否结束：{{act.is_end}}</li>
 				<li>创建日期：{{act.date}}</li>
+				{% ifequal is_create_act False %}
 				<input type = "button" value = "去处理" onclick = 'deal()'/>
+				{% endifequal %}
 				<script type="text/javascript">
 					
 					function deal(){

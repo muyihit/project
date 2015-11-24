@@ -32,12 +32,17 @@
 	{%if friend_h.end_date%}<li><label>结束日期：</label>{{friend_h.end_date}}</li>{%endif%}
 	{%if friend_h.landtype%}<li><label>目的地地型：</label>{{friend_h.landtype}}</li>{%endif%}
 	{%if friend_h.tip%}<li><label>备注：</label>{{friend_h.tip}}</li>{%endif%}
-	{% ifequal target_msg.is_freq True%}
+	{% ifequal target_msg.msg_type 0%}
 		<table><input type = "button" value = "同意添加" onclick = 'ensuref()'/>
 		<input type = "button" value = "拒绝添加" onclick = 'cancelf()'/></table>
-	{% else %}
+	{% endifequal %}
+	{% ifequal target_msg.msg_type 1%}
 		<table><input type = "button" value = "同意加入" onclick = 'ensuret()'/>
 		<input type = "button" value = "拒绝加入" onclick = 'cancelt()'/></table>
+	{% endifequal %}
+	{% ifequal target_msg.msg_type 2%}
+		<table><input type = "button" value = "同意申请" onclick = 'ensurea()'/>
+		<input type = "button" value = "拒绝申请" onclick = 'cancela()'/></table>
 	{% endifequal %}
 	</div>
 	<script type="text/javascript">
@@ -67,6 +72,20 @@
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancelt=cancelt");
 		oreq.send(null);
 		alert("你已拒绝加入对方团队！！！");
+		window.location.href = "/index/";
+	}
+	function ensurea(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensurea=ensurea");
+		oreq.send(null);
+		alert("对方已加入您的团队！！！");
+		window.location.href = "/index/";
+	}
+	function cancela(){
+		var oreq = new XMLHttpRequest();
+		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancela=cancela");
+		oreq.send(null);
+		alert("你已拒绝对方加入您的团队！！！");
 		window.location.href = "/index/";
 	}
 	</script>

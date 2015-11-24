@@ -59,11 +59,10 @@ class Migration(migrations.Migration):
             name='Messages',
             fields=[
                 ('msgID', models.AutoField(serialize=False, primary_key=True)),
-                ('is_freq', models.BooleanField()),
+                ('msg_type', models.IntegerField()),
+                ('msg_deal', models.IntegerField(default=3)),
                 ('is_req', models.BooleanField()),
                 ('is_read', models.BooleanField(default=False)),
-                ('is_ensuref', models.BooleanField(default=False)),
-                ('is_ensuret', models.BooleanField(default=False)),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('come', models.ForeignKey(related_name='come_set', to=settings.AUTH_USER_MODEL)),
                 ('go', models.ForeignKey(related_name='go_set', to=settings.AUTH_USER_MODEL)),

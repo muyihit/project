@@ -66,11 +66,10 @@ class Messages(models.Model):
     msgID = models.AutoField(primary_key = True)
     go = models.ForeignKey(User, related_name = 'go_set')
     come = models.ForeignKey(User, related_name = 'come_set')
-    is_freq = models.BooleanField()
+    msg_type = models.IntegerField()
+    msg_deal = models.IntegerField(default = 3)
     is_req = models.BooleanField()
     is_read = models.BooleanField(default = False)
-    is_ensuref = models.BooleanField(default = False)
-    is_ensuret = models.BooleanField(default = False)
     date = models.DateTimeField(auto_now_add = True)
     def __unicode__(self):
         return str(self.date) + "from" + str(self.come.username) + "to" + str(self.go.username)

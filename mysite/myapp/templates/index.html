@@ -31,40 +31,58 @@
 					<ul>
 					{% for message in messages %}
 						{% ifequal message.is_req True %}
-							{% ifequal message.is_freq True %}
+							{% ifequal message.msg_type 0 %}
 							<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的添加好友请求, 
 							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
 							{% endifequal%}
 							
-							{% ifequal message.is_freq False %}
+							{% ifequal message.msg_type 1 %}
 							<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的活动组队邀请, 
+							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							{% endifequal%}
+							
+							
+							{% ifequal message.msg_type 2 %}
+							<li>亲爱的{{message.go.username}}, {{message.come.username}}申请加入您的组团活动, 
 							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
 							{% endifequal%}
 							<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/">
 							<button>去处理</button></a>
-							
 						{% else %}
-							{% ifequal message.is_freq True%}
-								{% ifequal message.is_ensuref True %}
-									<li>亲爱的{{message.go.username}}, {{message.come.username}}接受了您的好友请求, 
-									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-								{% endifequal%}
+							{% ifequal message.msg_type 0 %}
 								
-								{% ifequal message.is_ensuref False %}
-									<li>亲爱的{{message.go.username}}, {{message.come.username}}拒绝了您的好友请求, 
-									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+								<li>亲爱的{{message.go.username}}, {{message.come.username}}
+								{% ifequal message.msg_deal 0 %}
+								接受了您的好友请求, 
+								{% else %}
+								拒绝了您的好友请求, 
 								{% endifequal%}
-							{% else %}
-								{% ifequal message.is_ensuret True %}
-									<li>亲爱的{{message.go.username}}, {{message.come.username}}加入了您的团队, 
-									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-								{% endifequal%}
+								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
 								
-								{% ifequal message.is_ensuret False %}
-									<li>亲爱的{{message.go.username}}, {{message.come.username}}拒绝加入您的团队, 
-									时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-								{% endifequal%}
 							{% endifequal %}
+							
+							{% ifequal message.msg_type 1 %}
+							
+								<li>亲爱的{{message.go.username}}, {{message.come.username}}
+								{% ifequal message.msg_deal 1 %}
+								接受了您的好友请求, 
+								{% else %}
+								拒绝了您的好友请求, 
+								{% endifequal%}
+								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							{% endifequal %}
+							
+							{% ifequal message.msg_type 2 %}
+							
+								<li>亲爱的{{message.go.username}}, {{message.come.username}}
+								{% ifequal message.msg_deal 2 %}
+								同意您加入{{message.come.username}}的活动, 
+								{% else %}
+								拒绝您加入{{message.come.username}}的活动 
+								{% endifequal%}
+								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							{% endifequal %}
+							
 							<input type = "button" value = "知道了" onclick = 'ignore()'/>
 						{% endifequal %}
 						
@@ -122,6 +140,36 @@
 		</div>
 		</td><td>
 		<div id = "container_right">
+			<div id = "acts">
+			<h2>活动公示</h2><hr>
+			{%for act in acts%}
+				<li>活动序号：{{act.actID}}</li>
+				<li>活动主题：{{act.title}}</li>
+				<li>活动内容：{{act.content}}</li>
+				<li>起始日期：{{act.start_date}}</li>
+				<li>结束日期：{{act.end_date}}</li>
+				<li>是否结束：{{act.is_end}}</li>
+				<li>创建日期：{{act.date}}</li>
+				<li>创建人：{{act.author.username}}</li>
+				{% ifequal has_act True %}
+				<input type = "button" value = "申请加入" onclick = 'upgrade()'/>
+				{% else %}{% endifequal %}
+				
+				<hr>
+				<script type="text/javascript">
+					function upgrade(){
+						var oreq = new XMLHttpRequest();
+						var para = "?upgrade=upgrade&actID=" + {{act.actID}};
+						oreq.open("get", "/index/" + para);
+						oreq.send(null);
+						alert("您已成功发送申请信息!");
+						window.location.href = "/index/";
+					}
+				</script>
+			{%endfor%}
+			
+			</div>
+			
 			<div id = "strgys">
 			<h2>旅游攻略</h2><hr>
 			{%for strgy in strgys%}
