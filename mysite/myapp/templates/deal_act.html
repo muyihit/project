@@ -23,7 +23,9 @@
 		<li>成员名称：{{person.user.username}}</li>
 		<li>成员加入时间：{{person.date}}</li>
 	{% endfor %}
+	{% ifequal act.is_end False%}
 	<input type = "button" value = "是否结束" onclick = 'end()'/></table>
+	{% endifequal %}
 	<script type="text/javascript">
 	function end(){
 		var oreq = new XMLHttpRequest();

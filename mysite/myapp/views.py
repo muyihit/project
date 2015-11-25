@@ -56,7 +56,7 @@ def index(request):
             m = Messages.objects.get(msgID = msgID)
             m.is_read = True
             m.save()
-        if request.GET.has_key('upgrade'):
+        if request.GET.has_key('actID'):
             actID = request.GET['actID']
             target_act = Activity.objects.get(actID = actID)
             target_user = target_act.author
@@ -464,6 +464,7 @@ def group(request):
                 new_act.start_date = h.start_date
                 new_act.end_date = h.end_date
                 new_act.save()
+                me = Person.objects.create(user = u, act = new_act)
                 is_create_act = False
                 return HttpResponseRedirect("/group/")
         else:
@@ -518,6 +519,9 @@ def deal_act(request):
                 act = Activity.objects.get(actID = actID)
                 act.is_end = True
                 act.save()
+                ps = act.person_set.all()
+                for p in ps:
+                    p.delete()
     return render_to_response('deal_act.html', locals())
 
 

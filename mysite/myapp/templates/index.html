@@ -83,24 +83,14 @@
 								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
 							{% endifequal %}
 							
-							<input type = "button" value = "知道了" onclick = 'ignore()'/>
+							<a href = "/index/?ignore=ignore&msgID={{message.msgID}}"><button onclick = 'ignore()'>知道了</button></a>
 						{% endifequal %}
 						
-						<script type="text/javascript">
-						function ignore(){
-							var oreq = new XMLHttpRequest();
-							var para = "?ignore=ignore&msgID="+{{message.msgID}}
-							oreq.open("get", "/index/" + para);
-							oreq.send(null);
-							alert("你已忽略此消息!");
-							window.location.href = "/index/";
-						}
-						</script>
+						
 					
 					{% endfor %}
 					</ul>
 					<hr>
-					
 				{% endif %} 
 			</div>
 			
@@ -152,22 +142,17 @@
 				<li>创建日期：{{act.date}}</li>
 				<li>创建人：{{act.author.username}}</li>
 				{% ifequal has_act True %}
-				<input type = "button" value = "申请加入" onclick = 'upgrade()'/>
+				<a href = "/index/?actID={{act.actID}}"><button onclick = 'upgrade()'>申请加入</button></a>
 				{% else %}{% endifequal %}
 				
 				<hr>
-				<script type="text/javascript">
+			{%endfor%}
+			<script type="text/javascript">
 					function upgrade(){
-						var oreq = new XMLHttpRequest();
-						var para = "?upgrade=upgrade&actID=" + {{act.actID}};
-						oreq.open("get", "/index/" + para);
-						oreq.send(null);
 						alert("您已成功发送申请信息!");
 						window.location.href = "/index/";
 					}
 				</script>
-			{%endfor%}
-			
 			</div>
 			
 			<div id = "strgys">

@@ -24,6 +24,7 @@
 {% block content%}
 	<table id = "group_table" width = "100%">
 		<tr><td width = "20%">
+			<h2>系统为您推荐的驴友</h2>
 			<div id = "adviceresult">
 			{%for hope in hlist%}
 				{%ifequal hope.user u%}
@@ -35,8 +36,8 @@
 		</td><td width = "60%">
 			{% ifequal h.is_commit False%}
 				<div id = "info">
-				<h2>您还未填写旅游意向</h2><br>
-				<a href = "/myhope/">请点此转到旅游意向界面</a>
+				<h2><center>您还未填写旅游意向</h2><br>
+				<a href = "/myhope/"><center>请点此转到旅游意向界面</a>
 				</div>
 			{% else %}
 				{% ifequal is_create_act True %}
@@ -44,7 +45,7 @@
 					<h2><center>请填写创建活动内容</h2>
 					<form method="post">
 						<table align = "center">{{form.as_table}}
-						<tr><th><label>选项:</label></th><td><input type = "submit" value = "保存" id = "sub" style="background:#453;color:white">
+						<tr><th><label>选项:</label></th><td><input type = "submit" value = "发布" id = "sub" style="background:#453;color:white">
 						<input type = "reset" value = "重置" id = "rst" style="background:#453;color:white"></td></tr>
 						</table>
 					</form>
@@ -64,19 +65,10 @@
 				<li>是否有效：{{act.is_valid}}</li>
 				<li>是否结束：{{act.is_end}}</li>
 				<li>创建日期：{{act.date}}</li>
-				{% ifequal is_create_act False %}
-				<input type = "button" value = "去处理" onclick = 'deal()'/>
+				{% ifequal act.is_end False %}
+				<a href = "/deal_act/?actID={{act.actID}}"><button>去处理</button></a>
 				{% endifequal %}
-				<script type="text/javascript">
-					
-					function deal(){
-						var oreq = new XMLHttpRequest();
-						var para = "?actID="+{{act.actID}}
-						oreq.open("get", "/deal_act/" + para);
-						oreq.send(null);
-						window.location.href = "/deal_act/" + "?actID="+{{act.actID}};
-					}
-				</script>
+				
 			{% endfor %}
 	</table>
 {% endblock %}
