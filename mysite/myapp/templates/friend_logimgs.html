@@ -8,7 +8,7 @@
 {% block title %}friend_logimgs{% endblock %}
 
 {% block content%}
-	<h2>您的好友{{friend_u.username}}共有{{logimgs_num}}张日志照片</h2><hr>
+	<h2>{{friend_u.username}}共有{{logimgs_num}}张日志照片</h2><hr>
 	{% for log in friend_logs %}
 		<div id = img_and_date>
 			<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"><br>

@@ -33,7 +33,7 @@
 	<tr><td>出发日期终点：</td><td>{{target_hope.end_date}}</td></tr>
 	<tr><td>旅行预算：</td><td>{{target_hope.price}}</td></tr>
 	<tr><td>期望去的景点：</td><td>{{target_hope.hopesry}}</td></tr>
-	<tr><td>旅游爱好：</td><td>{{target_user.profile.sex}}</td></tr>
+	<tr><td>旅游爱好：</td><td>{{target_user.profile.travellike}}</td></tr>
 	<tr><td>备注：</td><td>{{target_hope.tip}}</td></tr>
 	{% ifequal is_friend False %}
 	<tr><td>是否添加对方为好友：</td><td><input type = "button"  value = "添加好友" onclick = 'addfriend()'/></td></tr>

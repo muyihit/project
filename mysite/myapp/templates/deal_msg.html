@@ -22,7 +22,7 @@
 	{%else%}<img src="/static/imgs/{{friend_u.username}}.png"/ class = "radius_img">{%endifequal%}</li>
 	{%if friend_p.nickname%}<li><label>昵称：</label>{{friend_p.nickname}}</li>{%endif%}
 	{%if friend_p.age%}<li><label>年龄：</label>{{friend_p.age}}</li>{%endif%}
-	{%if friend_p.sex%}<li><label>性别：</label>{{friend_p.sex}}</li>{%endif%}
+	{%if friend_p.sex%}<li><label>性别：</label>{%ifequal friend_u.sex 0%}女{%else%}男{%endifequal%}</li>{%endif%}
 	{%if friend_p.phone%}<li><label>电话：</label>{{friend_p.phone}}</li>{%endif%}
 	{%if friend_p.qq%}<li><label>QQ：</label>{{friend_p.qq}}</li>{%endif%}
 	{%if friend_p.travellike%}<li><label>旅游爱好：</label>{{friend_p.travellike}}</li>{%endif%}

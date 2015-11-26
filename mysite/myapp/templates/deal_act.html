@@ -31,7 +31,7 @@
 		var oreq = new XMLHttpRequest();
 		oreq.open("get", "/deal_act/" + "?end=end&actID=" + {{act.actID}});
 		oreq.send(null);
-		alert("您想要结束活动？？？！");
+		window.location.href = "/group/";
 		
 	}
 	</script>

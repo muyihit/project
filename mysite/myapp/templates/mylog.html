@@ -2,24 +2,31 @@
 
 {% block style %}
    #logs{float: left; color : yellow; font-size:21px;}
-   #mylog{float: right; color : white; font-size:21px; margin-right: 5em; margin-top :20px;}
+   #log_img{float : left ; width : 200px }
+   #table{align : center; width : 100%}
 {% endblock %}
 
 {% block title %}mylog{% endblock %}
 
 {% block content%}
-
+	<table><tr><td width = "40%">
 	<div id = "logs">
+	<h2><center>我的日志列表及缩略信息</h2>
 	{%for log in logs%}
 	<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
 	{%endfor%}
 	</div>
-	<div id = "mylog">
-	<li><td>标题：</td>{{mylog.title}}</li>
-	<li><td>内容：</td>{{mylog.content}}</li>
-	<li><td>日期：</td>{{mylog.date|date:"Y-m-d H:i:s"}}</li>
+	</td><td>
+	<div id = "mylog" text-align = "center">
+	<table id = "table"><tr><td><label>标题：</lable>{{mylog.title}}</td></tr>
+	<tr><td><label>内容：</lable><div>{%ifequal mylog.is_img False%}
+					{%else%}<a href = "/friend_logimgs/{{mylog.user.username}}/">
+					<img src="/static/imgs/{{mylog.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
+					{{mylog.content}}</div></td></tr>
+	<tr><td><label>日期：</lable>{{mylog.date|date:"Y-m-d H:i:s"}}</td></tr></table>
 	</div>
-	
+	</td></tr>
+	</table>
 {% endblock %}
 
    

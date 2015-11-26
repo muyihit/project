@@ -261,7 +261,7 @@ def advice(request):
     img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
     if h.is_commit == True:
-        hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1])\
+        hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
                 .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
     return render_to_response('advice.html', locals())
 
@@ -273,7 +273,7 @@ def my_advice_user(request, id):
     p = Profile.objects.get_or_create(user = u)[0]
     img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
-    hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1])\
+    hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
             .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
     target_user = User.objects.get(username = id)
     target_hope = target_user.hope
@@ -294,9 +294,11 @@ def my_advice_user(request, id):
             if target_user not in act_users:
                 has_act = True
     '''
-    has_act = True
-    if Person.objects.filter(user = target_user):
-        has_act = False
+    has_act = False
+    if not Person.objects.filter(user = target_user):
+        if Person.objects.filter(user = u):
+            if u.person.act.author == u:
+                has_act = True
     if request.method == 'GET':
         if request.GET.has_key('friend'):
             mf = Messages()
@@ -446,16 +448,14 @@ def group(request):
     img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
     if h.is_commit == True:
-        hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1])\
+        hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
                 .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
-    is_create_act = True
-    acts = Activity.objects.filter(author = u).order_by('-date')
-    acts_num = len(acts)
-    if acts_num:
-        for act in acts:
-            if act.is_end == False:
-                is_create_act = False
-    if is_create_act:
+    acts = Activity.objects.filter(author = u)
+    has_act = True
+    if Person.objects.filter(user = u):
+        has_act = False
+        my_act = u.person.act
+    if has_act:
         if request.method == 'POST':
             new_act = Activity.objects.create(author = u)
             form = ActForm(request.POST, instance = new_act)

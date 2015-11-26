@@ -40,7 +40,7 @@
 				<a href = "/myhope/"><center>请点此转到旅游意向界面</a>
 				</div>
 			{% else %}
-				{% ifequal is_create_act True %}
+				{% ifequal has_act True %}
 					<div id = "act">
 					<h2><center>请填写创建活动内容</h2>
 					<form method="post">
@@ -52,7 +52,18 @@
 					</div>
 				{% else %}
 					<h2><center>您有未完成的活动，不能够创建新活动</h2>
+					<div><h3><center>我目前的活动</h3><hr>
+					<li>活动序号：{{my_act.actID}}</li>
+					<li>活动主题：{{my_act.title}}</li>
+					<li>活动内容：{{my_act.content}}</li>
+					<li>起始日期：{{my_act.start_date}}</li>
+					<li>结束日期：{{my_act.end_date}}</li>
+					<li>是否结束：{{my_act.is_end}}</li>
+					<li>创建日期：{{my_act.date}}</li>
+					<li>创建人：{{my_act.author.username}}</li>
+				</div>
 				{% endifequal %}
+				
 			{% endifequal%}
 		</td><td width = "20%">
 			<h2>我创建的活动</h2>
@@ -62,13 +73,12 @@
 				<li>活动内容：{{act.content}}</li>
 				<li>起始日期：{{act.start_date}}</li>
 				<li>结束日期：{{act.end_date}}</li>
-				<li>是否有效：{{act.is_valid}}</li>
 				<li>是否结束：{{act.is_end}}</li>
 				<li>创建日期：{{act.date}}</li>
 				{% ifequal act.is_end False %}
 				<a href = "/deal_act/?actID={{act.actID}}"><button>去处理</button></a>
 				{% endifequal %}
-				
+				<hr>
 			{% endfor %}
 	</table>
 {% endblock %}

@@ -111,17 +111,17 @@
 					<table>
 					<tr><td>{{log.user.username}}</td>
 					<td>{%ifequal log.user.profile.is_img 0%}
-					{%else%}<a href = "/friend_details/{{log.user.username}}/">
-						<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img"></a>
+					{%else%}
+						<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img">
 						{%endifequal%}</td>
 					<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
 					<td>标题：</h3>{{log.title}}</td></tr>
 					<tr>
-					<td colspan = "4"></h3><div>
+					<td colspan = "4"><div>
 					{%ifequal log.is_img False%}
 					{%else%}<a href = "/friend_logimgs/{{log.user.username}}/">
 					<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
-					{{log.content}}</div></td>
+					{{log.content}}</div></td></tr>
 					</table>
 					<hr>
 				{% endfor %}
