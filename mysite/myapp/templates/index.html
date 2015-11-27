@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block style %}
-   #strgys{float: right; color : white; font-size:18px; margin-right: 10px; font-family : KaiTi;}
+   #strgys{float: right; font-size:18px; margin-right: 10px; font-family : KaiTi;}
    #logs{float: left; font-size:18px;}
    #index_table{width : 100%; height : 100%; align : center; text-align : center}
    #container_left, #container_center, #container_right{
@@ -25,7 +25,7 @@
 			<div id = "message">
 				<h2>消息区</h2>
 				<hr>
-				<b><font color = "#3399FF">您有{{info_num}}条未读消息！</font></b>
+				<b><font color = "#3399FF"><b>您有{{info_num}}条未读消息！</b></font></b>
 				<hr>
 				{% if messages %}
 					<ul>
@@ -95,7 +95,7 @@
 			</div>
 			
 			<div id = "logs">
-				<h2><font color = "white">我的日志</font></h2><hr>
+				<h2><font color = "black">我的日志</font></h2><hr>
 				<b><font color = "#3399FF">您有{{logs_num}}条日志</font></b><hr>
 				{%for log in logs%}
 					<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
@@ -109,13 +109,13 @@
 			<hr>
 				{%for log in friends_logs%}
 					<table>
-					<tr><td>{{log.user.username}}</td>
+					<tr>
+					<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
+					<td>标题：</h3>{{log.title}}</td><td>{{log.user.username}}</td>
 					<td>{%ifequal log.user.profile.is_img 0%}
 					{%else%}
 						<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img">
-						{%endifequal%}</td>
-					<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
-					<td>标题：</h3>{{log.title}}</td></tr>
+						{%endifequal%}</td></tr>
 					<tr>
 					<td colspan = "4"><div>
 					{%ifequal log.is_img False%}
@@ -156,7 +156,7 @@
 			</div>
 			
 			<div id = "strgys">
-			<h2>旅游攻略</h2><hr>
+			<h2><font color = "black"><b>旅游攻略</b></font></h2><hr>
 			{%for strgy in strgys%}
 			<li><a href = "/showstrgy/{{strgy.strgyID}}/">{{strgy}}</a></li>
 			<hr>

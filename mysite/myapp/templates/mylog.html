@@ -11,7 +11,7 @@
 {% block content%}
 	<table><tr><td width = "40%">
 	<div id = "logs">
-	<h2><center>我的日志列表及缩略信息</h2>
+	<h2><center><font color = "black">我的日志列表及缩略信息</font></h2>
 	{%for log in logs%}
 	<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
 	{%endfor%}

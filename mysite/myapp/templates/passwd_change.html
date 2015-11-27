@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block style %}
-   input{width:200px;height:30px;font-size:20px; background-color: #453; color:white; border-radius:10px;}
+   input{width:200px;height:30px;font-size:20px; background-color: white; color:black; border-radius:10px;}
    #sub, #rst, #sub2{
 	margin-top:2px;
 	width:60px;
@@ -24,11 +24,11 @@
 
 	<form method = "post">
 	<ul>
-		<li><td><font size = 5px color = "white">请输入原密码：</font></td><td><input name = "old_passwd" type = "password"/></td>
-			<td><font size = 3px color = "yellow"><b>提示：务必确认原密码</b></font></td></li>
-		<li><td><font size = 5px color = "white">请输入新密码：</font></td><td><input name = "new_passwd" type = "password"/></td></li>
-		<li><td><font size = 5px color = "white">请输一遍新密码：</font></td><td><input name = "new_passwd2" type = "password"/></td>
-			<td><font size = 3px color = "yellow"><b>提示：务必确认两次密码一致</b></font></td></li>
+		<li><td><font size = 5px >请输入原密码：</font></td><td><input name = "old_passwd" type = "password"/></td>
+			<td><font size = 3px ><b>提示：务必确认原密码</b></font></td></li>
+		<li><td><font size = 5px >请输入新密码：</font></td><td><input name = "new_passwd" type = "password"/></td></li>
+		<li><td><font size = 5px >请输一遍新密码：</font></td><td><input name = "new_passwd2" type = "password"/></td>
+			<td><font size = 3px ><b>提示：务必确认两次密码一致</b></font></td></li>
 	</ul>
 	<td><input type = "submit" name = "ensure" value = "确定" id = "sub"/></td><td><input type = "reset" value = "重置" id = "rst"></td>
 	<td><input type = "submit" name = "cancel" value = "取消" id = "sub2"/></td>
