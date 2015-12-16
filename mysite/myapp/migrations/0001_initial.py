@@ -109,6 +109,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=50)),
                 ('content', models.CharField(max_length=1000)),
                 ('date', models.DateTimeField(auto_now_add=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

@@ -79,8 +79,6 @@ def ensure_logout(request):
         if request.POST.has_key('ensure'):
             auth.logout(request)
             return HttpResponseRedirect("/login/")
-        else:
-            return HttpResponseRedirect("/index/")
     return render_to_response("logout.html", locals())
 
 @csrf_exempt
@@ -194,7 +192,11 @@ def addstrgy(request):
     if request.method == 'POST':
         form = StrategyForm(request.POST)
         if form.is_valid():
-            form.save()
+            strgy = Strategy()
+            strgy.content = form.cleaned_data["content"]
+            strgy.title = form.cleaned_data["title"]
+            strgy.user = request.user
+            strgy.save()
             return HttpResponseRedirect("/index/")
     else:
         form = StrategyForm()
@@ -450,14 +452,15 @@ def group(request):
     if h.is_commit == True:
         hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
                 .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
-    acts = Activity.objects.filter(author = u)
-    has_act = True
+    acts = Activity.objects.filter(author = u).order_by('-date')
     if Person.objects.filter(user = u):
         has_act = False
         my_act = u.person.act
+    else:
+        has_act = True
     if has_act:
         if request.method == 'POST':
-            new_act = Activity.objects.create(author = u)
+            new_act = Activity(author = u)
             form = ActForm(request.POST, instance = new_act)
             if form.is_valid():
                 form.save()

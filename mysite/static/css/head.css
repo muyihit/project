@@ -18,7 +18,6 @@
    }
    .radius_img{width:50px;height:50px;border-radius:50px;margin-top:8px}
    #hope{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
-   #myfriend{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
    #design{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
    #group{float: left;font-size: 18px; margin-top:6px; margin-left: 20px}
    
@@ -33,12 +32,12 @@ body {
 
 /* LINKS */
 a:link, a:visited {
-    color: #646464;
+    color: #6666BB;
     text-decoration: none;
 }
 
 a:hover {
-    color: #FFFF99;
+    color: #000000;
 }
 
 a:img {

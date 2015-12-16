@@ -3,7 +3,7 @@
 {% block style %}
    #strgys{float: right; font-size:18px; margin-right: 10px; font-family : KaiTi;}
    #logs{float: left; font-size:18px;}
-   #index_table{width : 100%; height : 100%; align : center; text-align : center}
+   #index_table{width : 100%; height : 100%; align : center; text-align : left}
    #container_left, #container_center, #container_right{
 		border:0px solid #fff;   
 		-moz-border-radius:30px;  
@@ -13,7 +13,7 @@
    #container_center{width : 90% ; height : 100%; padding : 20px; border:3px solid #fff;}
    #container_right{width : 100% ; height : 100%; padding : 5px; float : right;}
    #log_img{float : left ; width : 200px }
-   #message{font-family : STSong;}
+   
 {% endblock %}
 
 {% block title %}index{% endblock %}
@@ -23,7 +23,7 @@
 		<tr><td width = "20%">
 		<div id = "container_left">
 			<div id = "message">
-				<h2>消息区</h2>
+				<h2><center>消息区</h2>
 				<hr>
 				<b><font color = "#3399FF"><b>您有{{info_num}}条未读消息！</b></font></b>
 				<hr>
@@ -95,7 +95,7 @@
 			</div>
 			
 			<div id = "logs">
-				<h2><font color = "black">我的日志</font></h2><hr>
+				<h2><font color = "black"><center>我的日志</font></h2><hr>
 				<b><font color = "#3399FF">您有{{logs_num}}条日志</font></b><hr>
 				{%for log in logs%}
 					<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
@@ -131,7 +131,7 @@
 		</td><td>
 		<div id = "container_right">
 			<div id = "acts">
-			<h2>活动公示</h2><hr>
+			<h2><center>活动公示</h2><hr>
 			{%for act in acts%}
 				<li>活动序号：{{act.actID}}</li>
 				<li>活动主题：{{act.title}}</li>
@@ -156,7 +156,7 @@
 			</div>
 			
 			<div id = "strgys">
-			<h2><font color = "black"><b>旅游攻略</b></font></h2><hr>
+			<h2><font color = "black"><b><center>旅游攻略</b></font></h2><hr>
 			{%for strgy in strgys%}
 			<li><a href = "/showstrgy/{{strgy.strgyID}}/">{{strgy}}</a></li>
 			<hr>

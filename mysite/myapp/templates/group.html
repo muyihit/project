@@ -23,7 +23,7 @@
 
 {% block content%}
 	<table id = "group_table" width = "100%">
-		<tr><td width = "20%">
+		<tr><td width = "20%" valign="top" align = "center">
 			<h2>系统为您推荐的驴友</h2>
 			<div id = "adviceresult">
 			{%for hope in hlist%}
@@ -33,7 +33,7 @@
 				{%endifequal%}
 			{%endfor%}
 			</div>
-		</td><td width = "60%">
+		</td><td width = "60%" valign="top">
 			{% ifequal h.is_commit False%}
 				<div id = "info">
 				<h2><center>您还未填写旅游意向</h2><br>
@@ -60,12 +60,11 @@
 					<li>结束日期：{{my_act.end_date}}</li>
 					<li>是否结束：{{my_act.is_end}}</li>
 					<li>创建日期：{{my_act.date}}</li>
-					<li>创建人：{{my_act.author.username}}</li>
 				</div>
 				{% endifequal %}
 				
 			{% endifequal%}
-		</td><td width = "20%">
+		</td><td width = "20%" valign="top">
 			<h2>我创建的活动</h2>
 			{% for act in acts %}
 				<li>活动序号：{{act.actID}}</li>

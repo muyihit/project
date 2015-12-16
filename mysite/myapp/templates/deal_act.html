@@ -2,11 +2,15 @@
 
 {% block style %}
    #friends{color : yellow; font-size:30px;}
+   #my_act{float : right; text-align : left}
+   table{width : 100%}
 {% endblock %}
 
 {% block title %}deal_act{% endblock %}
 
 {% block content%}
+	<table><tr><td width = "35%"></td><td width = "30%">
+	<div id = "my_act">
 	{% ifequal msg_disread True %}
 	<h2>您还有未处理的活动申请</h2>
 	<a href = "/index/">请点此去首页处理</a>
@@ -24,15 +28,16 @@
 		<li>成员加入时间：{{person.date}}</li>
 	{% endfor %}
 	{% ifequal act.is_end False%}
-	<input type = "button" value = "是否结束" onclick = 'end()'/></table>
+	<input type = "button" value = "是否结束" onclick = 'end()'/>
 	{% endifequal %}
+	</div>
+	</td><td width = "35%"></td></tr></table>
 	<script type="text/javascript">
 	function end(){
 		var oreq = new XMLHttpRequest();
 		oreq.open("get", "/deal_act/" + "?end=end&actID=" + {{act.actID}});
 		oreq.send(null);
-		window.location.href = "/group/";
-		
+		window.location.href = "/group/?";
 	}
 	</script>
 {% endblock %}

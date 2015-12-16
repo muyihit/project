@@ -1,22 +1,23 @@
 {% extends "base.html" %}
 
 {% block style %}
-   #logs{float: left; color : yellow; font-size:21px;}
+   #logs{float: left; color : black; font-size:21px; margin-left : 3em;}
    #log_img{float : left ; width : 200px }
-   #table{align : center; width : 100%}
+   #table{align : center; width : 80%; margin-top : 6em}
 {% endblock %}
 
 {% block title %}mylog{% endblock %}
 
 {% block content%}
-	<table><tr><td width = "40%">
+	<table><tr><td width = "45%">
 	<div id = "logs">
 	<h2><center><font color = "black">我的日志列表及缩略信息</font></h2>
 	{%for log in logs%}
 	<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
+	<hr>
 	{%endfor%}
 	</div>
-	</td><td>
+	</td><td valign = "top" align = "center">
 	<div id = "mylog" text-align = "center">
 	<table id = "table"><tr><td><label>标题：</lable>{{mylog.title}}</td></tr>
 	<tr><td><label>内容：</lable><div>{%ifequal mylog.is_img False%}

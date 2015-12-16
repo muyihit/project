@@ -42,6 +42,7 @@ class Strategy(models.Model):
     title = models.CharField(max_length = 50)
     content = models.CharField(max_length = 1000)
     date = models.DateTimeField(verbose_name = '日期', auto_now_add = True)
+    user = models.ForeignKey(User)
     def __unicode__(self):
         return self.title + '_...' + self.content[0:10] + '..._' + str(self.date)
 

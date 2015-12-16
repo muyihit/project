@@ -41,7 +41,7 @@ class StrategyForm(forms.ModelForm):
                               widget = forms.Textarea(attrs = {"placeholder":"请再此编辑内容，不超过1000字..."}))
     class Meta:
         model = Strategy
-        fields = '__all__'
+        exclude = ['user', ]
         widgets = {
             "content": forms.Textarea(attrs={"col":10,"row":25},)
             }

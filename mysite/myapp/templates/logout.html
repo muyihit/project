@@ -17,9 +17,15 @@
 	<table class = "table" align="center" width="20%" >
 	<tr><td colspan = "2"><center><b>是否确定退出？</b></td></tr>
 	<tr><td><center><input type = "submit" name = "ensure" value = "确定" id = "button1" style="background:white; color:black;"></td>
-	<td><center><input type = "submit" name = "cancel" value = "取消" id = "button2" style="background:white; color:black;"></td></tr>
+	<td><center><button onclick = 'cancel()' id = "button2" style="background:white; color:black;">取消</button></td></tr>
 	</table>
 	</form></div>
-	
+	<script type="text/javascript">
+	function cancel(){
+		
+		window.history.go(-1);
+		
+	}
+	</script>
 {% endblock %}
 

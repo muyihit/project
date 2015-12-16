@@ -1,23 +1,29 @@
 {% extends "base.html" %}
 
 {% block style %}
-   #strgys{float: left; color : yellow; font-size:25px;}
-   #mystrgy{float: right; color : white; font-size:21px; margin-right: 5em; margin-top :20px;}
+   #strgys{float: left; color : black; font-size:21px; margin-left : 3em;}
+   #table{align : center; width : 80%; margin-top : 6em}
 {% endblock %}
 
 {% block title %}showstrgy{% endblock %}
 
 {% block content%}
 
+	<table><tr><td width = "60%">
 	<div id = "strgys">
+	<h2><center><font color = "black">旅游攻略列表及缩略信息</font></h2>
 	{%for strg in strgys%}
 	<li><a href = "/showstrgy/{{strg.strgyID}}/">{{strg}}</a></li>
+	<hr>
 	{%endfor%}
 	</div>
-	<div id = "mystrgy">
-	<li><td>主题：</td>{{strgy.title}}</li>
-	<li><td>内容：</td>{{strgy.content}}</li>
-	<li><td>日期：</td>{{strgy.date|date:"Y-m-d H:i:s"}}</li>
+	</td><td valign = "bottom" align = "center">
+	<div id = "mystrgy" text-align = "center">
+	<table id = "table"><tr><td><label>主题：</lable>{{strgy.title}}</td></tr>
+	<tr><td><label>内容：</lable>{{strgy.content}}</td></tr>
+	<tr><td><label>日期：</lable>{{strgy.date|date:"Y-m-d H:i:s"}}</td></tr></table>
 	</div>
+	</td></tr>
+	</table>
 	
 {% endblock %}
