@@ -29,12 +29,10 @@ def register(request):
 @login_required
 def index(request):
     u = request.user
-    username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     logs = u.log_set.all().order_by('-date')
     logs_num = len(logs)
-    strgys = Strategy.objects.all()
+    strgys = Strategy.objects.all().order_by('-date')
     info_num = len(Messages.objects.filter(go = u, is_read = False))
     messages = Messages.objects.filter(go = u, is_read = False).order_by('-date')
     
@@ -72,9 +70,6 @@ def index(request):
 @login_required
 def ensure_logout(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     if request.method == 'POST':
         if request.POST.has_key('ensure'):
             auth.logout(request)
@@ -85,9 +80,6 @@ def ensure_logout(request):
 @login_required
 def addlog(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     if request.method == 'POST':
         form = LogForm(request.POST)
         if form.is_valid():
@@ -106,9 +98,6 @@ def addlog(request):
 
 def mylog(request, id):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     mylog = u.log_set.all().get(logID = id)
     logs = u.log_set.all().order_by('-date') 
     return render_to_response('mylog.html', locals())
@@ -118,8 +107,6 @@ def myprofile(request):
     u = request.user
     #User.profile = property(lambda u: Profile.objects.get_or_create(user = u)[0])
     p = Profile.objects.get_or_create(user = u)[0]
-    username = p.user.username
-    img_mark = p.is_img
     if request.method == 'POST':       
         form = ProfileForm(request.POST, instance = p)
         if form.is_valid():
@@ -133,9 +120,6 @@ def myprofile(request):
 @login_required
 def passwd_change(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     if request.method == 'POST':
         if request.POST.has_key('cancel'):
             return HttpResponseRedirect("/index/")
@@ -159,15 +143,13 @@ def passwd_change(request):
 @login_required
 def img(request):
     u = request.user
-    username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     if request.method == 'POST':       
         if 'image' in request.FILES:
             image=request.FILES["image"]
             img=Image.open(image)
             img.thumbnail((112,54),Image.ANTIALIAS)
-            name='./static/imgs/'+username+'.png'
+            name='./static/imgs/'+u.username+'.png'
             img.save(name,"png")
             p.is_img = 1
             p.save()
@@ -186,9 +168,6 @@ def img(request):
 @login_required
 def addstrgy(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     if request.method == 'POST':
         form = StrategyForm(request.POST)
         if form.is_valid():
@@ -207,9 +186,6 @@ def addstrgy(request):
 
 def showstrgy(request, id):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     strgy = Strategy.objects.all().get(strgyID = id)
     strgys = Strategy.objects.all().order_by('date')
     return render_to_response('showstrgy.html', locals())
@@ -219,9 +195,6 @@ def showstrgy(request, id):
 
 def myhope(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
     if request.method == 'POST':       
         form = HopeForm(request.POST, instance = h)
@@ -238,18 +211,12 @@ def myhope(request):
 @login_required
 def design(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     return render_to_response('design.html', locals())
     
 @csrf_exempt
 @login_required
 def result(request, id1, id2):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     home1 = id1
     home2 = id2
     return render_to_response('result.html', locals())
@@ -258,9 +225,6 @@ def result(request, id1, id2):
 @login_required
 def advice(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
     if h.is_commit == True:
         hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
@@ -271,9 +235,7 @@ def advice(request):
 @login_required
 def my_advice_user(request, id):
     u = request.user
-    username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
     hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
             .exclude(Q(end_date__lt = h.start_date)|Q(start_date__gt = h.end_date))
@@ -323,9 +285,7 @@ def my_advice_user(request, id):
 @login_required
 def deal_msg(request, come_username, msgID):
     u = request.user
-    username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     friend_u = User.objects.get(username = come_username)
     friend_p = Profile.objects.get_or_create(user = friend_u)[0]
     friend_h = Hope.objects.get_or_create(user = friend_u)[0]
@@ -394,9 +354,6 @@ def deal_msg(request, come_username, msgID):
 @login_required    
 def is_add_logimg(request, id):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     if request.method == 'POST':
         if request.POST.has_key('ensure'):
             return HttpResponseRedirect("/logimg/" + str(id))
@@ -409,18 +366,15 @@ def is_add_logimg(request, id):
 @login_required
 def logimg(request, id):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     log = Log.objects.get(logID = id)
     if request.method == 'POST':       
         if 'image' in request.FILES:
             image=request.FILES["image"]
             img=Image.open(image)
             img.thumbnail((1080,720),Image.ANTIALIAS)
-            name='./static/imgs/' + username + str(log.logID) + 'log.png'
+            name='./static/imgs/' + u.username + str(log.logID) + 'log.png'
             img.save(name,"png")
-            nameurl = username + str(log.logID) + 'log'
+            nameurl = u.username + str(log.logID) + 'log'
             log.img_name = nameurl
             log.is_img = True
             log.save()
@@ -432,9 +386,6 @@ def logimg(request, id):
 @login_required
 def friend_logimgs(request, id):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     friend_u = User.objects.get(username = id)
     friend_logs = friend_u.log_set.all().filter(is_img = True).order_by('-date')
     logimgs_num = len(friend_logs)
@@ -445,9 +396,6 @@ def friend_logimgs(request, id):
 @login_required
 def group(request):
     u = request.user
-    username = u.username
-    p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     h = Hope.objects.get_or_create(user = u)[0]
     if h.is_commit == True:
         hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
@@ -481,9 +429,7 @@ def group(request):
 
 def myfriend(request):
     u = request.user
-    username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     friends = p.friend.all()
     friends_num = len(friends)
     has_friend = True
@@ -505,9 +451,7 @@ def myfriend(request):
 
 def deal_act(request):
     u = request.user
-    username = u.username
     p = Profile.objects.get_or_create(user = u)[0]
-    img_mark = p.is_img
     msg_disread = False
     if Messages.objects.filter(go = u, msg_type = 2, is_req = True, is_read = False):
         msg_disread = True

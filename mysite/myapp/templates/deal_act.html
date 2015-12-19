@@ -12,9 +12,11 @@
 	<table><tr><td width = "35%"></td><td width = "30%">
 	<div id = "my_act">
 	{% ifequal msg_disread True %}
-	<h2>您还有未处理的活动申请</h2>
-	<a href = "/index/">请点此去首页处理</a>
-	{% endifequal %}
+	<h2><center>您还有未处理的活动申请</h2>
+	<a href = "/index/"><center>请点此去首页处理</a>
+	{% else %}
+	
+	
 	<li>活动序号：{{act.actID}}</li>
 	<li>活动主题：{{act.title}}</li>
 	<li>活动内容：{{act.content}}</li>
@@ -31,13 +33,18 @@
 	<input type = "button" value = "是否结束" onclick = 'end()'/>
 	{% endifequal %}
 	</div>
-	</td><td width = "35%"></td></tr></table>
+	</td>{% endifequal %}
+	<td width = "35%"></td></tr></table>
+	
 	<script type="text/javascript">
 	function end(){
 		var oreq = new XMLHttpRequest();
+		oreq.onreadystatechange = callback;
 		oreq.open("get", "/deal_act/" + "?end=end&actID=" + {{act.actID}});
 		oreq.send(null);
-		window.location.href = "/group/?";
+	}
+	function callback(){
+		window.location.href = "/group/";
 	}
 	</script>
 {% endblock %}

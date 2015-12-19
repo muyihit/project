@@ -2,14 +2,14 @@
 
 {% block style %}
    #strgys{float: left; color : black; font-size:21px; margin-left : 3em;}
-   #table{align : center; width : 80%; margin-top : 6em}
+   #table{align : center; width : 80%; margin-top : 4em}
 {% endblock %}
 
 {% block title %}showstrgy{% endblock %}
 
 {% block content%}
 
-	<table><tr><td width = "60%">
+	<table><tr><td width = "60%" valign="top" align = "center">
 	<div id = "strgys">
 	<h2><center><font color = "black">旅游攻略列表及缩略信息</font></h2>
 	{%for strg in strgys%}

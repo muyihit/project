@@ -3,13 +3,13 @@
 {% block style %}
    #logs{float: left; color : black; font-size:21px; margin-left : 3em;}
    #log_img{float : left ; width : 200px }
-   #table{align : center; width : 80%; margin-top : 6em}
+   #table{align : center; width : 80%; margin-top : 4em}
 {% endblock %}
 
 {% block title %}mylog{% endblock %}
 
 {% block content%}
-	<table><tr><td width = "45%">
+	<table><tr><td width = "45%" valign="top" align = "center">
 	<div id = "logs">
 	<h2><center><font color = "black">我的日志列表及缩略信息</font></h2>
 	{%for log in logs%}

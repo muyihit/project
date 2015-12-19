@@ -48,44 +48,47 @@
 	<script type="text/javascript">
 	function ensuref(){
 		var oreq = new XMLHttpRequest();
+		oreq.onreadystatechange = callback;
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensuref=ensuref");
 		oreq.send(null);
 		alert("你已添加对方为好友！！！");
-		window.location.href = "/index/";
 	}
 	function cancelf(){
 		var oreq = new XMLHttpRequest();
+		oreq.onreadystatechange = callback;
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancelf=cancelf");
 		oreq.send(null);
 		alert("你已成功拒绝对方添加！！！");
-		window.location.href = "/index/";
 	}
 	function ensuret(){
 		var oreq = new XMLHttpRequest();
+		oreq.onreadystatechange = callback;
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensuret=ensuret");
 		oreq.send(null);
 		alert("你已成功加入对方团队！！！");
-		window.location.href = "/index/";
 	}
 	function cancelt(){
 		var oreq = new XMLHttpRequest();
+		oreq.onreadystatechange = callback;
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancelt=cancelt");
 		oreq.send(null);
 		alert("你已拒绝加入对方团队！！！");
-		window.location.href = "/index/";
 	}
 	function ensurea(){
 		var oreq = new XMLHttpRequest();
+		oreq.onreadystatechange = callback;
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?ensurea=ensurea");
 		oreq.send(null);
 		alert("对方已加入您的团队！！！");
-		window.location.href = "/index/";
 	}
 	function cancela(){
 		var oreq = new XMLHttpRequest();
+		oreq.onreadystatechange = callback;
 		oreq.open("get", "/deal_msg/{{friend_u.username}}/{{target_msg.msgID}}/" + "?cancela=cancela");
 		oreq.send(null);
 		alert("你已拒绝对方加入您的团队！！！");
+	}
+	function callback(){
 		window.location.href = "/index/";
 	}
 	</script>

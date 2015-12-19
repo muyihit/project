@@ -10,17 +10,17 @@
         -webkit-border-radius:30px;  
         border-radius:30px;}
    #container_left{width : 100% ; height : 100% ; padding : 5px ; float : left;}
-   #container_center{width : 90% ; height : 100%; padding : 20px; border:3px solid #fff;}
-   #container_right{width : 100% ; height : 100%; padding : 5px; float : right;}
+   #container_center{width : 90% ; height : 100%; padding : 20px; border:3px solid #fff; font-family:Arial,'Times New Roman','Microsoft YaHei',SimHei;}
+   #container_right{width : 100% ; height : 100%; padding : 5px; float : left;}
    #log_img{float : left ; width : 200px }
-   
+   .inside_hr{height:1px;border:none;border-top:1px dashed #0066CC;}
 {% endblock %}
 
 {% block title %}index{% endblock %}
 
 {% block content%}
 	<table id = "index_table">
-		<tr><td width = "20%">
+		<tr><td width = "25%">
 		<div id = "container_left">
 			<div id = "message">
 				<h2><center>消息区</h2>
@@ -83,11 +83,9 @@
 								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
 							{% endifequal %}
 							
-							<a href = "/index/?ignore=ignore&msgID={{message.msgID}}"><button onclick = 'ignore()'>知道了</button></a>
+							<button onclick = 'ignore({{message.msgID}})'>知道了</button>
 						{% endifequal %}
 						
-						
-					
 					{% endfor %}
 					</ul>
 					<hr>
@@ -99,10 +97,11 @@
 				<b><font color = "#3399FF">您有{{logs_num}}条日志</font></b><hr>
 				{%for log in logs%}
 					<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
+					<hr class = inside_hr>
 				{%endfor%}
 			</div>
 		</div>
-		</td><td width = "60%" align = "center">
+		</td><td width = "50%" align = "center">
 		<div id = "container_center">
 			<div>
 			<h1>好友动态</h1>
@@ -111,7 +110,8 @@
 					<table>
 					<tr>
 					<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
-					<td>标题：</h3>{{log.title}}</td><td>{{log.user.username}}</td>
+					<td><strong>标题：</strong>{{log.title}}</td>
+					<td><font color = "#3399FF">{{log.user.username}}</font></td>
 					<td>{%ifequal log.user.profile.is_img 0%}
 					{%else%}
 						<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img">
@@ -128,7 +128,7 @@
 			</div>
 			
 		</div>
-		</td><td>
+		</td><td width = "25%">
 		<div id = "container_right">
 			<div id = "acts">
 			<h2><center>活动公示</h2><hr>
@@ -142,16 +142,33 @@
 				<li>创建日期：{{act.date}}</li>
 				<li>创建人：{{act.author.username}}</li>
 				{% ifequal has_act True %}
-				<a href = "/index/?actID={{act.actID}}"><button onclick = 'upgrade()'>申请加入</button></a>
+				<button onclick = 'upgrade({{act.actID}})'>申请加入</button>
 				{% else %}{% endifequal %}
 				
 				<hr>
 			{%endfor%}
 			<script type="text/javascript">
-					function upgrade(){
-						alert("您已成功发送申请信息!");
+					function callback(){
 						window.location.href = "/index/";
 					}
+					function upgrade(act){
+						alert("您已成功发送申请信息!");
+						var actID = act; 
+						var oreq = new XMLHttpRequest();
+						oreq.onreadystatechange = callback;
+						oreq.open("get", "/index/?actID=" + actID);
+						oreq.send(null);
+					}
+					function ignore(msg){
+						alert("你已成功忽略此消息！！！");
+						var msgID = msg; 
+						var oreq = new XMLHttpRequest();
+						oreq.onreadystatechange = callback;
+						oreq.open("get", "/index/?ignore=ignore&msgID=" + msgID);
+						oreq.send(null);
+						
+					}
+					
 				</script>
 			</div>
 			

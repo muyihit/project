@@ -63,7 +63,9 @@ a.section:link, a.section:visited {
 #header a:link, #header a:visited {
     color: #fff;
 }
-
+#header .namelink:visited{
+	color: yellow;
+}
 #header a:hover {
 	color: yellow;
     text-decoration: underline;
