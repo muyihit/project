@@ -1,7 +1,7 @@
 ﻿{% extends "base.html" %}
 
 {% block style %}
-		#l-map{height:300px;width:300px%;}
+		#l-map{height:400px;width:100%;}
 		#r-result{width:100%;}
 {% endblock %}
 
@@ -23,7 +23,7 @@
 	}
 
 	var map = new BMap.Map("l-map");
-	map.centerAndZoom("北京",5);                   // 初始化地图,设置城市和地图级别。
+	map.centerAndZoom("哈尔滨工业大学司令街",20);                   // 初始化地图,设置城市和地图级别。
 
 	var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
 		{"input" : "suggestId"

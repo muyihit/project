@@ -16,10 +16,7 @@ Including another URLconf
 import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from myapp.views import register, index, ensure_logout, addlog, myprofile
-from myapp.views import myhope, passwd_change, mylog, img, addstrgy, showstrgy
-from myapp.views import design, result, advice, my_advice_user, deal_msg, is_add_logimg, logimg
-from myapp.views import friend_logimgs, group, myfriend, deal_act
+from myapp.views import*
 from django.contrib.auth.views import login, logout
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -48,4 +45,6 @@ urlpatterns = [
     url(r'^group/$', group),
     url(r'^myfriend/$', myfriend),
     url(r'^deal_act/$', deal_act),
+    url(r'^site/$', site),
+    url(r'^mysite/(.+)/$', mysite),
 ]

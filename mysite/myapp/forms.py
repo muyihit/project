@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from models import Log, Profile, Strategy, Hope, Activity
+from models import *
 class LogForm(forms.ModelForm):
     title = forms.CharField(label = (u"标题"), max_length = 50, widget = forms.TextInput(attrs = {"placeholder":"日志标题"}))
     content = forms.CharField(label = (u"内容"), max_length = 1000, widget = forms.Textarea(attrs = {"placeholder":"请再此输入您的日志内容，不超过1000字..."}))
@@ -84,4 +84,21 @@ class ActForm(forms.ModelForm):
         widgets = {
             'content' : forms.Textarea(attrs={"col":10,"row":20},),
 
+            }
+
+class SiteForm(forms.ModelForm):
+    
+    class Meta:
+        model = Site
+        exclude = ['is_img', ]
+        widgets = {
+            'content' : forms.Textarea(attrs={"col":10,"row":20},),
+            }
+class SiteCommitForm(forms.ModelForm):
+    
+    class Meta:
+        model = SiteCommit
+        fields = ['content',]
+        widgets = {
+            'content' : forms.Textarea(attrs={"col":10,"row":3},),
             }

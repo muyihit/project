@@ -27,6 +27,14 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='Describe',
+            fields=[
+                ('dscrbID', models.AutoField(serialize=False, primary_key=True)),
+                ('content', models.CharField(max_length=20, blank=True)),
+                ('user', models.ManyToManyField(to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Hope',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -98,8 +106,28 @@ class Migration(migrations.Migration):
             name='Site',
             fields=[
                 ('siteID', models.AutoField(serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=20)),
-                ('price', models.IntegerField()),
+                ('name', models.CharField(max_length=20, verbose_name=b'\xe6\x99\xaf\xe7\x82\xb9\xe5\x90\x8d')),
+                ('content', models.CharField(max_length=50, verbose_name=b'\xe6\x8f\x8f\xe8\xbf\xb0', blank=True)),
+                ('price', models.IntegerField(verbose_name=b'\xe4\xbb\xb7\xe6\xa0\xbc')),
+                ('is_img', models.IntegerField(default=0)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='SiteCommit',
+            fields=[
+                ('scID', models.AutoField(serialize=False, primary_key=True)),
+                ('content', models.CharField(max_length=50, blank=True)),
+                ('date', models.DateTimeField(auto_now_add=True)),
+                ('site', models.ForeignKey(related_name='site_sitecommit_set', to='myapp.Site')),
+                ('user', models.ForeignKey(related_name='user_sitecommit_set', to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='SiteImg',
+            fields=[
+                ('siteID', models.AutoField(serialize=False, primary_key=True)),
+                ('name', models.CharField(max_length=20, blank=True)),
+                ('site', models.ForeignKey(to='myapp.Site')),
             ],
         ),
         migrations.CreateModel(

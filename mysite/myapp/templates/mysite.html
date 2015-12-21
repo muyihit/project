@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block js %}
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/scroll2.js"></script>
+{% endblock %}
+{% block style %}
+	
+	input{ font-size:20px; background-color: white; color:black; border-radius:10px;}
+	#addcommit{border:3px solid #fff; float: right; width : 100%;}
+	.img{width : 150px;}
+	#sub{float : right;}
+	#commits{border:3px solid #fff;border-radius:10px;float: right; width : 100%;}
+	#mysite{position : relative; top : 0px; width : 100%}
+{% endblock %}
+
+{% block title %}mysite{% endblock %}
+
+{% block content%}
+	<table><tr><td width = "60%" valign = "top">
+	<div id = "mysite_info">
+		<h2>景点详细信息</h2>
+		<hr>
+		<p><label>景点名：</label>{{site.name}}</p>
+		<p><label>描述：</label>{{site.content}}</p>
+		<p><label>价格：</label>{{site.price}}</p>
+	</div>
+	<div id = "mysite">
+		{% for i in imgs %}
+			<img src="/static/siteimgs/{{i.name}}.png" class = "img"/>
+		{% endfor %}
+	</div>
+	</td><td valign = "top" width = "40%">
+	<div id = "addcommit">
+		<form method="post">
+		<legend>添加评论</legend>
+		<table>{{form.as_table}}</table>
+		<input type = "submit" value = "评论" id = "sub"/>
+		</form>
+	</div>
+	<div id = "commits">
+		{% for c in commits %}
+			<div class = "commit">
+				<p>{{c.content}}</p>
+				<div class = "footer">
+					评论者：{{c.user.username}}<br>
+					日期：{{c.date|date:"Y-m-d H:i:s"}}
+				</div>
+			</div>
+			<hr>
+		{% endfor %}	
+	</div>
+	</td></tr></table>
+{% endblock %}
+
+   

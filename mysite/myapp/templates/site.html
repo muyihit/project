@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block js %}
+	<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/js/site.js"></script>
+{% endblock %}
+{% block style %}
+	input{ font-size:20px; background-color: white; color:black; border-radius:10px;}
+	#id_content{ font-size:20px; }
+	#sub, #rst, #imgsub{
+	margin-top:2px;
+	width:60px;
+	height:30px;
+	border-radius:15px;
+	font-size:20px;
+	margin-left: 2em;
+	}
+	#sub{margin-left:10px;}
+	#rst{margin-right:40px;}
+	.site{width : 150px ;border:2px solid #bbb; border-radius:10px;background : white}
+	.siteimg0{float : left ; width : 100%;}
+	#addsite{border:3px solid #fff;}
+	#sites{position : relative; top : 0px; width : 100%}
+{% endblock %}
+
+{% block title %}site{% endblock %}
+
+{% block content%}
+	<table><tr><td width = "60%" valign = "top">
+	<h2>景点概况</h2><hr>
+	<div id = "sites">
+		
+		{% for i, j in sites_info %}
+			<a href = "/mysite/{{i.siteID}}/">
+			<div class = "site">
+				<p><label>景点名：</label>{{i.name}}</p>
+				<p><label>描述：</label>{{i.content}}</p>
+				<p><label>价格：</label>{{i.price}}</p>
+				{% if j%}
+					<img src="/static/siteimgs/{{j}}.png" class = "siteimg0"/>
+				{% endif %}
+			</div>
+			</a>
+		{% endfor %}
+	</div>
+	</td><td width = "40%" valign = "top">
+	<div id = "addsite">
+		<form enctype="multipart/form-data" method="post" action = "/site/">
+		<!--{% csrf_token %}-->
+		
+			<div id = "form">
+				<h2>添加景点</h2>
+				<table>{{form.as_table}}
+				</table>
+			</div>
+			
+			<div id = "siteimg">
+				<fieldset>
+				<legend>上传图片</legend>
+				<input type="file" name = "images"  multiple="" id = "uploadimg"/>
+				</fieldset>
+			</div>
+			<table>
+			<tr><th><label for="id_logID">选项:</label></th>
+			<td><input type = "submit" value = "确定" id = "sub"/>
+				<input type = "reset" value = "重置" id = "rst"/></td></tr>
+			</table>
+		</form>
+	</div>
+	</td></tr></table>
+{% endblock %}
+
+   

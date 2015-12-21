@@ -6,8 +6,8 @@ from django.contrib import auth
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from forms import LogForm, ProfileForm, StrategyForm, HopeForm, ActForm
-from models import Log, Profile, Strategy, Hope, Messages, Activity, Person
+from forms import *
+from models import *
 from PIL import Image
 from django.utils.timezone import timedelta
 import datetime
@@ -183,7 +183,6 @@ def addstrgy(request):
     
 @csrf_exempt
 @login_required
-
 def showstrgy(request, id):
     u = request.user
     strgy = Strategy.objects.all().get(strgyID = id)
@@ -192,7 +191,6 @@ def showstrgy(request, id):
 
 @csrf_exempt
 @login_required
-
 def myhope(request):
     u = request.user
     h = Hope.objects.get_or_create(user = u)[0]
@@ -426,7 +424,6 @@ def group(request):
 
 @csrf_exempt
 @login_required
-
 def myfriend(request):
     u = request.user
     p = Profile.objects.get_or_create(user = u)[0]
@@ -448,7 +445,6 @@ def myfriend(request):
 
 @csrf_exempt
 @login_required
-
 def deal_act(request):
     u = request.user
     p = Profile.objects.get_or_create(user = u)[0]
@@ -472,10 +468,66 @@ def deal_act(request):
     return render_to_response('deal_act.html', locals())
 
 
+@csrf_exempt
+@login_required
+def site(request):
+    u = request.user
+    sites = Site.objects.all()
+    imgs = []
+    for i in sites:
+        if i.is_img == 1:
+            imgs.append(i.siteimg_set.all().order_by('siteID')[0].name)
+        else:
+            imgs.append(False)
+    sites_info = zip(sites, imgs)
+    if request.method == 'POST':
+        form = SiteForm(request.POST)
+        if form.is_valid():
+            site = form.save()
+            form = SiteForm()
+            if 'images' in request.FILES:
+                images = request.FILES.getlist('images')
+                i = 1
+                for image in images:
+                    img=Image.open(image)
+                    img.thumbnail((1080,720),Image.ANTIALIAS)
+                    name='./static/siteimgs/' + str(site.siteID) + '-' + str(i) + '.png'
+                    img.save(name,"png")
+                    nameurl = str(site.siteID) + '-' + str(i)
+                    siteimg = SiteImg()
+                    siteimg.name = nameurl
+                    siteimg.site = site
+                    siteimg.save()
+                    i += 1
+                site.is_img = 1
+                site.save()
+            return HttpResponseRedirect("/site/")
+    else:
+        form = SiteForm()
+    return render_to_response('site.html', locals())
 
-
-
-
+@csrf_exempt
+@login_required
+def mysite(request, siteID):
+    u = request.user
+    site = Site.objects.get(siteID = siteID)
+    imgs = site.siteimg_set.all().order_by('siteID')
+    commits = site.site_sitecommit_set.all().order_by('-scID')
+    if request.method == 'POST':
+        form = SiteCommitForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data["content"]
+            sitecommit = SiteCommit()
+            sitecommit.content = content
+            sitecommit.site = site
+            sitecommit.user = u
+            sitecommit.save()
+            form = SiteCommitForm()
+        return HttpResponseRedirect("/mysite/" + str(siteID) + '/')
+    else:
+        form = SiteCommitForm()
+    
+    return render_to_response('mysite.html', locals())
 
 
 

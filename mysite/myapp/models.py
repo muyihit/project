@@ -23,8 +23,10 @@ class Profile(models.Model):
     
 class Site(models.Model):
     siteID = models.AutoField(primary_key = True)
-    name = models.CharField(max_length = 20)
-    price = models.IntegerField()
+    name = models.CharField(verbose_name = '景点名', max_length = 20)
+    content = models.CharField(verbose_name = '描述', max_length = 50, blank = True)
+    price = models.IntegerField(verbose_name = '价格')
+    is_img = models.IntegerField(default = 0)
 
 class Log(models.Model):
     logID = models.AutoField(primary_key = True)
@@ -100,11 +102,28 @@ class Person(models.Model):
 
 
 
+class Describe(models.Model):
+    dscrbID = models.AutoField(primary_key = True)
+    content = models.CharField(max_length = 20, blank = True)
+    user = models.ManyToManyField(User)
+    def __unicode__(self):
+        return self.content
 
-
-
-
-
+class SiteImg(models.Model):
+    siteID = models.AutoField(primary_key = True)
+    name = models.CharField(max_length = 20, blank = True)
+    site = models.ForeignKey(Site)
+    def __unicode__(self):
+        return self.name
+    
+class SiteCommit(models.Model):
+    scID = models.AutoField(primary_key = True)
+    content = models.CharField(max_length = 50)
+    site = models.ForeignKey(Site, related_name = 'site_sitecommit_set')
+    user = models.ForeignKey(User, related_name = 'user_sitecommit_set')
+    date = models.DateTimeField(auto_now_add = True, blank = True)
+    def __unicode__(self):
+        return self.content
 
 
 
