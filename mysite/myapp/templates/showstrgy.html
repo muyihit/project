@@ -24,7 +24,7 @@
 	<table id = "table"><tr><td><label>主题：</lable>{{strgy.title}}</td></tr>
 	<tr><td><label>日期：</lable>{{strgy.date|date:"Y-m-d H:i:s"}}</td></tr>
 	{% if is_site%}
-	<tr><td><label>景点：</lable>{{strgy.site.name}}</td></tr>
+	<tr><td><label>景点：</lable><a href = "/mysite/{{strgy.site.siteID}}/">{{strgy.site.name}}</a></td></tr>
 	{% endif %}
 	<tr><td><label>内容：</lable>
 		<div id = "layout">

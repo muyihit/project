@@ -115,5 +115,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(__file__), '../static/').replace('\\','/'),
     )
-LOGIN_URL = '/login/'
+LOGIN_URL = '/visitor/'
 #AUTH_PROFILE_MODULE = 'myapp.Profile'

@@ -253,7 +253,8 @@ def addstrgy(request):
             if 'sitename' in request.POST:
                 if request.POST['sitename']: 
                     name = request.POST['sitename']
-                    site = Site.objects.get(name = name)
+                    siteID = int(name.split('.')[0])
+                    site = Site.objects.get(siteID = siteID)
                     strgy.site = site
                     strgy.save()
             return HttpResponseRedirect("/index/")
@@ -617,6 +618,8 @@ def mysite(request, siteID):
     
     return render_to_response('mysite.html', locals())
 
-
+@csrf_exempt
+def visitor(request):
+    return render_to_response('visitor.html', locals())
 
 

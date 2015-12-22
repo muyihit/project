@@ -126,7 +126,12 @@ class SiteCommit(models.Model):
     def __unicode__(self):
         return self.content
 
-
+class LogImg(models.Model):
+    ID = models.AutoField(primary_key = True)
+    name = models.CharField(max_length = 20, blank = True)
+    log = models.ForeignKey(Log)
+    def __unicode__(self):
+        return self.name
 
 
     

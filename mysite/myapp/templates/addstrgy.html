@@ -69,7 +69,7 @@
 		function choice(siteID){
 			//document.getElementById("suggestId").value="";
 			
-			var tep = $("#btn"+siteID).attr("name")
+			var tep = siteID + "." + $("#btn"+siteID).attr("name")
 			$("#targetsite").val(tep);
 		}
 	</script>

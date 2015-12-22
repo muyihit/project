@@ -50,4 +50,5 @@ urlpatterns = [
     url(r'^ensure/$',ensure),
     url(r'^rewrite_password/$',rewrite_password),
     url(r'^find_password/$',find_password),
+    url(r'^visitor/$',visitor),
 ]

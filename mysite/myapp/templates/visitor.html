@@ -1,14 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-	<script type = "text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-	{% block js %}{% endblock %}
-	<style type="text/css">
-	{% block style %}{% endblock %}
-	</style>
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SmPwRK0YbgiWMTCXEIPPgK1S"></script>
+	<meta charset="utf-8" />
+	<title>Proper - Free CSS template by ChocoTemplates.com</title>
 	<link rel="shortcut icon" type="image/x-icon" href="/static/css/images/favicon.ico" />
 	<link rel="stylesheet" href="/static/css/style.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="/static/css/flexslider.css" type="text/css" media="all" />
@@ -19,7 +13,9 @@
 	<![endif]-->
 	<script src="/static/js/jquery.flexslider-min.js" type="text/javascript"></script>
 	<script src="/static/js/functions.js" type="text/javascript"></script>
-	<title>{% block title %}{% endblock %}</title>
+	<style>
+	.flexslider { width: 892px; height: 331px; margin: 0 auto; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -o-border-radius: 5px; overflow: hidden; margin-bottom: 27px; }
+	</style>
 </head>
 <body>
 	<!-- wrapper -->
@@ -34,41 +30,69 @@
 					<h1 id="logo"><a href="#">Proper</a></h1>
 					<nav id="navigation">
 						<ul>
-							<li><a href="/index/">个人主页</a></li>
-							<li><a href="/addlog/">撰写日志</a></li>
-							<li><a href="/addstrgy/">旅游攻略</a></li>
-							<li>
-								<a href="#">出行管理<span></span></a>
-								<ul>
-									<li><a href="/design/">路线规划</a></li>
-									<li><a href="/group/">组建团队</a></li>
-									<li><a href="/site/">景点管理</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#">个人信息<span></span></a>
-								<ul>
-									<li><a href='/profile/'>编辑信息</a></li>
-									<li><a href="/myhope/">旅游意向</a></li>
-									<li><a href="/passwd_change/">修改密码</a></li>
-									<li><a href="/logout/">退出登录</a></li>
-								</ul>
-							</li>
-							
+							<li><a href="#">主页</a></li>
+							<li><a href="/login/">登录</a></li>
+							<li><a href="/register/">注册</a></li>
 						</ul>
 					</nav>
 					<div class="cl">&nbsp;</div>
 				</header>
-				<hr>
 				<!-- end of header -->
 				<div class="main">
 					<!-- slider -->
 					<div class="flexslider">
-						{% block content %}{% endblock %}
+						<ul class="slides">
+							<li>
+								<img src="/static/css/images/main2.jpg" alt="" />
+								<div class="slide-cnt1">
+									<h2>                           什么是驴友 <br />我们就是驴友</h2>
+									<p></p>
+								</div>
+								<a href="#" class="slider-btn"><span>Order Now</span></a>
+							</li>
+							<li>
+								<img src="/static/css/images/main1.jpg" alt="" />
+								<div class="slide-cnt">
+
+									<h2>欢迎来到 <br />我们的驴友推荐网站</h2>
+									<p></p>
+								</div>
+								<a href="#" class="slider-btn"><span>Order Now</span></a>
+							</li>
+							<li>
+								<img src="/static/css/images/slide-img1.jpg" alt="" />
+								<div class="slide-cnt">
+									<h2>旅游 旅游 <br />一起来找志同道合的驴友吧！！</h2>
+									<p></p>
+								</div>
+								<a href="#" class="slider-btn"><span>Order Now</span></a>
+							</li>
+						</ul>
 					</div>
 					<!-- end of slider -->
 					<!-- cols -->
-					
+					<section class="cols">
+						<div class="col">
+							<h3><a href="#">系统介绍</a></h3>
+							<p>一个简单但强大的旅游网站</p>
+						</div>
+
+						<div class="col">
+							<h3><a href="#">开发者</a></h3>
+							<p>小丁丁 </p>
+						</div>
+
+						<div class="col">
+							<h3><a href="#">相关功能</a></h3>
+							<p>每一个用户都能在网站找到适合自己的驴友，然后可以进行分享。</p>
+						</div>
+
+						<div class="col">
+							<h3><a href="#">其他</a></h3>
+							<p>快来注册吧！！！ </p>
+						</div>
+						<div class="cl">&nbsp;</div>
+					</section>
 					<!-- end of cols  -->
 
 					<!-- box -->
