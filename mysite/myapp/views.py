@@ -12,19 +12,85 @@ from PIL import Image
 from django.utils.timezone import timedelta
 import datetime
 from django.db.models import Q
+from django.core.mail import send_mail
+from mysite.settings import EMAIL_HOST_USER
 # Create your views here.
 # the test
 # the second git test
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
-            new_user = form.save()
+
+            user = form.save()
+            #return HttpResponseRedirect("/login/")
+            user.is_active = False
+            user.save()
+            send_mail( "驴友推荐网站",
+                       "http://localhost:8000/ensure/?username=%s&password=%s"%(user.username,user.password),
+                       "1275288367@qq.com",
+                        [user.email]
+                        )
             return HttpResponseRedirect("/login/")
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
     return render_to_response("register.html", {'form': form,})
+
+@csrf_exempt 
+def ensure(request):
+    if request.method =='GET':
+        username=request.GET.get("username")
+        password=request.GET.get("password")
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+            if user.is_active==False:
+                user.is_active = True
+                user.save()
+                return HttpResponseRedirect("/login/")
+            else:
+                return HttpResponse("未激活成功！！！")
+        else:
+            return HttpResponse("用户不存在！！！")
+    return HttpResponse("Nothing Happened")
+
+@csrf_exempt
+def find_password(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        if User.objects.filter(username=username).exists() and User.objects.get(username=username).email== email:
+            user = User.objects.get(username=username)
+            if user.is_active == True:
+                send_mail("find password",
+                          "http://localhost:8000/rewrite_password/?username=%s&password=%s"%(username,user.password),
+                          "1275288367@qq.com",
+                          [email]
+                        )
+                return HttpResponse("find email")
+            else:
+                return HttpResponse("the user is not active")
+        else:
+            return HttpResponse("the user is not exist")
+    return render_to_response("find_password.html",locals())
+
+@csrf_exempt
+def rewrite_password(request):
+    username = request.GET.get("username")
+    password = request.GET.get("password")
+    if username and password and User.objects.filter(username=username).exists():
+        user = User.objects.get(username=username)
+        if request.method == 'POST':
+            if request.POST.get("password1") == request.POST.get("password2"):
+                newuser = User.objects.get(username=username)
+                newuser.set_password(request.POST.get("password1"))
+                newuser.save()
+                return HttpResponseRedirect("/login/")
+            else:
+                return HttpResponse("the two passwords should be same")
+        return render_to_response("rewrite_password.html",locals())
+    return HttpResponse("Invalid operation")
+
 @csrf_exempt
 @login_required
 def index(request):
@@ -168,6 +234,14 @@ def img(request):
 @login_required
 def addstrgy(request):
     u = request.user
+    sites = Site.objects.all().order_by('-siteID')
+    imgs = []
+    for i in sites:
+        if i.is_img == 1:
+            imgs.append(i.siteimg_set.all().order_by('siteID')[0].name)
+        else:
+            imgs.append(False)
+    sites_info = zip(sites, imgs)
     if request.method == 'POST':
         form = StrategyForm(request.POST)
         if form.is_valid():
@@ -176,6 +250,12 @@ def addstrgy(request):
             strgy.title = form.cleaned_data["title"]
             strgy.user = request.user
             strgy.save()
+            if 'sitename' in request.POST:
+                if request.POST['sitename']: 
+                    name = request.POST['sitename']
+                    site = Site.objects.get(name = name)
+                    strgy.site = site
+                    strgy.save()
             return HttpResponseRedirect("/index/")
     else:
         form = StrategyForm()
@@ -186,7 +266,15 @@ def addstrgy(request):
 def showstrgy(request, id):
     u = request.user
     strgy = Strategy.objects.all().get(strgyID = id)
-    strgys = Strategy.objects.all().order_by('date')
+    strgys = Strategy.objects.all().order_by('-date')
+    is_site = False
+    is_img = False
+    if strgy.site:
+        site = strgy.site
+        is_site = True
+        if SiteImg.objects.filter(site = site):
+            imgs = site.siteimg_set.all()
+            is_img = True
     return render_to_response('showstrgy.html', locals())
 
 @csrf_exempt
@@ -472,7 +560,7 @@ def deal_act(request):
 @login_required
 def site(request):
     u = request.user
-    sites = Site.objects.all()
+    sites = Site.objects.all().order_by('-siteID')
     imgs = []
     for i in sites:
         if i.is_img == 1:

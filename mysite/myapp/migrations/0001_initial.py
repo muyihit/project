@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
             name='SiteCommit',
             fields=[
                 ('scID', models.AutoField(serialize=False, primary_key=True)),
-                ('content', models.CharField(max_length=50, blank=True)),
+                ('content', models.CharField(max_length=50)),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('site', models.ForeignKey(related_name='site_sitecommit_set', to='myapp.Site')),
                 ('user', models.ForeignKey(related_name='user_sitecommit_set', to=settings.AUTH_USER_MODEL)),
@@ -137,7 +137,8 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=50)),
                 ('content', models.CharField(max_length=1000)),
                 ('date', models.DateTimeField(auto_now_add=True, verbose_name=b'\xe6\x97\xa5\xe6\x9c\x9f')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('site', models.ForeignKey(related_name='site_strgy_set', blank=True, to='myapp.Site', null=True)),
+                ('user', models.ForeignKey(related_name='user_strgy_set', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

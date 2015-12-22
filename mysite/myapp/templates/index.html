@@ -155,17 +155,17 @@
 						alert("您已成功发送申请信息!");
 						var actID = act; 
 						var oreq = new XMLHttpRequest();
-						oreq.onreadystatechange = callback;
 						oreq.open("get", "/index/?actID=" + actID);
 						oreq.send(null);
+						oreq.onreadystatechange = callback;
 					}
 					function ignore(msg){
 						alert("你已成功忽略此消息！！！");
 						var msgID = msg; 
 						var oreq = new XMLHttpRequest();
-						oreq.onreadystatechange = callback;
 						oreq.open("get", "/index/?ignore=ignore&msgID=" + msgID);
 						oreq.send(null);
+						oreq.onreadystatechange = callback;
 						
 					}
 					

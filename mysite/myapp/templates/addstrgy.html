@@ -1,42 +1,78 @@
 {% extends "base.html" %}
-
+{% block js %}
+	<script type="text/javascript" src="/static/js/site.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/button.css" />
+{% endblock %}
 {% block style %}
-   #form{ 
-	float: left;
-    font-size: 20px;
-    margin-top: 1em;
-	margin-left: 0em;
-	border-radius:10px;
-	}
-	#id_logID{color = "white";}
 	input{width:200px;height:30px;font-size:25; background-color: white; color:black; border-radius:10px;}
-	label{font-color:white;}
-	#id_content{width:1000px;height:300px;font-size:30; background-color: white; color:black;}
-	#sub, #rst{
-	margin-top:2px;
-	width:60px;
-	height:30px;
-	border-radius:15px;
-	font-size:20px;
-	margin-left: 2em;
-	}
+	#id_content{width:500px;height:250px;font-size:30; background-color: white; color:black;}
+	#sub, #rst{margin-top:2px;width:60px;height:30px;border-radius:15px;font-size:20px;margin-left: 2em;}
 	#sub{margin-left:10px;}
 	#rst{margin-right:40px;}
+	.site{width : 150px ;border:2px solid #bbb; border-radius:18px;background : #ddd}
+	.siteimg0{float : left ; width : 100%;}
+	#addstrgy{border:3px solid #fff;}
+	#sites{position : relative; top : 0px; width : 100%}
 {% endblock %}
 
 {% block title %}addstrgy{% endblock %}
 
 {% block content%}
-
-	<form method="post">
-	<div id = "form">
-	<table>{{form.as_table}}
-	<tr><th><label for="id_logID">选项:</label></th><td><input type = "submit" value = "发布" id = "sub" style="background:white;color:black">
-	<input type = "reset" value = "重置" id = "rst" style="background:white;color:black"></td></tr>
-	</table>
+	<table><tr><td width = "60%" valign = "top">
+	<h2>景点选择区</h2><hr>
+	<div id = "sites">
+		
+		{% for i, j in sites_info %}
+			
+			<div class = "site">
+				<a href = "/mysite/{{i.siteID}}/">
+				<p><label>景点名：</label>{{i.name}}</p>
+				<p><label>描述：</label>{{i.content}}</p>
+				<p><label>价格：</label>{{i.price}}</p>
+				</a>
+				<button onclick = 'choice({{i.siteID}})' name = "{{i.name}}" id = "btn{{i.siteID}}" class = "button">选择该景点</button>
+				{% if j%}
+					<img src="/static/siteimgs/{{j}}.png" class = "siteimg0"/>
+				{% endif %}
+			</div>
+			
+		{% endfor %}
 	</div>
-	</form>
-	
+	</td><td width = "40%" valign = "top">
+	<div id = "addstrgy">
+		<form method="post">
+		<!--{% csrf_token %}-->
+		
+			<div id = "form">
+				<h2>撰写旅游攻略</h2>
+				<table>{{form.as_table}}
+				</table>
+			</div>
+			
+			<div id = "choicesite">
+				<legend>添加景点</legend>
+				<fieldset>
+				<h3>请在左侧区域点击选择</h3>
+				<a href = "/site/">如若没有目标景点，请点此添加</a>
+				<input name = "sitename" id = "targetsite" readonly = "true"/>
+				</fieldset>
+			</div>
+			<table>
+			<tr><th><label for="id_logID">选项:</label></th>
+			<td><input type = "submit" value = "确定" id = "sub"/>
+				<input type = "reset" value = "重置" id = "rst"/></td></tr>
+			</table>
+		</form>
+	</div>
+	</td></tr></table>
+	<script type="text/javascript">
+		function choice(siteID){
+			//document.getElementById("suggestId").value="";
+			
+			var tep = $("#btn"+siteID).attr("name")
+			$("#targetsite").val(tep);
+		}
+	</script>
 {% endblock %}
 
    

@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
 Django settings for mysite project.
 
@@ -85,7 +86,13 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'                   
+EMAIL_PORT = 25                           
+EMAIL_HOST_USER = '1275288367@qq.com'       
+EMAIL_HOST_PASSWORD = 'xvqlekoznwosgjfd'                  
+EMAIL_SUBJECT_PREFIX = u'[CoorCar网]'
+EMAIL_USE_TLS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

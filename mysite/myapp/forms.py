@@ -1,6 +1,17 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from models import *
+from django.contrib.auth.forms import UserCreationForm
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(label = "邮箱", required = True, error_messages = {'required': "邮箱不能为空", "invalid" : "邮箱不合法"})
+    def save(self, commit = True):
+        user = super(RegisterForm, self).save(commit = False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
+    
 class LogForm(forms.ModelForm):
     title = forms.CharField(label = (u"标题"), max_length = 50, widget = forms.TextInput(attrs = {"placeholder":"日志标题"}))
     content = forms.CharField(label = (u"内容"), max_length = 1000, widget = forms.Textarea(attrs = {"placeholder":"请再此输入您的日志内容，不超过1000字..."}))
@@ -35,13 +46,13 @@ class ProfileForm(forms.ModelForm):
             "travellike": forms.Textarea(attrs={"col":10,"row":25},),
         }
 class StrategyForm(forms.ModelForm):
-    title = forms.CharField(label = (u"旅游攻略主题"), max_length = 50,
+    title = forms.CharField(label = (u"主题"), max_length = 50,
                             widget = forms.TextInput(attrs = {"placeholder":"旅游攻略主题"}))
     content = forms.CharField(label = (u"内容"), max_length = 1000,
                               widget = forms.Textarea(attrs = {"placeholder":"请再此编辑内容，不超过1000字..."}))
     class Meta:
         model = Strategy
-        exclude = ['user', ]
+        exclude = ['user', 'site', ]
         widgets = {
             "content": forms.Textarea(attrs={"col":10,"row":25},)
             }
