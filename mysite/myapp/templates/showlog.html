@@ -1,24 +1,23 @@
 {% extends "base.html" %}
 {% block style %}
-   
+   .flexslider { width: 1000px;}
    h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
    #logs{
-		width : 325px;
+		width : 400px;
 		border:1px solid #999ea2;   
 		-moz-border-radius:10px;  
         -webkit-border-radius:10px;  
         border-radius:10px;
-		padding : 20px 18px 20px 30px;
-		margin-top : 1em;
+		padding : 20px;
+		margin-left : 20px;
+		margin-top : 20px;
    }
-   #log{ width : 300px; height : 80px;}
+   #log{height : 80px;}
 {% endblock %}
 
 {% block title %}showlog{% endblock %}
 
 {% block content%}
-	<table text-align = "center"><tr><td width = "800px">
-	
 		<div id = "logs">
 		<h2><center>我的日志目录</h2>
 		{%for log in logs%}
@@ -30,5 +29,4 @@
 			</div>
 		{%endfor%}
 		</div>
-	</td></tr></table>
 {% endblock %}

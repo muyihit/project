@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% block style %}
-   
+   .flexslider { width: 1000px;}
    h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
    #strgys{
-		width : 325px;
+		width : 400px;
 		border:1px solid #999ea2;   
 		-moz-border-radius:10px;  
         -webkit-border-radius:10px;  
         border-radius:10px;
-		padding : 20px 20px 20px 20px;
-		margin-top : 1em;
+		padding : 20px;
+		margin-left : 20px;
+		margin-top : 20px;
    }
-   #strgy{ width : 300px; height : 80px;}
+   #strgy{ height : 80px;}
 {% endblock %}
 
 {% block title %}showstrgy{% endblock %}
 
 {% block content%}
-	<table text-align = "center"><tr><td width = "800px">
 	
 		<div id = "strgys">
 		<h2><center>旅游攻略目录</h2>
@@ -30,5 +30,4 @@
 			</div>
 		{%endfor%}
 		</div>
-	</td></tr></table>
 {% endblock %}

@@ -1,26 +1,35 @@
 {% extends "base.html" %}
 {% block style %}
+	.flexslider { width: 1000px;}
 	h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
    #strgys{
-		width : 325px;
+		width : 400px;
 		border:1px solid #999ea2;   
 		-moz-border-radius:10px;  
         -webkit-border-radius:10px;  
         border-radius:10px;
-		padding : 20px 20px 20px 20px;
-		margin-top : 1em;
+		padding : 20px;
+		margin-left : 18px;
+		margin-top : 18px;
    }
-   #strgy{ width : 300px; height : 80px;}
+   #strgy{ height : 80px;}
    .img{float: left; width : 200px;}
-   #mysite{width : 420px ;float: left ;height : 300px; overflow : scroll;}
-   #text{width: 100%; }
+   #mysite{width : 450px ;float: left ;height : 300px; overflow-y : scroll;}
+   #mystrgy{
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 20px;
+		margin : 18px;
+   }
 {% endblock %}
 
 {% block title %}showstrgy{% endblock %}
 
 {% block content%}
 
-	<table><tr><td width = "325px" valign="top" align = "center">
+	<table width = "1000px"><tr><td width = "460px" valign="top" align = "center">
 		<div id = "strgys">
 			<h2><center>旅游攻略目录</h2>
 			{%for strg in strgys%}
@@ -32,8 +41,8 @@
 				</div>
 			{%endfor%}
 		</div>
-	</td><td width = "60%" valign = "top" align = "center">
-		<div id = "mystrgy" text-align = "center">
+	</td><td valign = "top" width = "534px" align = "center">
+		<div id = "mystrgy">
 			<h2><center>旅游攻略内容</h2>
 			<table id = "table"><tr><td><label>主题：</lable>{{strgy.title}}</td></tr>
 				<tr><td><label>日期：</lable>{{strgy.date|date:"Y-m-d H:i:s"}}</td></tr>

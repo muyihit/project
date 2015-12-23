@@ -1,25 +1,32 @@
 {% extends "base.html" %}
 
 {% block style %}
-   .table{margin-top:10em; border:solid 1px #454;}
-	#button1, #button2{
+   .table{border:solid 0px; align : right}
+	#button1{
 	width:60px;
 	height:30px;
-	border-radius:15px;}
+	border-radius:15px;
+	margin-left : 350px;}
+	#button2{
+	width:60px;
+	height:30px;
+	border-radius:15px;
+	margin-right : 350px;}
 {% endblock %}
 
 {% block title %}logout{% endblock %}
 
 {% block content%}
-
-	<div id = "ensure">
+	
     <form method="post">
-	<table class = "table" align="center" width="20%" >
+	<div>
+	<table class = "table" width = "892px">
 	<tr><td colspan = "2"><center><b>是否确定退出？</b></td></tr>
 	<tr><td><center><input type = "submit" name = "ensure" value = "确定" id = "button1" style="background:white; color:black;"></td>
 	<td><center><button onclick = 'cancel()' id = "button2" style="background:white; color:black;">取消</button></td></tr>
 	</table>
-	</form></div>
+	</div>
+	</form>
 	<script type="text/javascript">
 	function cancel(){
 		

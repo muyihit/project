@@ -557,6 +557,7 @@ def group(request):
     if Person.objects.filter(user = u):
         has_act = False
         my_act = u.person.act
+        persons = my_act.person_set.all().order_by('-date')
     else:
         has_act = True
     if has_act:

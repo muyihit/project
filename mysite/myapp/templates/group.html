@@ -1,17 +1,12 @@
 ﻿{% extends "base.html" %}
 
 {% block style %}
-	h1, h2, h3{color:#000;border-top:1px;margin:2em 0;}
+	.flexslider { width: 1000px;}
+	h1, h2, h3{color:#000;border-top:1px;margin:1em 0;}
    #id_title{width:300px;height:30px;font-size:20px; background-color: white; color:black; border-radius:10px;}
    #id_content{width:420px;height:100px;font-size:18px; background-color: white; color:black;}
-   #adviceresult{float: left; color : black; font-size:21px;}
-   #act{margin : 10px;
-		border:1px solid #999ea2;   
-		-moz-border-radius:10px;  
-        -webkit-border-radius:10px;  
-        border-radius:10px;
-		padding : 10px 10px 10px 10px;
-   }
+  
+   
    #sub, #rst{
 	margin-top:2px;
 	width:60px;
@@ -24,23 +19,35 @@
 	}#rst{
 	margin-right:40px;
 	}
+	#addact, #adviceresult, #info, #acting, #myact{
+		margin : 10px;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 10px;
+   }
+   #act{padding : 5px;}
+   p{margin-top : 5px;}
+   .inside_hr{border-top:1px dashed #999ea2;}
+   
 {% endblock %}
 
-{% block title %}advice{% endblock %}
+{% block title %}group{% endblock %}
 
 {% block content%}
-	<table id = "group_table" width = "100%">
-		<tr><td width = "20%" valign="top" align = "center">
-			<h3>系统为您推荐的驴友</h3>
+	<table id = "group_table" width = "1000px">
+		<tr><td width = "25%" valign="top" align = "center">
 			<div id = "adviceresult">
+			<h2>驴友推荐</h2>
 			{%for hope in hlist%}
 				{%ifequal hope.user u%}
 				{%else%}
-				<li><a href = "/my_advice_user/{{hope.user.username}}/">{{hope.user.username}}</a></li>
+				<p><a href = "/my_advice_user/{{hope.user.username}}/">{{hope.user.username}}</a></p>
 				{%endifequal%}
 			{%endfor%}
 			</div>
-		</td><td width = "60%" valign="top">
+		</td><td width = "50%" valign="top">
 			{% ifequal h.is_commit False%}
 				<div id = "info">
 				<h2><center>您还未填写旅游意向</h2><br>
@@ -48,7 +55,7 @@
 				</div>
 			{% else %}
 				{% ifequal has_act True %}
-					<div id = "act">
+					<div id = "addact">
 					<h2><center>请填写创建活动内容</h2>
 					<form method="post">
 						<table>{{form.as_table}}
@@ -58,33 +65,43 @@
 					</form>
 					</div>
 				{% else %}
-					<h2><center>您有未完成的活动，不能够创建新活动</h2>
-					<div><h3><center>我目前的活动</h3><hr>
-					<li>活动序号：{{my_act.actID}}</li>
-					<li>活动主题：{{my_act.title}}</li>
-					<li>活动内容：{{my_act.content}}</li>
-					<li>起始日期：{{my_act.start_date}}</li>
-					<li>结束日期：{{my_act.end_date}}</li>
-					<li>是否结束：{{my_act.is_end}}</li>
-					<li>创建日期：{{my_act.date}}</li>
-				</div>
+					<div id = "acting">
+					<h3><center>您有未完成的活动,不能够创建新活动</h3>
+					<h3><center>我目前的活动</h3><hr>
+					<p>活动主题：{{my_act.title}}</p>
+					<p>活动内容：</p><div style = "margin-left : 90px">{{my_act.content}}</div>
+					<p>起始日期：{{my_act.start_date|date:"Y-m-d"}}</p>
+					<p>结束日期：{{my_act.end_date|date:"Y-m-d"}}</p>
+					<p>活动状态：{% if my_act.is_end %}已结束{% else %}进行中{% endif %}</p>
+					<p>创建人：{{my_act.author.username}}</p>
+					<p>创建日期：{{my_act.date|date:"Y-m-d H:i:s"}}</p>
+					<hr>
+					{% for person in persons %}
+						<p>成员名称：{{person.user.username}}</p>
+						<p>成员加入时间：{{person.date}}</p>
+						<hr class = "inside_hr">
+					{% endfor %}
+					</div>
 				{% endifequal %}
 				
 			{% endifequal%}
-		</td><td width = "20%" valign="top">
-			<h3>我创建的活动</h3>
+		</td><td width = "25%" valign="top">
+			<div id = "myact">
+			<h2><center>我创建的活动</h2><hr>
 			{% for act in acts %}
-				<li>活动序号：{{act.actID}}</li>
-				<li>活动主题：{{act.title}}</li>
-				<li>活动内容：{{act.content}}</li>
-				<li>起始日期：{{act.start_date}}</li>
-				<li>结束日期：{{act.end_date}}</li>
-				<li>是否结束：{{act.is_end}}</li>
-				<li>创建日期：{{act.date}}</li>
-				{% ifequal act.is_end False %}
-				<a href = "/deal_act/?actID={{act.actID}}"><button>去处理</button></a>
-				{% endifequal %}
-				<hr>
+				<div id = "act">
+					<p>活动主题：{{act.title}}</p>
+					<p>活动内容：</p><div style = "margin-left : 90px">{{act.content}}</div>
+					<p>起始日期：{{act.start_date|date:"Y-m-d"}}</p>
+					<p>结束日期：{{act.end_date|date:"Y-m-d"}}</p>
+					<p>是否结束：{% if act.is_end %}已结束{% else %}进行中{% endif %}</p>
+					<p>创建日期：{{act.date|date:"Y-m-d H:i:s"}}</p>
+					{% ifequal act.is_end False %}
+					<a href = "/deal_act/?actID={{act.actID}}"><button>去处理</button></a>
+					{% endifequal %}
+				</div>
+				<hr class = "inside_hr">
 			{% endfor %}
+			</div>
 	</table>
 {% endblock %}
