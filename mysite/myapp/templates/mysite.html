@@ -1,21 +1,36 @@
 {% extends "base.html" %}
 {% block js %}
-	<script type="text/javascript" src="/static/js/scroll2.js"></script>
+
 {% endblock %}
 {% block style %}
-	
+	h1, h2{color:#000;margin:2em 0;}
 	input{ font-size:20px; background-color: white; color:black; border-radius:10px;}
-	#addcommit{border:3px solid #fff; float: right; width : 100%;}
-	.img{width : 150px;}
+	#id_content{width:300px;height:100px;font-size:30; background-color: white; color:black;}	
 	#sub{float : right;}
-	#commits{border:3px solid #fff;border-radius:10px;float: right; width : 100%;}
-	#mysite{position : relative; top : 0px; width : 100%}
+	#commits{margin : 10px;}
+	#mysite{width : 400px;}
+	
+	.img{width : 150px ;
+		border:2px solid #bbb; 
+		border-radius:18px;background : #eee; 
+		float : left;
+		padding : 10px;
+		margin : 10px;}
+	#mysite_info{width : 400px;}
+	#deal_commits{
+		width : 400px;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 10px;
+		float : right ;}
 {% endblock %}
 
 {% block title %}mysite{% endblock %}
 
 {% block content%}
-	<table><tr><td width = "60%" valign = "top">
+	<table><tr><td width = "400px" valign = "top">
 	<div id = "mysite_info">
 		<h2>景点详细信息</h2>
 		<hr>
@@ -29,24 +44,27 @@
 		{% endfor %}
 	</div>
 	</td><td valign = "top" width = "40%">
-	<div id = "addcommit">
-		<form method="post">
-		<legend>添加评论</legend>
-		<table>{{form.as_table}}</table>
-		<input type = "submit" value = "评论" id = "sub"/>
-		</form>
-	</div>
-	<div id = "commits">
-		{% for c in commits %}
-			<div class = "commit">
-				<p>{{c.content}}</p>
-				<div class = "footer">
-					评论者：{{c.user.username}}<br>
-					日期：{{c.date|date:"Y-m-d H:i:s"}}
-				</div>
-			</div>
+	<div id = "deal_commits">
+		<div id = "addcommit">
+			<h2>添加评论</h2>
+			<form method="post">
+			<table>{{form.as_table}}</table>
+			<input type = "submit" value = "评论" id = "sub"/>
+			</form>
+		</div>
+		
+		<div id = "commits">
+			<h2>最新评论</h2>
 			<hr>
-		{% endfor %}	
+			{% for c in commits %}
+				<div class = "commit">
+					<p align = "left"><label>内容：</label>{{c.content}}</p>
+					<p align = "right"><label>评论者：</label>{{c.user.username}}</p>
+					<p align = "right"><label>日期：</label>{{c.date|date:"Y-m-d H:i:s"}}</p>
+				</div>
+				<hr>
+			{% endfor %}	
+		</div>
 	</div>
 	</td></tr></table>
 {% endblock %}

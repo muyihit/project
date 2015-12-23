@@ -5,6 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(label = "邮箱", required = True, error_messages = {'required': "邮箱不能为空", "invalid" : "邮箱不合法"})
+    username = forms.CharField(label = "用户名", error_messages = {'required': "用户名不能为空", "invalid" : "用户名不合法"})
+    password1 = forms.CharField(label = "密码", error_messages = {'required': "密码存在问题"})
+    password2 = forms.CharField(label = "请确认密码")
     def save(self, commit = True):
         user = super(RegisterForm, self).save(commit = False)
         user.email = self.cleaned_data['email']

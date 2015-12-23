@@ -4,8 +4,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<script type = "text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-	{% block js %}{% endblock %}
-	
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SmPwRK0YbgiWMTCXEIPPgK1S"></script>
 	<link rel="shortcut icon" type="image/x-icon" href="/static/css/images/favicon.ico" />
 	<link rel="stylesheet" href="/static/css/style.css" type="text/css" media="all" />
@@ -17,15 +15,11 @@
 	<![endif]-->
 	<script src="/static/js/jquery.flexslider-min.js" type="text/javascript"></script>
 	<script src="/static/js/functions.js" type="text/javascript"></script>
+	{% block js %}{% endblock %}
+	
 	<style type="text/css">
 	#mylogo{width : 220px;}
 	{% block style %}{% endblock %}
-	.flexslider ul li {
-    width: 0px;
-    height: 0px;
-	}
-	#userimg{float : right;}
-	.radius_img{width:50px;height:50px;border-radius:50px;margin-top:5px; margin-left : 10px;}
 	</style>
 	<title>{% block title %}{% endblock %}</title>
 </head>
@@ -40,46 +34,13 @@
 				<!-- header -->
 				<header class="header">
 					<img src="/static/imgs/logo.png"/ id = "mylogo"/>
-					<div id = "userimg">
-					<a href="/profile/"><img src="/static/imgs/{{u.username}}.png" class = "radius_img"/></a>
-					</div>
 					<nav id="navigation">
 						<ul>
-							<li><a href="/index/">个人主页</a></li>
-							<li>
-								<a href="#">旅游攻略<span></span></a>
-								<ul>
-									<li><a href="/strgys/">攻略查看</a></li>
-									<li><a href="/addstrgy/">撰写攻略</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#">日志管理<span></span></a>
-								<ul>
-									<li><a href="/showlog/">我的日志</a></li>
-									<li><a href="/addlog/">撰写日志</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#">出行管理<span></span></a>
-								<ul>
-									<li><a href="/design/">路线规划</a></li>
-									<li><a href="/group/">组建团队</a></li>
-									<li><a href="/site/">景点管理</a></li>
-								</ul>
-							</li>
-							<li>
-								<a href="#">个人信息<span></span></a>
-								<ul>
-									<li><a href='/profile/'>编辑信息</a></li>
-									<li><a href="/myhope/">旅游意向</a></li>
-									<li><a href="/passwd_change/">修改密码</a></li>
-									<li><a href="/logout/">退出登录</a></li>
-								</ul>
-							</li>
-							<li><a href="/profile/">{{u.username}}</a></li>	
+							<li><a href="/visitor/">首页</a></li>
+							<li><a href="/login/">登录</a></li>
+							<li><a href="/register/">注册</a></li>
+							<li><a href="/find_password/">找回密码</a></li>
 						</ul>
-						
 					</nav>
 					<div class="cl">&nbsp;</div>
 				</header>
@@ -98,64 +59,34 @@
 					<!-- box -->
 					<section class="box">
 						<span class="shadow-t"></span>
-						<h3>最新日志</h3>
-						<a href="/showlog/" class="alignright"> + 更多</a>
+						<h3>Recent Works</h3>
+						<a href="#" class="alignright"> + Explore Showcase</a>
 						<div class="cl">&nbsp;</div>
 						<!-- entries -->
 						<div class="entries">
-							{% for log in deal_logs %}
 							<div class="entry">
-								{% if log %}
-									{% if log.is_img %}
-										<a href="/mylog/{{log.logID}}/">
-										<img src="/static/imgs/{{log.img_name}}.png" alt=""/></a>
-									{% else %}
-										<a href="/mylog/{{log.logID}}/">
-										<img src="/static/imgs/hello_log.png" alt=""/></a>
-									{% endif %}
-								{% else %}
-									<a href="#">
-										<img src="/static/imgs/hello_log.png" alt=""/></a>
-								{% endif %}
+								<a href="#"><img src="/static/css/images/entry1.png" alt="" /></a>
 								<span class="shadow"></span>
 							</div>
-							{% endfor %}
+							<div class="entry">
+								<a href="#"><img src="/static/css/images/entry2.png" alt="" /></a>
+								<span class="shadow"></span>
+							</div>
+							<div class="entry">
+								<a href="#"><img src="/static/css/images/entry3.png" alt="" /></a>
+								<span class="shadow"></span>
+							</div>
+							<div class="entry">
+								<a href="#"><img src="/static/css/images/entry4.png" alt="" /></a>
+								<span class="shadow"></span>
+							</div>
 							<div class="cl">&nbsp;</div>
 							<span class="shadow-b"></span>
 						</div>	
 					<!-- end of entries -->
 					</section>
 					<!-- end of box -->
-					<!-- 旅游攻略 -->
-					<section class="box">
-						<span class="shadow-t"></span>
-						<h3>最新攻略</h3>
-						<a href="/strgys/" class="alignright"> + 更多</a>
-						<div class="cl">&nbsp;</div>
-						<!-- entries -->
-						<div class="entries">
-							{% for i, j in final_strgys %}
-							<div class="entry">
-								{% if i %}
-									{% if j %}
-										<a href="/showstrgy/{{i.strgyID}}/">
-										<img src="/static/siteimgs/{{j}}.png" alt=""/></a>
-									{% else %}
-										<a href="/showstrgy/{{i.strgyID}}/">
-										<img src="/static/imgs/hello_strgy.png" alt=""/></a>
-									{% endif %}
-								{% else %}
-									<a href="#">
-										<img src="/static/imgs/hello_strgy.png" alt=""/></a>
-								{% endif %}
-								<span class="shadow"></span>
-							</div>
-							{% endfor %}
-							<div class="cl">&nbsp;</div>
-							<span class="shadow-b"></span>
-						</div>	
-					<!-- end of entries -->
-					</section>
+					
 					<!-- services -->
 					<section class="services">
 						<div class="widget">

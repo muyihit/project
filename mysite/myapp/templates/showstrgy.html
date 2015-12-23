@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 {% block style %}
-   #strgys{float: left; color : black; font-size:21px; margin-left : 3em;}
-   #table{align : center; width : 80%; margin-top : 4em}
+	h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
+   #strgys{
+		width : 325px;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 20px 20px 20px 20px;
+		margin-top : 1em;
+   }
+   #strgy{ width : 300px; height : 80px;}
    .img{float: left; width : 200px;}
    #mysite{width : 420px ;float: left ;height : 300px; overflow : scroll;}
    #text{width: 100%; }
@@ -11,40 +20,42 @@
 
 {% block content%}
 
-	<table><tr><td width = "40%" valign="top" align = "center">
-	<div id = "strgys">
-	<h2><center><font color = "black">旅游攻略列表及缩略信息</font></h2>
-	{%for strg in strgys%}
-	<li><a href = "/showstrgy/{{strg.strgyID}}/">{{strg}}</a></li>
-	<hr>
-	{%endfor%}
-	</div>
-	</td><td width = "60%" valign = "top" align = "center">
-	<div id = "mystrgy" text-align = "center">
-	<table id = "table"><tr><td><label>主题：</lable>{{strgy.title}}</td></tr>
-	<tr><td><label>日期：</lable>{{strgy.date|date:"Y-m-d H:i:s"}}</td></tr>
-	{% if is_site%}
-	<tr><td><label>景点：</lable><a href = "/mysite/{{strgy.site.siteID}}/">{{strgy.site.name}}</a></td></tr>
-	{% endif %}
-	<tr><td><label>内容：</lable>
-		<div id = "layout">
-			{% if is_img %}
-				<div id = "mysite">
-					{% for img in imgs%}
-						<img src="/static/siteimgs/{{img.name}}.png" class = "img"/>
-					{% endfor %}
+	<table><tr><td width = "325px" valign="top" align = "center">
+		<div id = "strgys">
+			<h2><center>旅游攻略目录</h2>
+			{%for strg in strgys%}
+				<div id = "strgy">
+					<p align = "left"><label>标题：</label><a href = "/showstrgy/{{strg.strgyID}}/">{{strg.title}}</a></p>
+					<p>&nbsp</p>
+					<p align = "right"><label>日期：</label>{{strg.date|date:"Y-m-d H:i:s"}}</p>
+					<hr>
 				</div>
-			{% endif %}
-			<div id = "text">
-			{{strgy.content}}
-			</div>
+			{%endfor%}
 		</div>
-	</td></tr>
-	{% if strgy.site %}
-	
-	{% endif %}
-	</table>
-	</div>
+	</td><td width = "60%" valign = "top" align = "center">
+		<div id = "mystrgy" text-align = "center">
+			<h2><center>旅游攻略内容</h2>
+			<table id = "table"><tr><td><label>主题：</lable>{{strgy.title}}</td></tr>
+				<tr><td><label>日期：</lable>{{strgy.date|date:"Y-m-d H:i:s"}}</td></tr>
+				{% if is_site%}
+				<tr><td><label>景点：</lable><a href = "/mysite/{{strgy.site.siteID}}/">{{strgy.site.name}}</a></td></tr>
+				{% endif %}
+				<tr><td><label>内容：</lable>
+					<div id = "layout">
+						{% if is_img %}
+							<div id = "mysite">
+								{% for img in imgs%}
+									<img src="/static/siteimgs/{{img.name}}.png" class = "img"/>
+								{% endfor %}
+							</div>
+						{% endif %}
+						<div id = "text">
+						{{strgy.content}}
+						</div>
+					</div>
+				</td></tr>
+			</table>
+		</div>
 	</td></tr>
 	</table>
 	

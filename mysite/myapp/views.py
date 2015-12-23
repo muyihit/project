@@ -17,6 +17,38 @@ from mysite.settings import EMAIL_HOST_USER
 # Create your views here.
 # the test
 # the second git test
+
+def box(user):
+        u = user
+        logs = list(u.log_set.all().order_by('-date'))
+        logs_num = len(logs)
+        if logs_num <= 4:
+            deal_logs = logs
+            rest_log_num = 4 - logs_num
+            for i in range(rest_log_num):
+                deal_logs.append(False)
+        else:
+            deal_logs = logs[0 : 4]
+        
+        strgys = list(Strategy.objects.all().order_by('-date'))
+        strgys_num = len(strgys)
+        if strgys <=4:
+            deal_strgys = strgys
+            rest_strgys_num = 4 - strgys_num
+            for j in range(rest_num):
+                deal_strgys.append(False)
+        else:
+            deal_strgys = strgys[0 : 4]
+        strgy_img_mark = []
+        for i in deal_strgys:
+            if i:
+                if i.site:
+                    if i.site.siteimg_set.all():
+                        strgy_img_mark.append(i.site.siteimg_set.all().order_by('siteID')[0].name)
+            strgy_img_mark.append(False)
+        final_strgys = zip(deal_strgys, strgy_img_mark)
+        return (deal_logs, final_strgys)
+    
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -95,13 +127,11 @@ def rewrite_password(request):
 @login_required
 def index(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     p = Profile.objects.get_or_create(user = u)[0]
-    logs = u.log_set.all().order_by('-date')
-    logs_num = len(logs)
-    strgys = Strategy.objects.all().order_by('-date')
     info_num = len(Messages.objects.filter(go = u, is_read = False))
     messages = Messages.objects.filter(go = u, is_read = False).order_by('-date')
-    
     friends = p.friend.all()
     friends_u = []
     for friend in friends:
@@ -136,6 +166,8 @@ def index(request):
 @login_required
 def ensure_logout(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     if request.method == 'POST':
         if request.POST.has_key('ensure'):
             auth.logout(request)
@@ -146,6 +178,8 @@ def ensure_logout(request):
 @login_required
 def addlog(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     if request.method == 'POST':
         form = LogForm(request.POST)
         if form.is_valid():
@@ -164,6 +198,8 @@ def addlog(request):
 
 def mylog(request, id):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     mylog = u.log_set.all().get(logID = id)
     logs = u.log_set.all().order_by('-date') 
     return render_to_response('mylog.html', locals())
@@ -171,6 +207,8 @@ def mylog(request, id):
 @login_required
 def myprofile(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     #User.profile = property(lambda u: Profile.objects.get_or_create(user = u)[0])
     p = Profile.objects.get_or_create(user = u)[0]
     if request.method == 'POST':       
@@ -186,6 +224,8 @@ def myprofile(request):
 @login_required
 def passwd_change(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     if request.method == 'POST':
         if request.POST.has_key('cancel'):
             return HttpResponseRedirect("/index/")
@@ -209,6 +249,8 @@ def passwd_change(request):
 @login_required
 def img(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     p = Profile.objects.get_or_create(user = u)[0]
     if request.method == 'POST':       
         if 'image' in request.FILES:
@@ -234,6 +276,8 @@ def img(request):
 @login_required
 def addstrgy(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     sites = Site.objects.all().order_by('-siteID')
     imgs = []
     for i in sites:
@@ -266,6 +310,8 @@ def addstrgy(request):
 @login_required
 def showstrgy(request, id):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     strgy = Strategy.objects.all().get(strgyID = id)
     strgys = Strategy.objects.all().order_by('-date')
     is_site = False
@@ -282,6 +328,8 @@ def showstrgy(request, id):
 @login_required
 def myhope(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     h = Hope.objects.get_or_create(user = u)[0]
     if request.method == 'POST':       
         form = HopeForm(request.POST, instance = h)
@@ -298,12 +346,16 @@ def myhope(request):
 @login_required
 def design(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     return render_to_response('design.html', locals())
     
 @csrf_exempt
 @login_required
 def result(request, id1, id2):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     home1 = id1
     home2 = id2
     return render_to_response('result.html', locals())
@@ -312,6 +364,8 @@ def result(request, id1, id2):
 @login_required
 def advice(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     h = Hope.objects.get_or_create(user = u)[0]
     if h.is_commit == True:
         hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
@@ -322,6 +376,8 @@ def advice(request):
 @login_required
 def my_advice_user(request, id):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     p = Profile.objects.get_or_create(user = u)[0]
     h = Hope.objects.get_or_create(user = u)[0]
     hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
@@ -372,6 +428,8 @@ def my_advice_user(request, id):
 @login_required
 def deal_msg(request, come_username, msgID):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     p = Profile.objects.get_or_create(user = u)[0]
     friend_u = User.objects.get(username = come_username)
     friend_p = Profile.objects.get_or_create(user = friend_u)[0]
@@ -441,6 +499,8 @@ def deal_msg(request, come_username, msgID):
 @login_required    
 def is_add_logimg(request, id):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     if request.method == 'POST':
         if request.POST.has_key('ensure'):
             return HttpResponseRedirect("/logimg/" + str(id))
@@ -453,6 +513,8 @@ def is_add_logimg(request, id):
 @login_required
 def logimg(request, id):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     log = Log.objects.get(logID = id)
     if request.method == 'POST':       
         if 'image' in request.FILES:
@@ -473,6 +535,8 @@ def logimg(request, id):
 @login_required
 def friend_logimgs(request, id):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     friend_u = User.objects.get(username = id)
     friend_logs = friend_u.log_set.all().filter(is_img = True).order_by('-date')
     logimgs_num = len(friend_logs)
@@ -483,6 +547,8 @@ def friend_logimgs(request, id):
 @login_required
 def group(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     h = Hope.objects.get_or_create(user = u)[0]
     if h.is_commit == True:
         hlist = Hope.objects.filter(home__contains = h.home[0:1]).filter(goal__contains = h.goal[0:1]).filter(busy = 0)\
@@ -515,6 +581,8 @@ def group(request):
 @login_required
 def myfriend(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     p = Profile.objects.get_or_create(user = u)[0]
     friends = p.friend.all()
     friends_num = len(friends)
@@ -536,6 +604,8 @@ def myfriend(request):
 @login_required
 def deal_act(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     p = Profile.objects.get_or_create(user = u)[0]
     msg_disread = False
     if Messages.objects.filter(go = u, msg_type = 2, is_req = True, is_read = False):
@@ -561,6 +631,8 @@ def deal_act(request):
 @login_required
 def site(request):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     sites = Site.objects.all().order_by('-siteID')
     imgs = []
     for i in sites:
@@ -599,6 +671,8 @@ def site(request):
 @login_required
 def mysite(request, siteID):
     u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
     site = Site.objects.get(siteID = siteID)
     imgs = site.siteimg_set.all().order_by('siteID')
     commits = site.site_sitecommit_set.all().order_by('-scID')
@@ -622,4 +696,20 @@ def mysite(request, siteID):
 def visitor(request):
     return render_to_response('visitor.html', locals())
 
+@csrf_exempt
+@login_required
+def showlog(request):
+    u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
+    logs = u.log_set.all().order_by('-date') 
+    return render_to_response('showlog.html', locals())
 
+@csrf_exempt
+@login_required
+def strgys(request):
+    u = request.user
+    deal_logs = box(u)[0]
+    final_strgys = box(u)[1]
+    strgys = Strategy.objects.all().order_by('-date')
+    return render_to_response('strgys.html', locals())

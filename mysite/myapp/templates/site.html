@@ -1,23 +1,37 @@
 {% extends "base.html" %}
 {% block js %}
-	<script type="text/javascript" src="/static/js/site.js"></script>
+
 {% endblock %}
 {% block style %}
+	h1, h2{color:#000;margin:2em 0;}
 	input{ font-size:20px; background-color: white; color:black; border-radius:10px;}
-	#id_content{ font-size:20px; }
+	#id_content{width:300px;height:150px;font-size:20px; background-color: white; color:black;}
 	#sub, #rst{margin-top:2px;width:60px;height:30px;border-radius:15px;font-size:20px;margin-left: 2em;}
 	#sub{margin-left:10px;}
 	#rst{margin-right:40px;}
-	.site{width : 150px ;border:2px solid #bbb; border-radius:18px;background : #ddd}
+	
+	.site{width : 150px ;
+		border:2px solid #bbb; 
+		border-radius:18px;background : #eee; 
+		float : left;
+		padding : 10px;
+		margin : 10px;}
 	.siteimg0{float : left ; width : 100%;}
-	#addsite{border:3px solid #fff;}
-	#sites{position : relative; top : 0px; width : 100%}
+	#addsite{
+		width : 400px;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 10px;
+		float : right ;}
+	#sites{width : 400px;}
 {% endblock %}
 
 {% block title %}site{% endblock %}
 
 {% block content%}
-	<table><tr><td width = "60%" valign = "top">
+	<table><tr><td valign = "top">
 	<h2>景点概况</h2><hr>
 	<div id = "sites">
 		

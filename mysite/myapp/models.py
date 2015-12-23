@@ -27,6 +27,8 @@ class Site(models.Model):
     content = models.CharField(verbose_name = '描述', max_length = 50, blank = True)
     price = models.IntegerField(verbose_name = '价格')
     is_img = models.IntegerField(default = 0)
+    def __unicode__(self):
+        return self.name
 
 class Log(models.Model):
     logID = models.AutoField(primary_key = True)

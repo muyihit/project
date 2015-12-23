@@ -1,6 +1,27 @@
-{% extends "base.html" %}
+{% extends "base_v.html" %}
+{% block js %}
+	<link rel="stylesheet" type="text/css" href="/static/css/button.css" />
+{% endblock %}
 {% block style %}
-    h2{color:#000;border-top:1px dotted #fff;margin-top:2em}
+    h1, h2{color:#000;border-top:1px dotted #fff;margin-top:2em}
+	.flexslider ul li {
+    width: 100px;
+    height: 20px;
+    float: left;
+	}
+  ul.errorlist {
+    margin: 0;
+    padding: 0;
+  }
+  .errorlist li {
+    background-color: #6666BB;
+    color: white;
+    display: block;
+    font-size: 10px;
+    margin: 0 0 3px;
+    padding: 4px 5px;
+  }
+	#id_email, #id_username, #id_password1, #id_password2{width : 300px; height : 30px; font-size : 26px}
 {% endblock %}
 {% block title %}用户注册{% endblock %}
 
@@ -8,15 +29,15 @@
 
 	<h1>注册页面</h1>
 	<form method = "post">
-	{%csrf_token%}
 		<label for="id_email"><h2>邮箱：</h2></label><input id="id_email" maxlength="30" name="email" type="email" />
-		{{form.email.errors}}<ul class="errorlist">请输入正确的邮箱名</ul>
+		{{form.email.errors}}<p class="errorlist">请输入正确的邮箱名</p>
 		<label for="id_username"><h2>用户名:</h2></label><input id="id_username" maxlength="30" name="username" type="text" />
-		{{form.username.errors}}<ul class="errorlist">请输入正确的用户名形式. 只包括字母, 数字和 @/./+/-/_ 等符号, 最长不超过30个字符.</ul>
+		{{form.username.errors}}<p class="errorlist">请输入正确的用户名形式. 只包括字母, 数字和 @/./+/-/_ 等符号, 最长不超过30个字符.</p>
 		<label for="id_password1"><h2>请输入密码:</h2></label><input id="id_password1" name="password1" type="password" />
+		{{form.password1.errors}}
 		<label for="id_password2"><h2>请确认密码:</h2></label><input id="id_password2" name="password2" type="password" />
-		<input type="submit" value = "ok" />
+		<input type="submit" value = "ok" class = "button"/>
 	</form>
-
+	
 {% endblock %}
 

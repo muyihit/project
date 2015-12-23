@@ -1,188 +1,158 @@
 {% extends "base.html" %}
 
 {% block style %}
-   #strgys{float: right; font-size:18px; margin-right: 10px; font-family : KaiTi;}
-   #logs{float: left; font-size:18px;}
+	h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
    #index_table{width : 100%; height : 100%; align : center; text-align : left}
-   #container_left, #container_center, #container_right{
-		border:0px solid #fff;   
-		-moz-border-radius:30px;  
-        -webkit-border-radius:30px;  
-        border-radius:30px;}
-   #container_left{width : 100% ; height : 100% ; padding : 5px ; float : left;}
-   #container_center{width : 90% ; height : 100%; padding : 20px; border:3px solid #fff; font-family:Arial,'Times New Roman','Microsoft YaHei',SimHei;}
-   #container_right{width : 100% ; height : 100%; padding : 5px; float : left;}
-   #log_img{float : left ; width : 200px }
-   .inside_hr{height:1px;border:none;border-top:1px dashed #0066CC;}
+   #messages, #friend_logs, #acts{
+		width : 80% ; height : 100% ;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 10px 10px 10px 10px;}
+   #log_img{float : left ; width : 200px;}
 {% endblock %}
 
 {% block title %}index{% endblock %}
 
 {% block content%}
-	<table id = "index_table">
-		<tr><td width = "25%">
-		<div id = "container_left">
-			<div id = "message">
-				<h2><center>消息区</h2>
-				<hr>
-				<b><font color = "#3399FF"><b>您有{{info_num}}条未读消息！</b></font></b>
-				<hr>
-				{% if messages %}
-					<ul>
-					{% for message in messages %}
-						{% ifequal message.is_req True %}
-							{% ifequal message.msg_type 0 %}
-							<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的添加好友请求, 
-							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+	<table><tr><td valign = "top" align = "center" width = "250px">
+		<div id = "messages">
+			<h2><center>消息区</h2>
+			<hr>
+			<b><font color = "#3399FF"><b>您有{{info_num}}条未读消息！</b></font></b>
+			<hr>
+			{% if messages %}
+				<ul>
+				{% for message in messages %}
+					{% ifequal message.is_req True %}
+						{% ifequal message.msg_type 0 %}
+						<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的添加好友请求, 
+						时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						{% endifequal%}
+						
+						{% ifequal message.msg_type 1 %}
+						<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的活动组队邀请, 
+						时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						{% endifequal%}
+						
+						
+						{% ifequal message.msg_type 2 %}
+						<li>亲爱的{{message.go.username}}, {{message.come.username}}申请加入您的组团活动, 
+						时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						{% endifequal%}
+						<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/">
+						<button>去处理</button></a>
+					{% else %}
+						{% ifequal message.msg_type 0 %}
+							
+							<li>亲爱的{{message.go.username}}, {{message.come.username}}
+							{% ifequal message.msg_deal 0 %}
+							接受了您的好友请求, 
+							{% else %}
+							拒绝了您的好友请求, 
 							{% endifequal%}
-							
-							{% ifequal message.msg_type 1 %}
-							<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的活动组队邀请, 
 							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-							{% endifequal%}
 							
-							
-							{% ifequal message.msg_type 2 %}
-							<li>亲爱的{{message.go.username}}, {{message.come.username}}申请加入您的组团活动, 
-							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-							{% endifequal%}
-							<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/">
-							<button>去处理</button></a>
-						{% else %}
-							{% ifequal message.msg_type 0 %}
-								
-								<li>亲爱的{{message.go.username}}, {{message.come.username}}
-								{% ifequal message.msg_deal 0 %}
-								接受了您的好友请求, 
-								{% else %}
-								拒绝了您的好友请求, 
-								{% endifequal%}
-								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-								
-							{% endifequal %}
-							
-							{% ifequal message.msg_type 1 %}
-							
-								<li>亲爱的{{message.go.username}}, {{message.come.username}}
-								{% ifequal message.msg_deal 1 %}
-								接受了您的好友请求, 
-								{% else %}
-								拒绝了您的好友请求, 
-								{% endifequal%}
-								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-							{% endifequal %}
-							
-							{% ifequal message.msg_type 2 %}
-							
-								<li>亲爱的{{message.go.username}}, {{message.come.username}}
-								{% ifequal message.msg_deal 2 %}
-								同意您加入{{message.come.username}}的活动, 
-								{% else %}
-								拒绝您加入{{message.come.username}}的活动 
-								{% endifequal%}
-								时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
-							{% endifequal %}
-							
-							<button onclick = 'ignore({{message.msgID}})'>知道了</button>
 						{% endifequal %}
 						
-					{% endfor %}
-					</ul>
-					<hr>
-				{% endif %} 
-			</div>
-			
-			<div id = "logs">
-				<h2><font color = "black"><center>我的日志</font></h2><hr>
-				<b><font color = "#3399FF">您有{{logs_num}}条日志</font></b><hr>
-				{%for log in logs%}
-					<li><a href = "/mylog/{{log.logID}}/">{{log}}</a></li>
-					<hr class = inside_hr>
-				{%endfor%}
-			</div>
-		</div>
-		</td><td width = "50%" align = "center">
-		<div id = "container_center">
-			<div>
-			<h1>好友动态</h1>
-			<hr>
-				{%for log in friends_logs%}
-					<table>
-					<tr>
-					<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
-					<td><strong>标题：</strong>{{log.title}}</td>
-					<td><font color = "#3399FF">{{log.user.username}}</font></td>
-					<td>{%ifequal log.user.profile.is_img 0%}
-					{%else%}
-						<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img">
-						{%endifequal%}</td></tr>
-					<tr>
-					<td colspan = "4"><div>
-					{%ifequal log.is_img False%}
-					{%else%}<a href = "/friend_logimgs/{{log.user.username}}/">
-					<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
-					{{log.content}}</div></td></tr>
-					</table>
-					<hr>
-				{% endfor %}
-			</div>
-			
-		</div>
-		</td><td width = "25%">
-		<div id = "container_right">
-			<div id = "acts">
-			<h2><center>活动公示</h2><hr>
-			{%for act in acts%}
-				<li>活动序号：{{act.actID}}</li>
-				<li>活动主题：{{act.title}}</li>
-				<li>活动内容：{{act.content}}</li>
-				<li>起始日期：{{act.start_date}}</li>
-				<li>结束日期：{{act.end_date}}</li>
-				<li>是否结束：{{act.is_end}}</li>
-				<li>创建日期：{{act.date}}</li>
-				<li>创建人：{{act.author.username}}</li>
-				{% ifequal has_act True %}
-				<button onclick = 'upgrade({{act.actID}})'>申请加入</button>
-				{% else %}{% endifequal %}
-				
-				<hr>
-			{%endfor%}
-			<script type="text/javascript">
-					function callback(){
-						window.location.href = "/index/";
-					}
-					function upgrade(act){
-						alert("您已成功发送申请信息!");
-						var actID = act; 
-						var oreq = new XMLHttpRequest();
-						oreq.open("get", "/index/?actID=" + actID);
-						oreq.send(null);
-						oreq.onreadystatechange = callback;
-					}
-					function ignore(msg){
-						alert("你已成功忽略此消息！！！");
-						var msgID = msg; 
-						var oreq = new XMLHttpRequest();
-						oreq.open("get", "/index/?ignore=ignore&msgID=" + msgID);
-						oreq.send(null);
-						oreq.onreadystatechange = callback;
+						{% ifequal message.msg_type 1 %}
 						
-					}
+							<li>亲爱的{{message.go.username}}, {{message.come.username}}
+							{% ifequal message.msg_deal 1 %}
+							接受了您的好友请求, 
+							{% else %}
+							拒绝了您的好友请求, 
+							{% endifequal%}
+							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						{% endifequal %}
+						
+						{% ifequal message.msg_type 2 %}
+						
+							<li>亲爱的{{message.go.username}}, {{message.come.username}}
+							{% ifequal message.msg_deal 2 %}
+							同意您加入{{message.come.username}}的活动, 
+							{% else %}
+							拒绝您加入{{message.come.username}}的活动 
+							{% endifequal%}
+							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						{% endifequal %}
+						
+						<button onclick = 'ignore({{message.msgID}})'>知道了</button>
+					{% endifequal %}
 					
-				</script>
-			</div>
-			
-			<div id = "strgys">
-			<h2><font color = "black"><b><center>旅游攻略</b></font></h2><hr>
-			{%for strgy in strgys%}
-			<li><a href = "/showstrgy/{{strgy.strgyID}}/">{{strgy}}</a></li>
-			<hr>
-			{%endfor%}
-			</div>
+				{% endfor %}
+				</ul>
+				<hr>
+			{% endif %} 
 		</div>
-		</td></tr>
-	</table>
-    
+	</td><td valign = "top" align = "center" width = "500px">
+	<div id = "friend_logs">
+		<h1>好友动态</h1>
+		<hr>
+			{%for log in friends_logs%}
+				<table>
+				<tr>
+				<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
+				<td><strong>标题：</strong>{{log.title}}</td>
+				<td><font color = "#3399FF">{{log.user.username}}</font></td>
+				<td>{%ifequal log.user.profile.is_img 0%}
+				{%else%}
+					<img src="/static/imgs/{{log.user.username}}.png"/ class = "radius_img">
+					{%endifequal%}</td></tr>
+				<tr>
+				<td colspan = "4"><div>
+				{%ifequal log.is_img False%}
+				{%else%}<a href = "/friend_logimgs/{{log.user.username}}/">
+				<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
+				{{log.content}}</div></td></tr>
+				</table>
+				<hr>
+			{% endfor %}
+		</div>
+	</td><td valign = "top" align = "center" width = "250px">
+		<div id = "acts">
+		<h2><center>活动公示</h2><hr>
+		{%for act in acts%}
+			<li>活动序号：{{act.actID}}</li>
+			<li>活动主题：{{act.title}}</li>
+			<li>活动内容：{{act.content}}</li>
+			<li>起始日期：{{act.start_date}}</li>
+			<li>结束日期：{{act.end_date}}</li>
+			<li>是否结束：{{act.is_end}}</li>
+			<li>创建日期：{{act.date}}</li>
+			<li>创建人：{{act.author.username}}</li>
+			{% ifequal has_act True %}
+			<button onclick = 'upgrade({{act.actID}})'>申请加入</button>
+			{% else %}{% endifequal %}
+			
+			<hr>
+		{%endfor%}
+		<script type="text/javascript">
+				function callback(){
+					window.location.href = "/index/";
+				}
+				function upgrade(act){
+					alert("您已成功发送申请信息!");
+					var actID = act; 
+					var oreq = new XMLHttpRequest();
+					oreq.open("get", "/index/?actID=" + actID);
+					oreq.send(null);
+					oreq.onreadystatechange = callback;
+				}
+				function ignore(msg){
+					alert("你已成功忽略此消息！！！");
+					var msgID = msg; 
+					var oreq = new XMLHttpRequest();
+					oreq.open("get", "/index/?ignore=ignore&msgID=" + msgID);
+					oreq.send(null);
+					oreq.onreadystatechange = callback;
+					
+				}
+				
+			</script>
+		</div>
+    </td></tr></table>
 {% endblock %}
 
 

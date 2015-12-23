@@ -1,24 +1,38 @@
 {% extends "base.html" %}
 {% block js %}
-	<script type="text/javascript" src="/static/js/site.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/css/button.css" />
 {% endblock %}
 {% block style %}
-	input{width:200px;height:30px;font-size:25; background-color: white; color:black; border-radius:10px;}
-	#id_content{width:500px;height:250px;font-size:30; background-color: white; color:black;}
+	h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
+	input{width:200px;height:30px;font-size:25px; background-color: white; color:black; border-radius:10px;}
+	#id_content{width:300px;height:150px;font-size:25px; background-color: white; color:black;}
 	#sub, #rst{margin-top:2px;width:60px;height:30px;border-radius:15px;font-size:20px;margin-left: 2em;}
 	#sub{margin-left:10px;}
 	#rst{margin-right:40px;}
-	.site{width : 150px ;border:2px solid #bbb; border-radius:18px;background : #ddd}
+	.site{width : 150px ;
+		border:2px solid #bbb; 
+		border-radius:18px;background : #eee; 
+		float : left;
+		padding : 10px;
+		margin : 10px;}
 	.siteimg0{float : left ; width : 100%;}
-	#addstrgy{border:3px solid #fff;}
-	#sites{position : relative; top : 0px; width : 100%}
+	#addstrgy{
+		width : 400px;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 10px;
+		float : right ;}
+	#sites{width : 400px;}
+	#strgy{height : 100%;}
 {% endblock %}
 
 {% block title %}addstrgy{% endblock %}
 
 {% block content%}
-	<table><tr><td width = "60%" valign = "top">
+	<div id = "stygy">
+	<table><tr><td valign = "top">
 	<h2>景点选择区</h2><hr>
 	<div id = "sites">
 		
@@ -38,7 +52,7 @@
 			
 		{% endfor %}
 	</div>
-	</td><td width = "40%" valign = "top">
+	</td><td valign = "top" width = "500px">
 	<div id = "addstrgy">
 		<form method="post">
 		<!--{% csrf_token %}-->
@@ -73,6 +87,7 @@
 			$("#targetsite").val(tep);
 		}
 	</script>
+	</div>
 {% endblock %}
 
    
