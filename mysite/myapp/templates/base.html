@@ -5,7 +5,7 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<script type = "text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 	{% block js %}{% endblock %}
-	
+	<link rel="stylesheet" type="text/css" href="/static/css/button.css" />
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SmPwRK0YbgiWMTCXEIPPgK1S"></script>
 	<link rel="shortcut icon" type="image/x-icon" href="/static/css/images/favicon.ico" />
 	<link rel="stylesheet" href="/static/css/style.css" type="text/css" media="all" />
@@ -26,6 +26,11 @@
 	}
 	#userimg{float : right;}
 	.radius_img{width:50px;height:50px;border-radius:50px;margin-top:5px; margin-left : 10px;}
+	.services{font-size : 10px;}
+	.errorlist li {
+    color: red;
+    font-size: 20px;
+  }
 	</style>
 	<title>{% block title %}{% endblock %}</title>
 </head>
@@ -41,7 +46,11 @@
 				<header class="header">
 					<img src="/static/imgs/logo.png"/ id = "mylogo"/>
 					<div id = "userimg">
-					<a href="/profile/"><img src="/static/imgs/{{u.username}}.png" class = "radius_img"/></a>
+					{% if u.profile%}
+						{% ifequal u.profile.is_img 1 %}
+							<a href="/profile/"><img src="/static/imgs/{{u.username}}.png" class = "radius_img"/></a>
+						{% endifequal %}
+					{% endif %}
 					</div>
 					<nav id="navigation">
 						<ul>
@@ -77,7 +86,17 @@
 									<li><a href="/logout/">退出登录</a></li>
 								</ul>
 							</li>
-							<li><a href="/profile/">{{u.username}}</a></li>	
+							<li><a href="/profile/">
+							{% if u.profile %}
+								{% if u.profile.nickname %}
+									{{u.profile.nickname}}{{u.username}}
+								{% else %}
+									{{u.username}}
+								{% endif %}
+							{% else %}
+								{{u.username}}
+							{% endif %}
+							</a></li>	
 						</ul>
 						
 					</nav>
@@ -159,19 +178,19 @@
 					<!-- services -->
 					<section class="services">
 						<div class="widget">
-							<h3>Crisp, Clean &amp; Creative Design</h3>
+							<h3>简洁, 美观 &方便; 创意设计</h3>
 							<p>Sed vel lacus lorem, non auctor ante. Aliquam posuere libero non felis euismod ac volutpat augue ullamcorper. Suspendisse convallis mi eget leo Sed pellentesque aliquam urna, vel euismod libero venenatis vitae.</p>
 						</div>
 						<div class="widget contact-widget">
-							<h3>Contact Us</h3>
+							<h3>关于我们</h3>
 							<ul>
-								<li>HIT Computer Science 2013 Grate2</li>
-								<li><strong>Phone: </strong>***********</li>
+								<li>HIT 2013级 计科二班 小丁丁工作室</li>
+								<li><strong>Phone: </strong>13159876793</li>
 								<li><strong>Email:</strong>1275288367@qq.com</li>
 							</ul>
 						</div>
 						<div class="widget socials-widget">
-							<h3>Get Social</h3>
+							<h3>社交网站</h3>
 							<p>Lorem ipsum dolor sit amet eu.</p>
 							<a href="http://www.baidu.com" class="facebook-ico">baidu</a>
 							<a href="http://weibo.com" class="twitter-ico">weibo</a>

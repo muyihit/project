@@ -12,7 +12,7 @@
 		margin-left : 20px;
 		margin-top : 20px;
    }
-   #strgy{ height : 80px;}
+   #strgy{ height : 100px;}
 {% endblock %}
 
 {% block title %}showstrgy{% endblock %}
@@ -24,6 +24,8 @@
 		{%for strg in strgys%}
 			<div id = "strgy">
 				<p><label>标题：</label><a href = "/showstrgy/{{strg.strgyID}}/">{{strg.title}}</a></p>
+				<p>&nbsp</p>
+				<p align = "right"><label>作者：</label>{{strg.user.username}}</p>
 				<p>&nbsp</p>
 				<p align = "right"><label>日期：</label>{{strg.date|date:"Y-m-d H:i:s"}}</p>
 				<hr>

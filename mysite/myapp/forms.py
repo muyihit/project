@@ -35,14 +35,9 @@ class ProfileForm(forms.ModelForm):
                          widget=forms.TextInput(attrs={"placeholder":"请输入QQ"}), required = False)
     travellike = forms.CharField(label = (u"旅游爱好"), max_length = 50, required = False,
                                widget = forms.Textarea(attrs={"placeholder":"请在此输入旅游爱好，可不写，不超过50字"}))
-    #myemail = forms.EmailField(widget=forms.TextInput(attrs={"placeholder":"请输入联系邮箱"}))
-    question = forms.CharField(label = (u"密保问题"), max_length = 50, required = False,
-                               widget = forms.Textarea(attrs={"placeholder":"请在此输入密保问题，可不写，不超过50字"}))
-    answer = forms.CharField(label = (u"密保问题答案"), max_length = 50, required = False,
-                             widget = forms.Textarea(attrs={"placeholder":"请在此输入密保问题答案，可不写，不超过50字"})) 
     class Meta:
         model = Profile
-        fields = ['nickname', 'age', 'sex', 'phone', 'qq', 'travellike', 'question', 'answer', ]
+        fields = ['nickname', 'age', 'sex', 'phone', 'qq', 'travellike', ]
         widgets = {
             "question": forms.Textarea(attrs={"col":10,"row":25, }, ), 
             "answer": forms.Textarea(attrs={"col":10,"row":25},),

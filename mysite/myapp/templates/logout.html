@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block style %}
+	h1, h2{color:#000;margin-top:1em; margin-bottom : 2em;}
    .table{border:solid 0px; align : right}
 	#button1{
 	width:60px;
@@ -20,10 +21,11 @@
 	
     <form method="post">
 	<div>
+	<h2><center>退出登录</h2>
 	<table class = "table" width = "892px">
 	<tr><td colspan = "2"><center><b>是否确定退出？</b></td></tr>
-	<tr><td><center><input type = "submit" name = "ensure" value = "确定" id = "button1" style="background:white; color:black;"></td>
-	<td><center><button onclick = 'cancel()' id = "button2" style="background:white; color:black;">取消</button></td></tr>
+	<tr><td><center><input type = "submit" name = "ensure" value = "确定" id = "button1" class = "button" style="background:white; color:black;"></td>
+	<td><center><input type = "button" onclick = 'cancel()' value = "取消" id = "button2" class = "button" style="background:white; color:black;"></td></tr>
 	</table>
 	</div>
 	</form>

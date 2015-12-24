@@ -59,12 +59,12 @@ def register(request):
             #return HttpResponseRedirect("/login/")
             user.is_active = False
             user.save()
-            send_mail( "驴友推荐网站",
-                       "http://localhost:8000/ensure/?username=%s&password=%s"%(user.username,user.password),
+            send_mail( "小丁丁旅游网：激活用户",
+                       "请点击或复制链接到浏览器中激活用户：\nhttp://localhost:8000/ensure/?username=%s&password=%s"%(user.username,user.password),
                        "1275288367@qq.com",
                         [user.email]
                         )
-            return HttpResponseRedirect("/login/")
+            return HttpResponse("邮件已发送，请进入邮箱查收！")
     else:
         form = RegisterForm()
     return render_to_response("register.html", {'form': form,})
@@ -84,7 +84,7 @@ def ensure(request):
                 return HttpResponse("未激活成功！！！")
         else:
             return HttpResponse("用户不存在！！！")
-    return HttpResponse("Nothing Happened")
+    return HttpResponse("页面不存在！")
 
 @csrf_exempt
 def find_password(request):
@@ -94,16 +94,16 @@ def find_password(request):
         if User.objects.filter(username=username).exists() and User.objects.get(username=username).email== email:
             user = User.objects.get(username=username)
             if user.is_active == True:
-                send_mail("find password",
+                send_mail("小丁丁旅游网：找回密码",
                           "http://localhost:8000/rewrite_password/?username=%s&password=%s"%(username,user.password),
                           "1275288367@qq.com",
                           [email]
                         )
-                return HttpResponse("find email")
+                return HttpResponse("邮件已发送，请进入邮箱查收！")
             else:
-                return HttpResponse("the user is not active")
+                return HttpResponse("用户未激活!!!")
         else:
-            return HttpResponse("the user is not exist")
+            return HttpResponse("用户不存在！！！")
     return render_to_response("find_password.html",locals())
 
 @csrf_exempt
@@ -119,9 +119,9 @@ def rewrite_password(request):
                 newuser.save()
                 return HttpResponseRedirect("/login/")
             else:
-                return HttpResponse("the two passwords should be same")
+                return HttpResponse("两次密码不一致")
         return render_to_response("rewrite_password.html",locals())
-    return HttpResponse("Invalid operation")
+    return HttpResponse("用户不存在！！！")
 
 @csrf_exempt
 @login_required
@@ -137,13 +137,13 @@ def index(request):
     for friend in friends:
         friends_u.append(friend.user)
     friends_logs = Log.objects.filter(user__in = friends_u).order_by('-date')
-
+    log_num = len(friends_logs)
     has_act = True
     if Person.objects.filter(user = u):
         has_act = False
         
     acts = Activity.objects.all().filter(is_end = False).order_by('-date').exclude(author = u)
-    
+    act_num = len(acts)
     if request.method == 'GET':
         if request.GET.has_key('ignore'):
             msgID = request.GET['msgID']
@@ -388,19 +388,6 @@ def my_advice_user(request, id):
         is_friend = True
     else:
         is_friend = False
-        
-    
-    '''
-    if Activity.objects.filter(author = u, is_end = False, is_valid = True).order_by('-date'):
-        act = Activity.objects.filter(author = u, is_end = False, is_valid = True).order_by('-date')[0]
-        persons = act.person_set.all()
-        act_users = []
-        for person in persons:
-            act_users.append(person.user)
-        if act:
-            if target_user not in act_users:
-                has_act = True
-    '''
     has_act = False
     if not Person.objects.filter(user = target_user):
         if Person.objects.filter(user = u):
@@ -435,6 +422,9 @@ def deal_msg(request, come_username, msgID):
     friend_p = Profile.objects.get_or_create(user = friend_u)[0]
     friend_h = Hope.objects.get_or_create(user = friend_u)[0]
     target_msg = Messages.objects.get(msgID = msgID)
+    if Person.objects.filter(user = friend_u):
+        act = friend_u.person.act
+        persons = act.person_set.all().order_by('-date')
     if request.method == 'GET':
         if target_msg.msg_type == 0:
             
@@ -520,7 +510,7 @@ def logimg(request, id):
         if 'image' in request.FILES:
             image=request.FILES["image"]
             img=Image.open(image)
-            img.thumbnail((1080,720),Image.ANTIALIAS)
+            img.thumbnail((500,500),Image.ANTIALIAS)
             name='./static/imgs/' + u.username + str(log.logID) + 'log.png'
             img.save(name,"png")
             nameurl = u.username + str(log.logID) + 'log'

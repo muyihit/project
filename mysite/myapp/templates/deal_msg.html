@@ -1,22 +1,31 @@
 ﻿{% extends "base.html" %}
 
 {% block style %}
-   #form{ 
-	float: left;
-    font-size: 20px;
-    margin-top: 1em;
-	margin-left: 0em;
-	border-radius:10px;
-	}
+	h1, h2, h3{color:#000;border-top:1px;margin:1em 0;}
 	input{width:100px;height:30px;font-size:20px; background-color: white; color:black; border-radius:10px;}
 	label{font-color:white;}
+	.button{
+	width:100px;
+	height:30px;
+	border-radius:15px;
+	font-size:18px;
+	}
+	#form, #acting{
+		margin : 10px;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 10px;
+   }
 {% endblock %}
 
 {% block title %}deal_msg{% endblock %}
 
 {% block content%}
-
+	<table width = "892px"><tr><td width = "400px">
 	<div id = "form">
+	<h2><center>驴友详情</h2><hr>
 	<li><label>用户名：</label>{{friend_u.username}}</li>
 	<li><label>头像：</label>{%ifequal friend_u.profile.is_img 0%}该驴友未上传头像
 	{%else%}<img src="/static/imgs/{{friend_u.username}}.png"/ class = "radius_img">{%endifequal%}</li>
@@ -28,23 +37,42 @@
 	{%if friend_p.travellike%}<li><label>旅游爱好：</label>{{friend_p.travellike}}</li>{%endif%}
 	{%if friend_h.home%}<li><label>出发地：</label>{{friend_h.home}}</li>{%endif%}
 	{%if friend_h.goal%}<li><label>目的地：</label>{{friend_h.goal}}</li>{%endif%}
-	{%if friend_h.start_date%}<li><label>出发日期：</label>{{friend_h.start_date}}</li>{%endif%}
-	{%if friend_h.end_date%}<li><label>结束日期：</label>{{friend_h.end_date}}</li>{%endif%}
-	{%if friend_h.landtype%}<li><label>目的地地型：</label>{{friend_h.landtype}}</li>{%endif%}
+	{%if friend_h.start_date%}<li><label>出发日期：</label>{{friend_h.start_date|date:"Y-m-d"}}</li>{%endif%}
+	{%if friend_h.end_date%}<li><label>结束日期：</label>{{friend_h.end_date|date:"Y-m-d"}}</li>{%endif%}
 	{%if friend_h.tip%}<li><label>备注：</label>{{friend_h.tip}}</li>{%endif%}
 	{% ifequal target_msg.msg_type 0%}
-		<table><input type = "button" value = "同意添加" onclick = 'ensuref()'/>
-		<input type = "button" value = "拒绝添加" onclick = 'cancelf()'/></table>
+		<table><input type = "button" value = "同意添加" class = "button" style="background:#fafafa; color:black;" onclick = 'ensuref()'/>
+		<input type = "button" value = "拒绝添加" class = "button" style="background:#fafafa; color:black;" onclick = 'cancelf()'/></table>
 	{% endifequal %}
 	{% ifequal target_msg.msg_type 1%}
-		<table><input type = "button" value = "同意加入" onclick = 'ensuret()'/>
-		<input type = "button" value = "拒绝加入" onclick = 'cancelt()'/></table>
+		<table><input type = "button" value = "同意加入" class = "button" style="background:#fafafa; color:black;" onclick = 'ensuret()'/>
+		<input type = "button" value = "拒绝加入" class = "button" style="background:#fafafa; color:black;" onclick = 'cancelt()'/></table>
 	{% endifequal %}
 	{% ifequal target_msg.msg_type 2%}
-		<table><input type = "button" value = "同意申请" onclick = 'ensurea()'/>
-		<input type = "button" value = "拒绝申请" onclick = 'cancela()'/></table>
+		<table><input type = "button" value = "同意申请" class = "button" style="background:#fafafa; color:black;" onclick = 'ensurea()'/>
+		<input type = "button" value = "拒绝申请" class = "button" style="background:#fafafa; color:black;" onclick = 'cancela()'/></table>
 	{% endifequal %}
 	</div>
+	</td><td width = "400px">
+		{% ifequal target_msg.msg_type 1%}
+			<div id = "acting">
+				<h2><center>活动详情</h2><hr>
+				<p>活动主题：{{act.title}}</p>
+				<p>活动内容：</p><div style = "margin-left : 90px">{{act.content}}</div>
+				<p>起始日期：{{act.start_date|date:"Y-m-d"}}</p>
+				<p>结束日期：{{act.end_date|date:"Y-m-d"}}</p>
+				<p>活动状态：{% if my_act.is_end %}已结束{% else %}进行中{% endif %}</p>
+				<p>创建人：{{act.author.username}}</p>
+				<p>创建日期：{{act.date|date:"Y-m-d H:i:s"}}</p>
+				<hr>
+				{% for person in persons %}
+					<p>成员名称：{{person.user.username}}</p>
+					<p>成员加入时间：{{person.date}}</p>
+					<hr class = "inside_hr">
+				{% endfor %}
+			</div>
+		{% endifequal %}
+	</td></tr></table>
 	<script type="text/javascript">
 	function ensuref(){
 		var oreq = new XMLHttpRequest();

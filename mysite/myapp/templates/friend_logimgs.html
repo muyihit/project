@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
 {% block style %}
-   #log_img{float : top ; width : 305px }
-   #img_and_date{float : left;}
+	h1, h2{margin-top:1em; margin-bottom : 2em;}
+   .log_img{width : 180px ;
+		border:2px solid #bbb; 
+		border-radius:18px;
+		background : #eee; 
+		float : left;
+		padding : 10px;
+		margin : 10px;}
 {% endblock %}
 
 {% block title %}friend_logimgs{% endblock %}
@@ -11,9 +17,8 @@
 	<h1>旅游相册</h1>
 	<h2>{{friend_u.username}}共有{{logimgs_num}}张日志照片</h2><hr>
 	{% for log in friend_logs %}
-		<div id = img_and_date>
-			<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"><br>
-			{{log.date|date:"Y-m-d H:i:s"}}
+		<div class = img_and_date>
+			<img src="/static/imgs/{{log.img_name}}.png"/ class = "log_img"><br>
 		</div>
 	{% endfor %}
 {% endblock %}

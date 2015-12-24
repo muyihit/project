@@ -1,100 +1,104 @@
 {% extends "base.html" %}
 
 {% block style %}
-	h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
-   #index_table{width : 100%; height : 100%; align : center; text-align : left}
+	.flexslider { width: 1000px;}
+	h1, h2{margin-top:1em; margin-bottom : 2em;}
    #messages, #friend_logs, #acts{
-		width : 80% ; height : 100% ;
 		border:1px solid #999ea2;   
 		-moz-border-radius:10px;  
         -webkit-border-radius:10px;  
         border-radius:10px;
-		padding : 10px 10px 10px 10px;}
-   #log_img{float : left ; width : 200px;}
+		padding : 10px;
+		margin : 5px;}
+	#act, #msg, #log{padding : 5px;}
+   p{margin-top : 5px;}
+   .inside_hr{border-top:1px dashed #999ea2;}
+   #log_img{float : left ; width : 200px; margin : 10px;}
+   .button{margin-left : 130px; font-size : 15px; border-radius:15px;}
+   #deal, #readed{margin-left : 120px;}
 {% endblock %}
 
 {% block title %}index{% endblock %}
 
 {% block content%}
-	<table><tr><td valign = "top" align = "center" width = "250px">
+	<table width = "1000px"><tr><td valign = "top" width = "250px">
 		<div id = "messages">
-			<h2><center>消息区</h2>
-			<hr>
-			<b><font color = "#3399FF"><b>您有{{info_num}}条未读消息！</b></font></b>
+			<h2><center>消息区(<font color = "#3399FF">{{info_num}}</font>)</h2>
 			<hr>
 			{% if messages %}
-				<ul>
 				{% for message in messages %}
+					<div id = "msg">
 					{% ifequal message.is_req True %}
 						{% ifequal message.msg_type 0 %}
-						<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的添加好友请求, 
-						时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						<p>{{message.come.username}}请求添加好友</p> 
+						<p align = "right" style = "font-size :12px;"><b>{{message.date|date:"Y-m-d H:i:s"}}</b></p>
 						{% endifequal%}
 						
 						{% ifequal message.msg_type 1 %}
-						<li>亲爱的{{message.go.username}}, 您收到 {{message.come.username}}的活动组队邀请, 
-						时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						<p>{{message.come.username}}邀请加入组队</p> 
+						<p align = "right" style = "font-size :12px;"><b>{{message.date|date:"Y-m-d H:i:s"}}</b></p>
 						{% endifequal%}
 						
 						
 						{% ifequal message.msg_type 2 %}
-						<li>亲爱的{{message.go.username}}, {{message.come.username}}申请加入您的组团活动, 
-						时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+						<p>{{message.come.username}}申请加入组队</p> 
+						<p align = "right" style = "font-size :12px;"><b>{{message.date|date:"Y-m-d H:i:s"}}</b></p>
 						{% endifequal%}
 						<a href = "/deal_msg/{{message.come.username}}/{{message.msgID}}/">
-						<button>去处理</button></a>
+						<button id = "deal" class = "button" style="background:#fafafa; color:black;">处理</button></a>
 					{% else %}
 						{% ifequal message.msg_type 0 %}
 							
-							<li>亲爱的{{message.go.username}}, {{message.come.username}}
+							<p>{{message.come.username}}
 							{% ifequal message.msg_deal 0 %}
-							接受了您的好友请求, 
+							接受了您的好友请求</p>
 							{% else %}
-							拒绝了您的好友请求, 
+							拒绝了您的好友请求</p>
 							{% endifequal%}
-							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							<p align = "right" style = "font-size :12px;"><b>{{message.date|date:"Y-m-d H:i:s"}}</b></p>
 							
 						{% endifequal %}
 						
 						{% ifequal message.msg_type 1 %}
 						
-							<li>亲爱的{{message.go.username}}, {{message.come.username}}
+							<p>{{message.come.username}}
 							{% ifequal message.msg_deal 1 %}
-							接受了您的好友请求, 
+							接受了您的组队邀请</p>
 							{% else %}
-							拒绝了您的好友请求, 
+							拒绝了您的组队邀请</p>
 							{% endifequal%}
-							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							<p align = "right" style = "font-size :12px;"><b>{{message.date|date:"Y-m-d H:i:s"}}</b></p>
 						{% endifequal %}
 						
 						{% ifequal message.msg_type 2 %}
 						
-							<li>亲爱的{{message.go.username}}, {{message.come.username}}
+							<p>{{message.come.username}}
 							{% ifequal message.msg_deal 2 %}
-							同意您加入{{message.come.username}}的活动, 
+							接受了您的活动申请</p>
 							{% else %}
-							拒绝您加入{{message.come.username}}的活动 
+							拒绝了您的活动申请</p>
 							{% endifequal%}
-							时间为{{message.date|date:"Y-m-d H:i:s"}}</li>
+							<p align = "right" style = "font-size :12px;"><b>{{message.date|date:"Y-m-d H:i:s"}}</b></p>
 						{% endifequal %}
 						
-						<button onclick = 'ignore({{message.msgID}})'>知道了</button>
+						<button onclick = 'ignore({{message.msgID}})' id = "readed" class = "button" style="background:#fafafa; color:black;"/>知道了</button>
 					{% endifequal %}
-					
+					</div>
+					<hr class = "inside_hr">
 				{% endfor %}
-				</ul>
-				<hr>
+				
 			{% endif %} 
 		</div>
 	</td><td valign = "top" align = "center" width = "500px">
 	<div id = "friend_logs">
-		<h1>好友动态</h1>
+		<h1>好友动态(<font color = "#3399FF">{{log_num}}</font>)</h1>
 		<hr>
 			{%for log in friends_logs%}
-				<table>
+				<div id = "log">
+				<table width = "400px">
 				<tr>
 				<td>{{log.date|date:"Y-m-d H:i:s"}}</td>
-				<td><strong>标题：</strong>{{log.title}}</td>
+				<td><strong><font color = "#111">标题：{{log.title}}</font></strong></td>
 				<td><font color = "#3399FF">{{log.user.username}}</font></td>
 				<td>{%ifequal log.user.profile.is_img 0%}
 				{%else%}
@@ -107,26 +111,27 @@
 				<img src="/static/imgs/{{log.img_name}}.png"/ id = "log_img"></a>{%endifequal%}
 				{{log.content}}</div></td></tr>
 				</table>
-				<hr>
+				</div>
+				<hr class = "inside_hr">
 			{% endfor %}
 		</div>
-	</td><td valign = "top" align = "center" width = "250px">
+	</td><td valign = "top" width = "250px">
 		<div id = "acts">
-		<h2><center>活动公示</h2><hr>
+		<h2><center>活动公示(<font color = "#3399FF">{{act_num}}</font>)</h2><hr>
 		{%for act in acts%}
-			<li>活动序号：{{act.actID}}</li>
-			<li>活动主题：{{act.title}}</li>
-			<li>活动内容：{{act.content}}</li>
-			<li>起始日期：{{act.start_date}}</li>
-			<li>结束日期：{{act.end_date}}</li>
-			<li>是否结束：{{act.is_end}}</li>
-			<li>创建日期：{{act.date}}</li>
-			<li>创建人：{{act.author.username}}</li>
-			{% ifequal has_act True %}
-			<button onclick = 'upgrade({{act.actID}})'>申请加入</button>
-			{% else %}{% endifequal %}
-			
-			<hr>
+			<div id = "act">
+				<p>活动主题：{{act.title}}</p>
+				<p>活动内容：</p><div style = "margin-left : 90px">{{act.content}}</div>
+				<p>起始日期：{{act.start_date|date:"Y-m-d"}}</p>
+				<p>结束日期：{{act.end_date|date:"Y-m-d"}}</p>
+				<p>是否结束：{% if act.is_end %}已结束{% else %}进行中{% endif %}</p>
+				<p>创建人：{{act.author.username}}</p>
+				<p>创建日期：{{act.date|date:"Y-m-d H:i:s"}}</p>
+				{% ifequal has_act True %}
+				<button onclick = 'upgrade({{act.actID}})' class = "button" style="background:#fafafa; color:black;">申请加入</button>
+				{% else %}{% endifequal %}
+			</div>
+			<hr class = "inside_hr">
 		{%endfor%}
 		<script type="text/javascript">
 				function callback(){

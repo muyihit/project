@@ -12,7 +12,8 @@
 	
 	.img{width : 150px ;
 		border:2px solid #bbb; 
-		border-radius:18px;background : #eee; 
+		border-radius:18px;
+		background : #eee; 
 		float : left;
 		padding : 10px;
 		margin : 10px;}
@@ -25,6 +26,13 @@
         border-radius:10px;
 		padding : 10px;
 		float : right ;}
+	.commit{padding : 5px;}
+	.button{
+	width:60px;
+	height:30px;
+	border-radius:15px;
+	font-size:18px;
+	}
 {% endblock %}
 
 {% block title %}mysite{% endblock %}
@@ -49,7 +57,7 @@
 			<h2>添加评论</h2>
 			<form method="post">
 			<table>{{form.as_table}}</table>
-			<input type = "submit" value = "评论" id = "sub"/>
+			<input type = "submit" value = "评论" id = "sub" class = "button" style="background:#fafafa; color:black;"/>
 			</form>
 		</div>
 		

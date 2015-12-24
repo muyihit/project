@@ -17,7 +17,14 @@
     margin: 0 0 3px;
     padding: 4px 5px;
 	}
+	body{font-size: 15px;}
 	#username, #password{width : 300px; height : 30px; font-size : 26px}
+	.button{
+	width:60px;
+	height:30px;
+	border-radius:15px;
+	font-size:18px;
+	}
 {% endblock %}
 {% block title %}用户登录{% endblock %}
 
@@ -35,7 +42,7 @@
 		{% endif %}
 		<label for="password"><h2>密码:</h2></label>
 		<input type="password" name="password" value="" id="password">
-		<input type="submit" value="登录" class = "button"/>
+		<input type="submit" value="登录" class = "button" style="background:#fafafa; color:black;"/>
 		<input type="hidden" name="next" value="/index/" />
 	</form>
 

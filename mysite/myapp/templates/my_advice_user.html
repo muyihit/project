@@ -1,48 +1,76 @@
 ﻿{% extends "base.html" %}
-
 {% block style %}
-   
-   #adviceresult{float: left; color : yellow; font-size:40px; margin-left: 8em;}
-   #advice_u_details{float: right; font-size:21px; margin-right : 15em;}
-   #friendimg{}
+	.flexslider { width: 1000px;}
+	h1, h2{color:#000;border-top:1px dotted #fff;margin-top:1em; margin-bottom : 2em;}
+    #adviceresult{
+		width : 400px;
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 20px ;
+		margin-left : 18px;
+		margin-top : 18px;
+   }
+   #advice_u_details{
+		border:1px solid #999ea2;   
+		-moz-border-radius:10px;  
+        -webkit-border-radius:10px;  
+        border-radius:10px;
+		padding : 20px;
+		margin : 18px;
+   }
+    p{margin-top : 5px;}
+	.button{
+	width:120px;
+	height:30px;
+	border-radius:15px;
+	font-size:18px;
+	}
 {% endblock %}
 
-{% block title %}my_advice_user{% endblock %}
+{% block title %}驴友信息{% endblock %}
 
 {% block content%}
-
-	<div id = "adviceresult">
-	{%for hope in hlist%}
-		{%ifequal hope.user u%}
-		{%else%}
-		<li><a href = "/my_advice_user/{{hope.user.username}}/">{{hope.user.username}}</a></li>
-		{%endifequal%}
-	{%endfor%}
-	</div>
 	
-	<div id = "advice_u_details">
-	<table>
-	<tr><td>用户名：</td><td>{{target_user.username}}</td></tr>
-	<tr><td>头像：</td><td>{%ifequal target_user.profile.is_img 0%}该驴友未上传头像
-	{%else%}<div id = "friendimg"><img src="/static/imgs/{{target_user.username}}.png"/ class = "radius_img"></div>{%endifequal%}</td></tr>
-	<tr><td>昵称：</td><td>{{target_user.profile.nickname}}</td></tr>
-	<tr><td>性别：</td><td>{%ifequal target_user.profile.sex 0%}女{%else%}男{%endifequal%}</td></tr>
-	<tr><td>出发地：</td><td>{{target_hope.home}}</td></tr>
-	<tr><td>目的地：</td><td>{{target_hope.goal}}</td></tr>
-	<tr><td>出发日期起点：</td><td>{{target_hope.start_date}}</td></tr>
-	<tr><td>出发日期终点：</td><td>{{target_hope.end_date}}</td></tr>
-	<tr><td>旅行预算：</td><td>{{target_hope.price}}</td></tr>
-	<tr><td>期望去的景点：</td><td>{{target_hope.hopesry}}</td></tr>
-	<tr><td>旅游爱好：</td><td>{{target_user.profile.travellike}}</td></tr>
-	<tr><td>备注：</td><td>{{target_hope.tip}}</td></tr>
-	{% ifequal is_friend False %}
-	<tr><td>是否添加对方为好友：</td><td><input type = "button"  value = "添加好友" onclick = 'addfriend()'/></td></tr>
-	{% else %}{% endifequal %}
-	{% ifequal has_act True %}
-	<tr><td>是否发出组团邀请：</td><td><input type = "button"  value = "发送邀请" onclick = 'travelreq()'/></td></tr>
-	{% else %}{% endifequal %}
+	<table width = "1000px"><tr><td width = "460px" valign="top" align = "center">
+		<div id = "adviceresult">
+			<h2><center>驴友推荐</h2><hr>
+			{%for hope in hlist%}
+				{%ifequal hope.user u%}
+				{%else%}
+					<p><a href = "/my_advice_user/{{hope.user.username}}/"><font style= "font-size :30px">{{hope.user.username}}</font></a></p>
+					<p>&nbsp</p>
+				{%endifequal%}
+			{%endfor%}
+		</div>
+	</td><td width = "534px" valign = "top" align = "center">
+		<div id = "advice_u_details">
+			<h2><center>驴友详细信息</h2>
+			<table>
+			<tr><td>用户名：</td><td>{{target_user.username}}</td></tr>
+			<tr><td>头像：</td><td>{%ifequal target_user.profile.is_img 0%}该驴友未上传头像
+			{%else%}<div id = "friendimg"><img src="/static/imgs/{{target_user.username}}.png"/ class = "radius_img"></div>{%endifequal%}</td></tr>
+			<tr><td>昵称：</td><td>{{target_user.profile.nickname}}</td></tr>
+			<tr><td>性别：</td><td>{%ifequal target_user.profile.sex 0%}女{%else%}男{%endifequal%}</td></tr>
+			<tr><td>出发地：</td><td>{{target_hope.home}}</td></tr>
+			<tr><td>目的地：</td><td>{{target_hope.goal}}</td></tr>
+			<tr><td>出发日期起点：</td><td>{{target_hope.start_date}}</td></tr>
+			<tr><td>出发日期终点：</td><td>{{target_hope.end_date}}</td></tr>
+			<tr><td>旅行预算：</td><td>{{target_hope.price}}</td></tr>
+			<tr><td>期望去的景点：</td><td>{{target_hope.hopesry}}</td></tr>
+			<tr><td>旅游爱好：</td><td>{{target_user.profile.travellike}}</td></tr>
+			<tr><td>备注：</td><td>{{target_hope.tip}}</td></tr>
+			{% ifequal is_friend False %}
+			<tr><td>是否添加对方为好友：</td><td><input type = "button"  value = "添加好友" class = "button" style="background:#fafafa; color:black;" onclick = 'addfriend()'/></td></tr>
+			{% else %}{% endifequal %}
+			{% ifequal has_act True %}
+			<tr><td>是否发出组团邀请：</td><td><input type = "button"  value = "发送邀请" class = "button" style="background:#fafafa; color:black;" onclick = 'travelreq()'/></td></tr>
+			{% else %}{% endifequal %}
+			</table>
+		</div>
+	</td></tr>
 	</table>
-	</div>
 	<script type="text/javascript">
 	function addfriend(){
 		var oreq = new XMLHttpRequest();
@@ -60,3 +88,4 @@
 	}
 	</script>
 {% endblock %}
+   

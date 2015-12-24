@@ -12,7 +12,7 @@
 		margin-left : 18px;
 		margin-top : 18px;
    }
-   #strgy{ height : 80px;}
+   #strgy{ height : 100px;}
    .img{float: left; width : 200px;}
    #mysite{width : 450px ;float: left ;height : 300px; overflow-y : scroll;}
    #mystrgy{
@@ -36,6 +36,8 @@
 				<div id = "strgy">
 					<p align = "left"><label>标题：</label><a href = "/showstrgy/{{strg.strgyID}}/">{{strg.title}}</a></p>
 					<p>&nbsp</p>
+					<p align = "right"><label>作者：</label>{{strg.user.username}}</p>
+					<p>&nbsp</p>
 					<p align = "right"><label>日期：</label>{{strg.date|date:"Y-m-d H:i:s"}}</p>
 					<hr>
 				</div>
@@ -44,8 +46,10 @@
 	</td><td valign = "top" width = "534px" align = "center">
 		<div id = "mystrgy">
 			<h2><center>旅游攻略内容</h2>
-			<table id = "table"><tr><td><label>主题：</lable>{{strgy.title}}</td></tr>
+			<table width = "400px" id = "table"><tr><td><label>主题：</lable>{{strgy.title}}</td></tr>
 				<tr><td><label>日期：</lable>{{strgy.date|date:"Y-m-d H:i:s"}}</td></tr>
+				<tr><td><label>作者：</label>{{strgy.user.username}}</td></tr>
+				<p>&nbsp</p>
 				{% if is_site%}
 				<tr><td><label>景点：</lable><a href = "/mysite/{{strgy.site.siteID}}/">{{strgy.site.name}}</a></td></tr>
 				{% endif %}
