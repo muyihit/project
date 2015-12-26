@@ -6,15 +6,15 @@ from django.contrib.auth.models import User
     
 class Profile(models.Model):
     user = models.OneToOneField(User)
-    nickname = models.CharField(max_length = 16, blank = True)
+    nickname = models.CharField(max_length = 1000, blank = True)
     age = models.IntegerField(default = 0)
     sex = models.IntegerField(choices = ((1, '男'), (0, '女')), default = 1)
-    phone = models.CharField(max_length = 20, blank = True)
-    qq = models.CharField(max_length = 20, blank = True)
+    phone = models.CharField(max_length = 1000, blank = True)
+    qq = models.CharField(max_length = 1000, blank = True)
     #myemail = models.EmailField(verbose_name = '邮箱', blank = True,)
-    travellike = models.CharField(max_length = 50, blank = True)
-    question = models.CharField(max_length = 50, blank = True)
-    answer = models.CharField(max_length = 50, blank = True)
+    travellike = models.CharField(max_length = 1000, blank = True)
+    question = models.CharField(max_length = 1000, blank = True)
+    answer = models.CharField(max_length = 1000, blank = True)
     #img = models.ImageField(blank = True)
     is_img = models.IntegerField(default = 0)
     friend = models.ManyToManyField('self')
@@ -23,8 +23,8 @@ class Profile(models.Model):
     
 class Site(models.Model):
     siteID = models.AutoField(primary_key = True)
-    name = models.CharField(verbose_name = '景点名', max_length = 20)
-    content = models.CharField(verbose_name = '描述', max_length = 50, blank = True)
+    name = models.CharField(verbose_name = '景点名', max_length = 1000)
+    content = models.CharField(verbose_name = '描述', max_length = 1000, blank = True)
     price = models.IntegerField(verbose_name = '价格')
     is_img = models.IntegerField(default = 0)
     def __unicode__(self):
@@ -33,17 +33,17 @@ class Site(models.Model):
 class Log(models.Model):
     logID = models.AutoField(primary_key = True)
     user = models.ForeignKey(User)
-    title = models.CharField(max_length = 50, verbose_name = '日志题目')
+    title = models.CharField(max_length = 1000, verbose_name = '日志题目')
     content = models.CharField(max_length = 1000, verbose_name = '内容')
     date = models.DateTimeField(verbose_name = '日期', auto_now = True)
     is_img = models.BooleanField(default = False)
-    img_name = models.CharField(max_length = 50, default = '')
+    img_name = models.CharField(max_length = 1000, default = '')
     def __unicode__(self):
         return self.title + '_...' + self.content[0:10] + '..._' + str(self.date) + u'作者' + str(self.user.username)
 
 class Strategy(models.Model):
     strgyID = models.AutoField(primary_key = True)
-    title = models.CharField(max_length = 50)
+    title = models.CharField(max_length = 1000)
     content = models.CharField(max_length = 1000)
     date = models.DateTimeField(verbose_name = '日期', auto_now_add = True)
     user = models.ForeignKey(User, related_name = 'user_strgy_set')
@@ -53,8 +53,8 @@ class Strategy(models.Model):
 
 class Hope(models.Model):
     user = models.OneToOneField(User)
-    home = models.CharField(max_length = 50, blank = True)
-    goal = models.CharField(max_length = 50, blank = True)
+    home = models.CharField(max_length = 1000, blank = True)
+    goal = models.CharField(max_length = 1000, blank = True)
     start_date = models.DateField(blank = True, null = True)
     end_date = models.DateField(blank = True, null = True)
     price = models.IntegerField(blank = True, null = True)
@@ -62,9 +62,9 @@ class Hope(models.Model):
     landtype = models.CharField(verbose_name = '目的地类型', max_length = 10, choices = (('any', '随意'),
         ('plain', '平原'), ('mountain', '山林'), ('water', '湖海'), ('interest', '名胜'),
         ('scenery', '景区'), ('explore', '探险')), default = 'any')
-    hopesry = models.CharField(max_length = 50, blank = True)
+    hopesry = models.CharField(max_length = 1000, blank = True)
     is_commit = models.BooleanField(default = False)
-    tip = models.CharField(max_length = 128, blank = True)
+    tip = models.CharField(max_length = 1000, blank = True)
     def __unicode__(self):
         return self.user.username + "\'s hope"
 
@@ -83,8 +83,8 @@ class Messages(models.Model):
 
 class Activity(models.Model):
     actID = models.AutoField(primary_key = True)
-    title = models.CharField(max_length = 20, blank = True)
-    content = models.CharField(max_length = 100, blank = True)
+    title = models.CharField(max_length = 1000, blank = True)
+    content = models.CharField(max_length = 1000, blank = True)
     author = models.ForeignKey(User, related_name = 'author_set')
     start_date = models.DateField(blank = True, null = True)
     end_date = models.DateField(blank = True, null = True)
@@ -107,21 +107,21 @@ class Person(models.Model):
 
 class Describe(models.Model):
     dscrbID = models.AutoField(primary_key = True)
-    content = models.CharField(max_length = 20, blank = True)
+    content = models.CharField(max_length = 1000, blank = True)
     user = models.ManyToManyField(User)
     def __unicode__(self):
         return self.content
 
 class SiteImg(models.Model):
     siteID = models.AutoField(primary_key = True)
-    name = models.CharField(max_length = 20, blank = True)
+    name = models.CharField(max_length = 1000, blank = True)
     site = models.ForeignKey(Site)
     def __unicode__(self):
         return self.name
     
 class SiteCommit(models.Model):
     scID = models.AutoField(primary_key = True)
-    content = models.CharField(max_length = 50)
+    content = models.CharField(max_length = 1000)
     site = models.ForeignKey(Site, related_name = 'site_sitecommit_set')
     user = models.ForeignKey(User, related_name = 'user_sitecommit_set')
     date = models.DateTimeField(auto_now_add = True, blank = True)
@@ -130,7 +130,7 @@ class SiteCommit(models.Model):
 
 class LogImg(models.Model):
     ID = models.AutoField(primary_key = True)
-    name = models.CharField(max_length = 20, blank = True)
+    name = models.CharField(max_length = 1000, blank = True)
     log = models.ForeignKey(Log)
     def __unicode__(self):
         return self.name

@@ -64,6 +64,14 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='LogImg',
+            fields=[
+                ('ID', models.AutoField(serialize=False, primary_key=True)),
+                ('name', models.CharField(max_length=20, blank=True)),
+                ('log', models.ForeignKey(to='myapp.Log')),
+            ],
+        ),
+        migrations.CreateModel(
             name='Messages',
             fields=[
                 ('msgID', models.AutoField(serialize=False, primary_key=True)),

@@ -32,10 +32,10 @@ def box(user):
         
         strgys = list(Strategy.objects.all().order_by('-date'))
         strgys_num = len(strgys)
-        if strgys <=4:
+        if strgys_num <=4:
             deal_strgys = strgys
             rest_strgys_num = 4 - strgys_num
-            for j in range(rest_num):
+            for j in range(rest_strgys_num):
                 deal_strgys.append(False)
         else:
             deal_strgys = strgys[0 : 4]

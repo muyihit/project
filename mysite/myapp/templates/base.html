@@ -31,6 +31,29 @@
     color: red;
     font-size: 20px;
   }
+	input{
+	width: 220px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	height: 20px;
+	font-size: 15px;
+	border: 1px solid #cccccc;
+	outline: none;
+	color: #808080;
+	padding: 5px;
+	margin : 5px;
+}
+input:focus {
+	transition: border  linear .2s, box-shadow linear .5s;
+	-moz-transition: border linear .2s, -moz-box-shadow  linear .5s;
+	-webkit-transition: border linear .2s, -webkit-box-shadow linear .5s;
+	outline: none;
+	border-color: rgba(19,105,172,.75);
+	box-shadow: 0 0 3px rgba(19,105,192,.5);
+	-moz-box-shadow: 0 0 3px rgba(241,39,232,.5);
+	-webkit-box-shadow: 0 0 3px rgba(19,105,252,3);
+}
 	</style>
 	<title>{% block title %}{% endblock %}</title>
 </head>
